@@ -7,11 +7,13 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)
-@Table(name = "registration_pass_type")
+@Table(name = "registration_pass_types")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -36,7 +38,8 @@ public class RegistrationPassType {
     @JoinColumn(name = "event_id")
     private Program program;
 
-    // TODO: REGISTRATION PASS
+    @OneToMany(mappedBy = "passType", cascade = CascadeType.ALL)
+    private List<RegistrationPass> passes = new ArrayList<>();
 
     @CreatedDate
     @Column(name = "created_at", updatable = false, nullable = false)
