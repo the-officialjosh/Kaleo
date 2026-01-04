@@ -1,4 +1,4 @@
-package dev.joshuaonyema.kaleo.domain;
+package dev.joshuaonyema.kaleo.domain.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -15,7 +15,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @Builder
-public class Pass extends AuditedEntity{
+public class Pass extends TimestampedEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id", updatable = false, nullable = false)

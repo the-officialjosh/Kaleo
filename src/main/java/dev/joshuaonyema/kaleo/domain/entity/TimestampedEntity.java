@@ -1,4 +1,4 @@
-package dev.joshuaonyema.kaleo.domain;
+package dev.joshuaonyema.kaleo.domain.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.MappedSuperclass;
@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @NoArgsConstructor
-public class AuditedEntity {
+public class TimestampedEntity {
     @CreatedDate
     @Column(name = "created_at", updatable = false, nullable = false)
     private LocalDateTime createdAt;

@@ -1,4 +1,4 @@
-package dev.joshuaonyema.kaleo.domain;
+package dev.joshuaonyema.kaleo.domain.entity;
 
 
 import jakarta.persistence.*;
@@ -17,7 +17,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @Builder
-public class Program extends AuditedEntity{
+public class Program extends TimestampedEntity {
     @Id
     @Column(name = "id", updatable = false, nullable = false)
     @GeneratedValue(strategy = GenerationType.UUID)

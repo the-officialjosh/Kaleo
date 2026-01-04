@@ -1,4 +1,4 @@
-package dev.joshuaonyema.kaleo.domain;
+package dev.joshuaonyema.kaleo.domain.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
@@ -18,7 +18,7 @@ import java.util.UUID;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class User extends AuditedEntity {
+public class User extends TimestampedEntity {
     @Id
     @Column(name = "id", updatable = false, nullable = false)
     private UUID id;

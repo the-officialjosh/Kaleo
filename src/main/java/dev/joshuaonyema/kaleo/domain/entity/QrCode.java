@@ -1,4 +1,4 @@
-package dev.joshuaonyema.kaleo.domain;
+package dev.joshuaonyema.kaleo.domain.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -7,13 +7,13 @@ import java.util.Objects;
 import java.util.UUID;
 
 @Entity
-@Table(name = "pass_validations")
+@Table(name = "qr_codes")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
 @Builder
-public class PassValidation extends AuditedEntity{
+public class QrCode extends TimestampedEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id", updatable = false, nullable = false)
@@ -21,11 +21,10 @@ public class PassValidation extends AuditedEntity{
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
-    private PassValidationStatus passStatus;
+    private QrCodeStatus status;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "validation_method", nullable = false)
-    private PassValidationMethod validationMethod;
+    @Column(name = "value", nullable = false)
+    private String value;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "pass_id")
@@ -34,8 +33,8 @@ public class PassValidation extends AuditedEntity{
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
-        PassValidation that = (PassValidation) o;
-        return Objects.equals(id, that.id);
+        QrCode qrCode = (QrCode) o;
+        return Objects.equals(id, qrCode.id);
     }
 
     @Override

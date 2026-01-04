@@ -1,6 +1,6 @@
 package dev.joshuaonyema.kaleo.repository;
 
-import dev.joshuaonyema.kaleo.domain.User;
+import dev.joshuaonyema.kaleo.domain.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

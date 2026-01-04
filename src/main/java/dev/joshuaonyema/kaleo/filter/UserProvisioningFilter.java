@@ -1,6 +1,6 @@
 package dev.joshuaonyema.kaleo.filter;
 
-import dev.joshuaonyema.kaleo.domain.User;
+import dev.joshuaonyema.kaleo.domain.entity.User;
 import dev.joshuaonyema.kaleo.repository.UserRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
