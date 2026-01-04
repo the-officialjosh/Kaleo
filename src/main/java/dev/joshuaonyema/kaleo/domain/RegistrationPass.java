@@ -40,7 +40,8 @@ public class RegistrationPass {
     @OneToMany(mappedBy = "pass", cascade = CascadeType.ALL)
     private List<RegistrationPassValidation> passValidations = new ArrayList<>();
 
-    // TODO: QRCode
+    @OneToMany(mappedBy = "pass", cascade = CascadeType.ALL)
+    private List<QrCode> qrCodes = new ArrayList<>();
 
     @CreatedDate
     @Column(name = "created_at", updatable = false, nullable = false)
