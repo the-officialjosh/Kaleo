@@ -1,0 +1,108 @@
+@startuml Kaleo
+title Kaleo, Domain Model
+hide circle
+skinparam classAttributeIconSize 0
+
+
+' ===== Base Entity =====
+abstract class AuditedEntity {
+  LocalDateTime createdAt
+  LocalDateTime updatedAt
+}
+
+' ===== User =====
+class User {
+  UUID id
+  String name
+  String email
+}
+
+User --|> AuditedEntity
+
+' ===== Core domain =====
+enum ProgramStatus {
+  DRAFT
+  PUBLISHED
+  CANCELLED
+  COMPLETED
+}
+
+class Program {
+  UUID id
+  String name
+  LocalDateTime startTime
+  LocalDateTime endTime
+  String venue
+  ProgramStatus programStatus
+  LocalDateTime? registrationStart
+  LocalDateTime? registrationEndTime
+}
+
+Program --|> AuditedEntity
+
+class PassType {
+  UUID id
+  String name
+  BigInteger price
+  Integer? totalAvailable
+}
+
+PassType --|> AuditedEntity
+
+enum PassStatus {
+  ACTIVE
+  CANCELLED
+}
+
+class Pass {
+  UUID id
+  PassStatus status
+}
+
+Pass --|> AuditedEntity
+
+enum PassValidationStatus {
+  VALID
+  INVALID
+  EXPIRED
+}
+
+enum PassValidationMethod {
+  QR_SCAN
+  MANUAL
+}
+
+class PassValidation {
+  UUID id
+  PassValidationStatus passStatus
+  PassValidationMethod validationMethod
+}
+
+PassValidation --|> AuditedEntity
+
+enum QrCodeStatus {
+  ACTIVE
+  EXPIRED
+}
+
+class QrCode {
+  UUID id
+  QrCodeStatus status
+  String value
+}
+
+QrCode --|> AuditedEntity
+
+
+' ===== Relationships =====
+User "1" -- "0..*" Program : organizes
+User "0..*" -- "0..*" Program : attends
+User "0..*" -- "0..*" Program : staffs
+
+Program "1" *-- "0..*" PassType : offers
+PassType "1" -- "0..*" Pass : categorizes
+User "1" -- "0..*" Pass : registers
+
+Pass "1" *-- "0..*" PassValidation : validated
+Pass "1" *-- "1..*" QrCode : has
+@enduml
