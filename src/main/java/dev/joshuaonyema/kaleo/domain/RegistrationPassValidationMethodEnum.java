@@ -1,6 +1,6 @@
 package dev.joshuaonyema.kaleo.domain;
 
-public enum PassValidationMethodEnum {
+public enum RegistrationPassValidationMethodEnum {
     QR_SCAN,
     MANUAL
 }
