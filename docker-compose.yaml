@@ -4,15 +4,13 @@ services:
     container_name: kaleo-container
     ports:
       - "5432:5432"
-    restart: unless-stopped
+    restart: always
     env_file:
       - .env
     environment:
       POSTGRES_DB: kaleo
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-    volumes:
-      - kaleo-data:/var/lib/postgresql
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
       interval: 10s
@@ -22,12 +20,28 @@ services:
   adminer:
     image: adminer:latest
     container_name: kaleo-adminer
-    restart: unless-stopped
+    restart: always
     ports:
       - "8888:8080"
     depends_on:
       db:
         condition: service_healthy
 
+  keycloak:
+    image: quay.io/keycloak/keycloak:26.4.7
+    ports:
+      - "9090:8080"
+    env_file:
+      - .env
+    environment:
+      KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN}
+      KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD}
+    volumes:
+      - keycloak-data:/opt/keycloak/data
+    command:
+      - start-dev
+      - --db=dev-file
+
 volumes:
-  kaleo-data:
+  keycloak-data:
+    driver: local

@@ -37,12 +37,12 @@
 
 | Technology | Version | Purpose |
 |------------|---------|---------|
-| ![Java](https://img.shields.io/badge/-Java-ED8B00?style=flat-square&logo=openjdk&logoColor=white) | 25 | Core language |
-| ![Spring Boot](https://img.shields.io/badge/-Spring_Boot-6DB33F?style=flat-square&logo=spring&logoColor=white) | 4.0.1 | Application framework |
-| ![PostgreSQL](https://img.shields.io/badge/-PostgreSQL-336791?style=flat-square&logo=postgresql&logoColor=white) | 18 | Database |
-| ![Keycloak](https://img.shields.io/badge/-Keycloak-4D4D4D?style=flat-square&logo=keycloak&logoColor=white) | — | OIDC & RBAC |
-| ![Swagger](https://img.shields.io/badge/-OpenAPI-85EA2D?style=flat-square&logo=swagger&logoColor=black) | — | API documentation |
-| ![JUnit](https://img.shields.io/badge/-JUnit_5-25A162?style=flat-square&logo=junit5&logoColor=white) | 5 | Testing |
+| ![Java](https://img.shields.io/badge/-Java-ED8B00?style=flat-square&logo=openjdk&logoColor=white) | 25      | Core language |
+| ![Spring Boot](https://img.shields.io/badge/-Spring_Boot-6DB33F?style=flat-square&logo=spring&logoColor=white) | 4.0.1   | Application framework |
+| ![PostgreSQL](https://img.shields.io/badge/-PostgreSQL-336791?style=flat-square&logo=postgresql&logoColor=white) | 18      | Database |
+| ![Keycloak](https://img.shields.io/badge/-Keycloak-4D4D4D?style=flat-square&logo=keycloak&logoColor=white) | 26.4.7  | OIDC & RBAC |
+| ![Swagger](https://img.shields.io/badge/-OpenAPI-85EA2D?style=flat-square&logo=swagger&logoColor=black) | —       | API documentation |
+| ![JUnit](https://img.shields.io/badge/-JUnit_5-25A162?style=flat-square&logo=junit5&logoColor=white) | 5       | Testing |
 
 ---
 
@@ -51,7 +51,7 @@
 ### Milestone 1: Foundation
 - [x] Project setup, Maven wrapper, code style
 - [x] PostgreSQL integration
-- [ ] Keycloak integration, roles: `Organizer`, `Participant`, `Staff`
+- [x] Keycloak integration, roles
 
 ### Milestone 2: Program Management
 - [ ] Create program (draft)
