@@ -58,6 +58,9 @@ public class Program {
     @ManyToMany(mappedBy = "staffingProgram")
     private  List<User> staff = new ArrayList<>();
 
+    @OneToMany(mappedBy = "program", cascade = CascadeType.ALL)
+    private List<RegistrationPassType> registrationPassTypes = new ArrayList<>();
+
     @CreatedDate
     @Column(name = "created_at", updatable = false, nullable = false)
     private LocalDateTime createdAt;
