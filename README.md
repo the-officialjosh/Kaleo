@@ -1,6 +1,6 @@
 <div align="center">
 
-# 🙏 Kaleo
+# Kaleo
 
 ### A Church and Program Events Management API
 
