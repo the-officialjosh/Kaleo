@@ -52,6 +52,7 @@
 - [x] Project setup, Maven wrapper, code style
 - [x] PostgreSQL integration
 - [x] Keycloak integration, roles
+- [x] MapStruct and Lombok Mapstruct Binding for annotation
 
 ### Milestone 2: Program Management
 - [ ] Create program (draft)
