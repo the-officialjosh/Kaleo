@@ -41,7 +41,6 @@
 | ![Spring Boot](https://img.shields.io/badge/-Spring_Boot-6DB33F?style=flat-square&logo=spring&logoColor=white) | 4.0.1 | Application framework |
 | ![PostgreSQL](https://img.shields.io/badge/-PostgreSQL-336791?style=flat-square&logo=postgresql&logoColor=white) | 18 | Database |
 | ![Keycloak](https://img.shields.io/badge/-Keycloak-4D4D4D?style=flat-square&logo=keycloak&logoColor=white) | — | OIDC & RBAC |
-| ![Flyway](https://img.shields.io/badge/-Flyway-CC0200?style=flat-square&logo=flyway&logoColor=white) | — | Database migrations |
 | ![Swagger](https://img.shields.io/badge/-OpenAPI-85EA2D?style=flat-square&logo=swagger&logoColor=black) | — | API documentation |
 | ![JUnit](https://img.shields.io/badge/-JUnit_5-25A162?style=flat-square&logo=junit5&logoColor=white) | 5 | Testing |
 
@@ -51,9 +50,8 @@
 
 ### Milestone 1: Foundation
 - [x] Project setup, Maven wrapper, code style
-- [ ] PostgreSQL integration, Flyway baseline migration
+- [x] PostgreSQL integration
 - [ ] Keycloak integration, roles: `Organizer`, `Participant`, `Staff`
-- [ ] OpenAPI documentation, error handling standard
 
 ### Milestone 2: Program Management
 - [ ] Create program (draft)
