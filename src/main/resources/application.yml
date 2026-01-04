@@ -1,3 +1,21 @@
 spring:
     application:
         name: Kaleo
+
+    #Database configuration
+    datasource:
+        url: jdbc:postgresql://localhost/postgres
+        username: ${POSTGRES_USER}
+        password: ${POSTGRES_PASSWORD}
+
+    #JPA Configuration
+    jpa:
+        hibernate:
+            ddl-auto: update
+        show-sql: true
+        properties:
+            hibernate:
+                format_sql: true
+                dialect: org.hibernate.dialect.PostgreSQLDialect
+
+
