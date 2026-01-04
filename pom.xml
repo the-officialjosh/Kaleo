@@ -12,7 +12,7 @@
     <artifactId>Kaleo</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>Kaleo</name>
-    <description>Kaleo</description>
+    <description>Kaleo is a secure REST API for church and ministry program management, enabling organizers to publish programs, participants to register for limited capacity gatherings, and staff to validate attendance using QR coded passes, with built-in capacity enforcement, duplicate check-in prevention, and reporting endpoints.</description>
     <url/>
     <licenses>
         <license/>
