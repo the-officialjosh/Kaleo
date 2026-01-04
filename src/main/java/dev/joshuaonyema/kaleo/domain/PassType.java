@@ -28,6 +28,9 @@ public class PassType extends AuditedEntity {
     @Column(name = "price", nullable = false)
     private BigInteger price;
 
+    @Column (name = "description")
+    private String description;
+
     @Column(name = "total_available")
     private Integer totalAvailable;
 
