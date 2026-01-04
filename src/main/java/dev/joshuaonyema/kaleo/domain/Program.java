@@ -7,6 +7,7 @@ import lombok.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 @Entity
@@ -55,5 +56,17 @@ public class Program extends AuditedEntity{
     private  List<User> staff = new ArrayList<>();
 
     @OneToMany(mappedBy = "program", cascade = CascadeType.ALL)
-    private List<RegistrationPassType> registrationPassTypes = new ArrayList<>();
+    private List<PassType> passTypes = new ArrayList<>();
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Program program = (Program) o;
+        return Objects.equals(id, program.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
+    }
 }

@@ -6,16 +6,17 @@ import lombok.*;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 @Entity
-@Table(name = "registration_pass_types")
+@Table(name = "pass_types")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
 @Builder
-public class RegistrationPassType extends AuditedEntity {
+public class PassType extends AuditedEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id", updatable = false, nullable = false)
@@ -35,5 +36,17 @@ public class RegistrationPassType extends AuditedEntity {
     private Program program;
 
     @OneToMany(mappedBy = "passType", cascade = CascadeType.ALL)
-    private List<RegistrationPass> passes = new ArrayList<>();
+    private List<Pass> passes = new ArrayList<>();
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        PassType that = (PassType) o;
+        return Objects.equals(id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
+    }
 }

@@ -1,6 +1,6 @@
 package dev.joshuaonyema.kaleo.domain;
 
-public enum RegistrationPassStatus {
+public enum PassStatus {
     ACTIVE,
     CANCELLED
 }

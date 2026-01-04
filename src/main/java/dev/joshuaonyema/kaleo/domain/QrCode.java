@@ -3,6 +3,7 @@ package dev.joshuaonyema.kaleo.domain;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.Objects;
 import java.util.UUID;
 
 @Entity
@@ -27,6 +28,17 @@ public class QrCode extends AuditedEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "pass_id")
-    private RegistrationPass pass;
+    private Pass pass;
 
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        QrCode qrCode = (QrCode) o;
+        return Objects.equals(id, qrCode.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
+    }
 }
