@@ -1,18 +1,19 @@
 package dev.joshuaonyema.kaleo.domain;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import lombok.*;
-import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 @Table(name = "users")
 @Getter
 @Setter
@@ -31,17 +32,30 @@ public class User {
     @Column(name = "email", nullable = false)
     private String email;
 
-    //TODO: Organise program
+    @OneToMany(mappedBy = "organizer", cascade = CascadeType.ALL)
+    private List<Program> organizingPrograms = new ArrayList<>();
 
-    //TODO: Attend program
+    @ManyToMany
+    @JoinTable(
+            name = "user_attending_programs",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "program_id")
+    )
+    private List<Program> attendingProgram = new ArrayList<>();
 
-    //TODO: Staff program
+    @ManyToMany
+    @JoinTable(
+            name = "user_staffing_programs",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "program_id")
+    )
+    private List<Program> staffingProgram = new ArrayList<>();
 
     @CreatedDate
     @Column(name = "created_at", updatable = false, nullable = false)
     private LocalDateTime createdAt;
 
-    @CreatedDate
+    @LastModifiedDate
     @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
 }
