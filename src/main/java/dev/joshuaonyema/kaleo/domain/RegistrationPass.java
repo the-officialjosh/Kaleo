@@ -7,6 +7,8 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -35,7 +37,8 @@ public class RegistrationPass {
     @JoinColumn(name = "registrant_id")
     private User registrant;
 
-    // TODO: Validation
+    @OneToMany(mappedBy = "pass", cascade = CascadeType.ALL)
+    private List<RegistrationPassValidation> passValidations = new ArrayList<>();
 
     // TODO: QRCode
 
