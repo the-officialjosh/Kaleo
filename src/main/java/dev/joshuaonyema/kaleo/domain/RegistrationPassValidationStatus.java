@@ -1,6 +1,6 @@
 package dev.joshuaonyema.kaleo.domain;
 
-public enum RegistrationPassValidationStatusEnum {
+public enum RegistrationPassValidationStatus {
     VALID,
     INVALID,
     EXPIRED

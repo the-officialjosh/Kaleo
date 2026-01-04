@@ -3,9 +3,6 @@ package dev.joshuaonyema.kaleo.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -13,14 +10,13 @@ import java.util.List;
 import java.util.UUID;
 
 @Entity
-@EntityListeners(AuditingEntityListener.class)
 @Table(name = "programs")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
 @Builder
-public class Program {
+public class Program extends AuditedEntity{
     @Id
     @Column(name = "id", updatable = false, nullable = false)
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -40,7 +36,7 @@ public class Program {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "program_status", nullable = false)
-    private ProgramStatusEnum programStatus;
+    private ProgramStatus programStatus;
 
     @Column(name = "registration_start")
     private LocalDateTime registrationStart;
@@ -60,12 +56,4 @@ public class Program {
 
     @OneToMany(mappedBy = "program", cascade = CascadeType.ALL)
     private List<RegistrationPassType> registrationPassTypes = new ArrayList<>();
-
-    @CreatedDate
-    @Column(name = "created_at", updatable = false, nullable = false)
-    private LocalDateTime createdAt;
-
-    @LastModifiedDate
-    @Column(name = "updated_at", nullable = false)
-    private LocalDateTime updatedAt;
 }

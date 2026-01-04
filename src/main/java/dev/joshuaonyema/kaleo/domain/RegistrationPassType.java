@@ -2,24 +2,20 @@ package dev.joshuaonyema.kaleo.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import java.time.LocalDateTime;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 @Entity
-@EntityListeners(AuditingEntityListener.class)
 @Table(name = "registration_pass_types")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
 @Builder
-public class RegistrationPassType {
+public class RegistrationPassType extends AuditedEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id", updatable = false, nullable = false)
@@ -29,7 +25,7 @@ public class RegistrationPassType {
     private String name;
 
     @Column(name = "price", nullable = false)
-    private Double price;
+    private BigInteger price;
 
     @Column(name = "total_available")
     private Integer totalAvailable;
@@ -40,12 +36,4 @@ public class RegistrationPassType {
 
     @OneToMany(mappedBy = "passType", cascade = CascadeType.ALL)
     private List<RegistrationPass> passes = new ArrayList<>();
-
-    @CreatedDate
-    @Column(name = "created_at", updatable = false, nullable = false)
-    private LocalDateTime createdAt;
-
-    @LastModifiedDate
-    @Column(name = "updated_at", nullable = false)
-    private LocalDateTime updatedAt;
 }
