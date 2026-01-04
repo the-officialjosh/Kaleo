@@ -36,8 +36,8 @@ public class Program extends TimestampedEntity {
     private String venue;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "program_status", nullable = false)
-    private ProgramStatus programStatus;
+    @Column(name = "status", nullable = false)
+    private ProgramStatus status;
 
     @Column(name = "registration_start")
     private LocalDateTime registrationStart;
