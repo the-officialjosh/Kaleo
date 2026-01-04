@@ -79,10 +79,15 @@
 ---
 
 ## 📚 Documentation
+## 📚 Documentation
 
 | Document | Description |
 |----------|-------------|
 | [Project Brief](docs/project-brief.md) | Detailed project overview and specifications |
+| [Domain Model](docs/images/kaleo-domain.png) | Domain model diagram |
+
+### 🏗️ Domain Model
+![Kaleo Domain Model](docs/images/kaleo-domain.png)
 
 ---
 
