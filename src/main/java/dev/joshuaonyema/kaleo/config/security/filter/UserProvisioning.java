@@ -20,7 +20,7 @@ import java.util.UUID;
 
 @Component
 @RequiredArgsConstructor
-public class UserProvisioningFilter extends OncePerRequestFilter {
+public class UserProvisioning extends OncePerRequestFilter {
 
     private final UserRepository userRepository;
 

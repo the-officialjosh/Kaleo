@@ -1,6 +1,6 @@
 package dev.joshuaonyema.kaleo.config.security;
 
-import dev.joshuaonyema.kaleo.config.security.filter.UserProvisioningFilter;
+import dev.joshuaonyema.kaleo.config.security.filter.UserProvisioning;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
@@ -11,10 +11,10 @@ import org.springframework.security.oauth2.server.resource.web.authentication.Be
 
 
 @Configuration
-public class SecurityConfig {
+public class HttpSecurityConfig {
 
     @Bean
-    Customizer<HttpSecurity> httpSecurityCustomizer(UserProvisioningFilter userProvisioningFilter){
+    Customizer<HttpSecurity> httpSecurityCustomizer(UserProvisioning userProvisioning){
         return httpSecurity -> httpSecurity
                 .authorizeHttpRequests(
                         authorize->authorize
@@ -24,6 +24,6 @@ public class SecurityConfig {
                 .sessionManagement(
                         session-> session
                                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .addFilterAfter(userProvisioningFilter, BearerTokenAuthenticationFilter.class);
+                .addFilterAfter(userProvisioning, BearerTokenAuthenticationFilter.class);
     }
 }
