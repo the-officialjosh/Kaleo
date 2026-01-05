@@ -1,12 +1,13 @@
-package dev.joshuaonyema.kaleo.domain;
+package dev.joshuaonyema.kaleo.api.dto;
 
 import dev.joshuaonyema.kaleo.domain.entity.ProgramStatus;
-import dev.joshuaonyema.kaleo.domain.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -19,6 +20,11 @@ public class CreateProgramRequest {
     private LocalDateTime registrationStart;
     private LocalDateTime registrationEndTime;
     private ProgramStatus status;
-    private User organizer;
+    private List<CreatePassTypeRequest> passTypes = new ArrayList<>();
+
+    // TODO: When implementing ProgramService#create,
+    //  set Program.organizer from SecurityContext.
+    //  Organizer is derived from the authenticated principal (JWT)
+    //  in the service layer.
 
 }
