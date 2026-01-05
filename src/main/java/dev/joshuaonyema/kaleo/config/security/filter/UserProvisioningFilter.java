@@ -1,4 +1,4 @@
-package dev.joshuaonyema.kaleo.filter;
+package dev.joshuaonyema.kaleo.config.security.filter;
 
 import dev.joshuaonyema.kaleo.domain.entity.User;
 import dev.joshuaonyema.kaleo.repository.UserRepository;

@@ -1,4 +1,4 @@
-package dev.joshuaonyema.kaleo.config;
+package dev.joshuaonyema.kaleo.config.jpa;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;

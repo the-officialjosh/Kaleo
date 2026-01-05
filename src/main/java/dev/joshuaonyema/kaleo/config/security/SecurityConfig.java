@@ -1,6 +1,6 @@
-package dev.joshuaonyema.kaleo.config;
+package dev.joshuaonyema.kaleo.config.security;
 
-import dev.joshuaonyema.kaleo.filter.UserProvisioningFilter;
+import dev.joshuaonyema.kaleo.config.security.filter.UserProvisioningFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
