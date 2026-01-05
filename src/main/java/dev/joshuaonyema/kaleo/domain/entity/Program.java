@@ -43,7 +43,7 @@ public class Program extends TimestampedEntity {
     private LocalDateTime registrationStart;
 
     @Column(name = "registration_end")
-    private LocalDateTime registrationEndTime;
+    private LocalDateTime registrationEnd;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "organizer_id")
