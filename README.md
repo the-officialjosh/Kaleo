@@ -29,7 +29,7 @@
 
 ## 🚧 Status
 
-> **In Progress** — This repository is being built incrementally with small commits and milestone-based delivery.
+> **In Development** — Core domain model, security configuration, and program management foundation are in place.
 
 ---
 
@@ -41,44 +41,11 @@
 | ![Spring Boot](https://img.shields.io/badge/-Spring_Boot-6DB33F?style=flat-square&logo=spring&logoColor=white) | 4.0.1   | Application framework |
 | ![PostgreSQL](https://img.shields.io/badge/-PostgreSQL-336791?style=flat-square&logo=postgresql&logoColor=white) | 18      | Database |
 | ![Keycloak](https://img.shields.io/badge/-Keycloak-4D4D4D?style=flat-square&logo=keycloak&logoColor=white) | 26.4.7  | OIDC & RBAC |
-| ![Swagger](https://img.shields.io/badge/-OpenAPI-85EA2D?style=flat-square&logo=swagger&logoColor=black) | —       | API documentation |
+| ![MapStruct](https://img.shields.io/badge/-MapStruct-FF6600?style=flat-square&logo=java&logoColor=white) | 1.6.3   | DTO mapping |
 | ![JUnit](https://img.shields.io/badge/-JUnit_5-25A162?style=flat-square&logo=junit5&logoColor=white) | 5       | Testing |
 
 ---
 
-## 🗺️ Roadmap
-
-### Milestone 1: Foundation
-- [x] Project setup, Maven wrapper, code style
-- [x] PostgreSQL integration
-- [x] Keycloak integration, roles
-- [x] MapStruct and Lombok Mapstruct Binding for annotation
-
-### Milestone 2: Program Management
-- [ ] Create program (draft)
-- [ ] Add registration types and capacity
-- [ ] Publish and close program
-- [ ] Browse programs (public endpoints)
-
-### Milestone 3: Registration & Pass Issuance
-- [ ] Register for a program (capacity safe)
-- [ ] Create registration record and pass
-- [ ] Generate QR payload and unique codes
-- [ ] List passes for a participant
-
-### Milestone 4: Check-in
-- [ ] Validate pass via QR payload or manual code
-- [ ] Prevent duplicate check-in
-- [ ] Record check-in events (timestamp, staff)
-
-### Milestone 5: Reporting
-- [ ] Totals by program and registration type
-- [ ] Check-in totals and attendance rate
-- [ ] Registrant lists with status
-
----
-
-## 📚 Documentation
 ## 📚 Documentation
 
 | Document                                     | Description |
@@ -91,23 +58,64 @@
 
 ---
 
+## 📋 Prerequisites
+
+- **Java 25** or later
+- **Docker** and **Docker Compose**
+- **Maven** (or use the included Maven Wrapper)
+
+---
+
 ## 🚀 Running Locally
 
-> **Coming Soon** — Local setup will be provided via Docker Compose (PostgreSQL 18, Keycloak) and the Maven Wrapper.
+### 1. Clone the repository
 
 ```bash
-# Clone the repository
 git clone https://github.com/yourusername/kaleo.git
-
-# Navigate to project directory
 cd kaleo
+```
 
-# Start dependencies (coming soon)
+### 2. Configure environment variables
+
+Create a `.env` file in the project root:
+
+```env
+POSTGRES_USER=your_db_user
+POSTGRES_PASSWORD=your_db_password
+KEYCLOAK_ADMIN=admin
+KEYCLOAK_ADMIN_PASSWORD=your_keycloak_password
+```
+
+### 3. Start dependencies
+
+```bash
 docker-compose up -d
+```
 
-# Run the application
+This starts:
+- **PostgreSQL 18** on port `5432`
+- **Keycloak 26.4.7** on port `9090`
+- **Adminer** (DB admin UI) on port `8888`
+
+### 4. Configure Keycloak
+
+1. Open http://localhost:9090 and login with your admin credentials
+2. Create a realm named `kaleo-events`
+3. Configure clients and roles as needed
+
+### 5. Run the application
+
+```bash
 ./mvnw spring-boot:run
 ```
+
+The API will be available at http://localhost:8080
+
+---
+
+## 📄 License
+
+This project is licensed under the MIT License.
 
 ---
 
