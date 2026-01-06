@@ -8,6 +8,7 @@ import java.lang.annotation.*;
 @Documented
 @Constraint(validatedBy = StartBeforeEndValidator.class)
 @Target(ElementType.TYPE)
+@Repeatable(StartBeforeEnd.List.class)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface StartBeforeEnd {
     String message() default  "startTime must be before endTime";
@@ -18,4 +19,11 @@ public @interface StartBeforeEnd {
 
     String startField() default "startTime";
     String endField() default "endTime";
+
+    @Target(ElementType.TYPE)
+    @Retention(RetentionPolicy.RUNTIME)
+    @Documented
+    @interface List {
+        StartBeforeEnd[] value();
+    }
 }
