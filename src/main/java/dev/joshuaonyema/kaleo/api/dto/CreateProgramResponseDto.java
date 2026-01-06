@@ -21,8 +21,8 @@ public class CreateProgramResponseDto extends TimestampedEntity {
     private LocalDateTime startTime;
     private LocalDateTime endTime;
     private String venue;
-    private LocalDateTime salesStart;
-    private LocalDateTime salesEnd;
+    private LocalDateTime registrationStart;
+    private LocalDateTime registrationEnd;
     private ProgramStatus status;
     private List<CreatePassTypeResponseDto> passTypes;
 }

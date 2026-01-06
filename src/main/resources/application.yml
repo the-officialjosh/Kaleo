@@ -28,3 +28,14 @@ spring:
     threads:
         virtual:
             enabled: true
+
+#logging:
+#    level:
+#        com:
+#            zaxxer:
+#                hikari: DEBUG
+#        org:
+#            springframework:
+#                boot:
+#                    context:
+#                        properties: DEBUG
