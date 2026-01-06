@@ -16,8 +16,8 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@StartBeforeEnd(startField = "startTime", endField = "endTime")
-@StartBeforeEnd(startField = "registrationStart", endField = "registrationEnd")
+@StartBeforeEnd(startField = "startTime", endField = "endTime", message = "start time must be before end time")
+@StartBeforeEnd(startField = "registrationStart", endField = "registrationEnd", message = "registration start time must be before end time")
 public class CreateProgramRequestDto {
     @NotBlank(message = "Program name is required")
     private String name;
