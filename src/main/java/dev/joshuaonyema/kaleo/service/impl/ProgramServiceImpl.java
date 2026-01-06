@@ -37,7 +37,7 @@ public class ProgramServiceImpl implements ProgramService {
         programToCreate.setEndTime(programRequest.getEndTime());
         programToCreate.setVenue(programRequest.getVenue());
         programToCreate.setRegistrationStart(programRequest.getRegistrationStart());
-        programToCreate.setRegistrationEnd(programRequest.getRegistrationEndTime());
+        programToCreate.setRegistrationEnd(programRequest.getRegistrationEnd());
         programToCreate.setStatus(programRequest.getStatus());
         programToCreate.setPassTypes(createPassTypes(programRequest, programToCreate));
 
@@ -63,8 +63,6 @@ public class ProgramServiceImpl implements ProgramService {
             throw  new AccessDeniedException("Not authenticated");
         }
 
-        // TEST: DELETE LATER
-        System.out.println("Authorities: " + auth.getAuthorities());
 
         UUID organizerId = UUID.fromString(jwt.getSubject());
         return userRepository.findById(organizerId)
