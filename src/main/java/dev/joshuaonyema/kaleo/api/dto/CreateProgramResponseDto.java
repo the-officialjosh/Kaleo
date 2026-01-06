@@ -18,8 +18,8 @@ import java.util.UUID;
 public class CreateProgramResponseDto extends TimestampedEntity {
     private UUID id;
     private String name;
-    private LocalDateTime start;
-    private LocalDateTime end;
+    private LocalDateTime startTime;
+    private LocalDateTime endTime;
     private String venue;
     private LocalDateTime salesStart;
     private LocalDateTime salesEnd;
