@@ -27,7 +27,7 @@ import java.util.List;
         message = "registration start time must be before end time")
 @BothOrNone(
         first = "registrationStart",
-        second = "registrationEndTime",
+        second = "registrationEnd",
         message = "registrationStart and registrationEndTime must both be provided"
 )
 public class CreateProgramRequestDto {
