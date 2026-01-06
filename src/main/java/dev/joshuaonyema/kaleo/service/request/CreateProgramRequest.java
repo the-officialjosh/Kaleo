@@ -17,7 +17,7 @@ public class CreateProgramRequest {
     private LocalDateTime endTime;
     private String venue;
     private LocalDateTime registrationStart;
-    private LocalDateTime registrationEndTime;
+    private LocalDateTime registrationEnd;
     private ProgramStatus status;
     private List<CreatePassTypeRequest> passTypes;
 }
