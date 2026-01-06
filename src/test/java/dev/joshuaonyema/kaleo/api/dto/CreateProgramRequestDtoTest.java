@@ -11,6 +11,7 @@ import java.math.BigInteger;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class CreateProgramRequestDtoTest {
@@ -30,7 +31,7 @@ class CreateProgramRequestDtoTest {
         dto.setEndTime(LocalDateTime.now().plusHours(1));
         dto.setVenue("Spring Church");
         dto.setStatus(ProgramStatus.DRAFT);
-        dto.setPassTypes(List.of());
+        dto.setPassTypes(List.of(new CreatePassTypeRequestDto("General", BigInteger.ZERO, null, 100)));
 
         var violations = validator.validate(dto);
 
@@ -46,7 +47,9 @@ class CreateProgramRequestDtoTest {
         dto.setStartTime(LocalDateTime.now().plusHours(2));
         dto.setEndTime(LocalDateTime.now().plusHours(1));
         dto.setVenue("Spring Church");
-        dto.setPassTypes(List.of());
+        dto.setStatus(ProgramStatus.DRAFT);
+        dto.setPassTypes(List.of(new CreatePassTypeRequestDto("General", BigInteger.ZERO, null, 100)));
+
 
         var validations = validator.validate(dto);
 
@@ -80,7 +83,7 @@ class CreateProgramRequestDtoTest {
         dto.setEndTime(LocalDateTime.now().plusHours(1));
         dto.setVenue("");
         dto.setStatus(ProgramStatus.DRAFT);
-        dto.setPassTypes(List.of());
+        dto.setPassTypes(List.of(new CreatePassTypeRequestDto("General", BigInteger.ZERO, null, 100)));
 
         var violations = validator.validate(dto);
 
@@ -125,5 +128,33 @@ class CreateProgramRequestDtoTest {
                     return string.equals("passTypes");
                 }));
     }
+
+    @Test
+    void whenCreatePassTypeRequestDtoIsNotValid_thenViolation() {
+        var dto = new CreateProgramRequestDto();
+        dto.setName("Sunday Service");
+        dto.setStartTime(LocalDateTime.now());
+        dto.setEndTime(LocalDateTime.now().plusHours(1));
+        dto.setVenue("Spring Church");
+        dto.setStatus(ProgramStatus.DRAFT);
+        dto.setPassTypes(List.of(new CreatePassTypeRequestDto(null, null, null, null)));
+
+        var violations = validator.validate(dto);
+
+        assertTrue(violations.stream()
+                .anyMatch(v -> v.getPropertyPath()
+                        .toString().equals("passTypes[0].name")));
+        assertTrue(violations.stream()
+                .anyMatch(v -> v.getPropertyPath()
+                        .toString().equals("passTypes[0].price")));
+        assertFalse(violations.stream()
+                .anyMatch(v -> v.getPropertyPath()
+                        .toString().equals("passTypes[0].description")));
+        assertFalse(violations.stream()
+                .anyMatch(v -> v.getPropertyPath()
+                        .toString().equals("passTypes[0].totalAvailable")));
+
+    }
+
 
 }
