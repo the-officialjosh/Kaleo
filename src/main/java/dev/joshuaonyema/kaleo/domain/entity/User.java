@@ -47,7 +47,7 @@ public class User extends TimestampedEntity {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "program_id")
     )
-    private List<Program> staffingPrograms = new ArrayList<>();
+    private List<Program> staffingProgram = new ArrayList<>();
 
     @Override
     public boolean equals(Object o) {
