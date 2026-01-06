@@ -6,7 +6,7 @@ import jakarta.validation.Payload;
 import java.lang.annotation.*;
 
 @Documented
-@Constraint(validatedBy = StartBeforeEndValidator.class)
+@Constraint(validatedBy = BothOrNoneValidator.class)
 @Target(ElementType.TYPE)
 @Repeatable(BothOrNone.List.class)
 @Retention(RetentionPolicy.RUNTIME)
