@@ -61,6 +61,19 @@ class CreateProgramRequestDtoTest {
     }
 
     @Test
+    void whenStartTimeMissing_thenViolation() {
+        var dto = validDto();
+        dto.setStartTime(null);
+
+        var violations = validator.validate(dto);
+
+        assertTrue(violations.stream()
+                .anyMatch(v -> v.getPropertyPath()
+                        .toString().equals("startTime")));
+        assertEquals(1, violations.size());
+    }
+
+    @Test
     void whenEndTimeMissing_thenViolation() {
         var dto = validDto();
 
