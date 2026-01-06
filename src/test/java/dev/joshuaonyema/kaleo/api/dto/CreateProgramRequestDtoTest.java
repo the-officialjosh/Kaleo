@@ -7,7 +7,7 @@ import jakarta.validation.ValidatorFactory;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import java.math.BigInteger;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -22,7 +22,7 @@ class CreateProgramRequestDtoTest {
         dto.setEndTime(now.plusHours(2));
         dto.setVenue("Spring Church");
         dto.setStatus(ProgramStatus.DRAFT);
-        dto.setPassTypes(List.of(new CreatePassTypeRequestDto("General", BigInteger.ZERO, null, 100)));
+        dto.setPassTypes(List.of(new CreatePassTypeRequestDto("General", BigDecimal.ZERO, null, 100)));
         return dto;
     }
 
