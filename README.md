@@ -51,10 +51,10 @@
 | Document                                     | Description |
 |----------------------------------------------|-------------|
 | [Project Plan](docs/project-plan.md)         | Detailed project overview and specifications |
-| [Domain Model](docs/images/kaleo-domain.png) | Domain model diagram |
+| [Domain Model](docs/images/Kaleo-domain.png) | Domain model diagram |
 
 ### 🏗️ Domain Model
-![Kaleo Domain Model](docs/images/kaleo-domain.png)
+![Kaleo Domain Model](docs/images/Kaleo-domain.png)
 
 ---
 
