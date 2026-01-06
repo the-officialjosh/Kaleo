@@ -1,5 +1,6 @@
 package dev.joshuaonyema.kaleo.api.dto;
 
+import dev.joshuaonyema.kaleo.api.validation.BothOrNone;
 import dev.joshuaonyema.kaleo.api.validation.StartBeforeEnd;
 import dev.joshuaonyema.kaleo.domain.entity.ProgramStatus;
 import jakarta.validation.Valid;
@@ -16,8 +17,19 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@StartBeforeEnd(startField = "startTime", endField = "endTime", message = "start time must be before end time")
-@StartBeforeEnd(startField = "registrationStart", endField = "registrationEnd", message = "registration start time must be before end time")
+@StartBeforeEnd(
+        startField = "startTime",
+        endField = "endTime",
+        message = "start time must be before end time")
+@StartBeforeEnd(
+        startField = "registrationStart",
+        endField = "registrationEnd",
+        message = "registration start time must be before end time")
+@BothOrNone(
+        first = "registrationStart",
+        second = "registrationEndTime",
+        message = "registrationStart and registrationEndTime must both be provided"
+)
 public class CreateProgramRequestDto {
     @NotBlank(message = "Program name is required")
     private String name;
