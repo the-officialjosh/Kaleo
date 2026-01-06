@@ -115,6 +115,7 @@
                         </path>
                         <path>
                             <groupId>org.mapstruct</groupId>
+                            <artifactId>mapstruct-processor</artifactId>
                             <artifactId>mapstruct</artifactId>
                             <version>${org.mapstruct.version}</version>
                         </path>
