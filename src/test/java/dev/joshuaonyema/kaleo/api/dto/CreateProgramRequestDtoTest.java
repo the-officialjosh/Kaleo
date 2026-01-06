@@ -52,7 +52,7 @@ class CreateProgramRequestDtoTest {
 
         assertTrue(validations.stream()
                 .anyMatch(v -> v.getMessage()
-                        .toLowerCase().contains("starttime")));
+                        .toLowerCase().contains("startime")));
     }
 
     @Test
@@ -68,7 +68,62 @@ class CreateProgramRequestDtoTest {
         var violations = validator.validate(dto);
 
         assertTrue(violations.stream()
-                .anyMatch(v -> v.getPropertyPath().toString().equals("endTime")));
+                .anyMatch(v -> v.getPropertyPath()
+                        .toString().equals("endTime")));
+    }
+
+    @Test
+    void  whenVenueBlank_thenViolation(){
+        var dto = new CreateProgramRequestDto();
+        dto.setName("Spring Church");
+        dto.setStartTime(LocalDateTime.now());
+        dto.setEndTime(LocalDateTime.now().plusHours(1));
+        dto.setVenue("");
+        dto.setStatus(ProgramStatus.DRAFT);
+        dto.setPassTypes(List.of());
+
+        var violations = validator.validate(dto);
+
+        assertTrue(violations.stream()
+                .anyMatch(v -> v.getPropertyPath()
+                        .toString().equals("venue")));
+    }
+
+    @Test
+    void whenStatusMissing_thenViolation() {
+        var dto = new CreateProgramRequestDto();
+        dto.setName("Sunday Service");
+        dto.setStartTime(LocalDateTime.now());
+        dto.setEndTime(LocalDateTime.now().plusHours(1));
+        dto.setVenue("Spring Church");
+        dto.setStatus(null);
+        dto.setPassTypes(List.of(new CreatePassTypeRequestDto("General", BigInteger.ZERO, null, 100)));
+
+        var violations = validator.validate(dto);
+
+        assertTrue(violations.stream()
+                .anyMatch(v -> v.getPropertyPath()
+                        .toString().equals("status")));
+    }
+
+    @Test
+    void whenPassTypesMissing_thenViolation() {
+        var dto = new CreateProgramRequestDto();
+        dto.setName("Sunday Service");
+        dto.setStartTime(LocalDateTime.now());
+        dto.setEndTime(LocalDateTime.now().plusHours(1));
+        dto.setVenue("Spring Church");
+        dto.setStatus(ProgramStatus.DRAFT);
+        dto.setPassTypes(List.of());
+
+        var violations = validator.validate(dto);
+
+        assertTrue(violations.stream()
+                .anyMatch(v -> {
+                    String string = v.getPropertyPath().toString();
+                    System.out.println(string);
+                    return string.equals("passTypes");
+                }));
     }
 
 }
