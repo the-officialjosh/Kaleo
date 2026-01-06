@@ -55,7 +55,7 @@ class CreateProgramRequestDtoTest {
 
         assertTrue(validations.stream()
                 .anyMatch(v -> v.getMessage()
-                        .toLowerCase().contains("startime")));
+                        .toLowerCase().contains("start")));
     }
 
     @Test
@@ -156,5 +156,23 @@ class CreateProgramRequestDtoTest {
 
     }
 
+    @Test
+    void whenRegistrationStartAfterRegistrationEnd_thenViolation(){
+        var dto = new CreateProgramRequestDto();
+        dto.setName("Sunday Service");
+        dto.setStartTime(LocalDateTime.now().plusHours(1));
+        dto.setEndTime(LocalDateTime.now().plusHours(2));
+        dto.setVenue("Spring Church");
+        dto.setStatus(ProgramStatus.DRAFT);
+        dto.setPassTypes(List.of(new CreatePassTypeRequestDto("General", BigInteger.ZERO, null, 100)));
+        dto.setRegistrationStart(LocalDateTime.now().plusHours(2));
+        dto.setRegistrationEnd(LocalDateTime.now().plusHours(1));
+
+        var validations = validator.validate(dto);
+
+        assertTrue(validations.stream()
+                .anyMatch(v -> v.getMessage()
+                        .toLowerCase().contains("registration")));
+    }
 
 }
