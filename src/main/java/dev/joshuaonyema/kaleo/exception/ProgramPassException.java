@@ -3,6 +3,7 @@ package dev.joshuaonyema.kaleo.exception;
 
 public class ProgramPassException extends RuntimeException{
 
+
     public ProgramPassException() {
     }
 
