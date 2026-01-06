@@ -105,7 +105,7 @@ class ProgramServiceImplTest {
         assertEquals(validRequest.getEndTime(), result.getEndTime());
         assertEquals(validRequest.getVenue(), result.getVenue());
         assertEquals(validRequest.getRegistrationStart(), result.getRegistrationStart());
-        assertEquals(validRequest.getRegistrationEndTime(), result.getRegistrationEnd());
+        assertEquals(validRequest.getRegistrationEnd(), result.getRegistrationEnd());
         assertEquals(validRequest.getStatus(), result.getStatus());
         assertEquals(user, result.getOrganizer());
 
@@ -123,7 +123,7 @@ class ProgramServiceImplTest {
         assertNotNull(result.getPassTypes());
         assertEquals(1, result.getPassTypes().size());
 
-        PassType passType = result.getPassTypes().get(0);
+        PassType passType = result.getPassTypes().getFirst();
         assertEquals("General", passType.getName());
         assertEquals(BigDecimal.TEN, passType.getPrice());
         assertEquals("Standard entry", passType.getDescription());
@@ -215,7 +215,7 @@ class ProgramServiceImplTest {
         when(programRepository.save(any(Program.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
         validRequest.setRegistrationStart(null);
-        validRequest.setRegistrationEndTime(null);
+        validRequest.setRegistrationEnd(null);
 
         Program result = programService.createProgram(validRequest);
 
