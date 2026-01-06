@@ -3,27 +3,31 @@ package dev.joshuaonyema.kaleo.config.security;
 import dev.joshuaonyema.kaleo.config.security.filter.UserProvisioning;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.oauth2.server.resource.web.authentication.BearerTokenAuthenticationFilter;
+import org.springframework.security.web.SecurityFilterChain;
+
+import static org.springframework.security.config.Customizer.withDefaults;
 
 
 @Configuration
 public class HttpSecurityConfig {
 
     @Bean
-    Customizer<HttpSecurity> httpSecurityCustomizer(UserProvisioning userProvisioning){
-        return httpSecurity -> httpSecurity
+    SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity, UserProvisioning userProvisioning) throws Exception {
+        return httpSecurity
                 .authorizeHttpRequests(
-                        authorize->authorize
+                        authorize -> authorize
                                 .anyRequest()
                                 .authenticated())
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(
-                        session-> session
+                        session -> session
                                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .addFilterAfter(userProvisioning, BearerTokenAuthenticationFilter.class);
+                .oauth2ResourceServer(oauth2 -> oauth2.jwt(withDefaults()))
+                .addFilterAfter(userProvisioning, BearerTokenAuthenticationFilter.class)
+                .build();
     }
 }
