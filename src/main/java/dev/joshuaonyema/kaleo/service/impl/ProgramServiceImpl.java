@@ -1,6 +1,5 @@
 package dev.joshuaonyema.kaleo.service.impl;
 
-import dev.joshuaonyema.kaleo.api.dto.CreateProgramRequest;
 import dev.joshuaonyema.kaleo.domain.entity.PassType;
 import dev.joshuaonyema.kaleo.domain.entity.Program;
 import dev.joshuaonyema.kaleo.domain.entity.User;
@@ -8,6 +7,7 @@ import dev.joshuaonyema.kaleo.exception.UserNotFoundException;
 import dev.joshuaonyema.kaleo.repository.ProgramRepository;
 import dev.joshuaonyema.kaleo.repository.UserRepository;
 import dev.joshuaonyema.kaleo.service.ProgramService;
+import dev.joshuaonyema.kaleo.service.request.CreateProgramRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.prepost.PreAuthorize;

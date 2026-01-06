@@ -1,4 +1,4 @@
-package dev.joshuaonyema.kaleo.api.dto;
+package dev.joshuaonyema.kaleo.service.request;
 
 import dev.joshuaonyema.kaleo.domain.entity.ProgramStatus;
 import lombok.AllArgsConstructor;
