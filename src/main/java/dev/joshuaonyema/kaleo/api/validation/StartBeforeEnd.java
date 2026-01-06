@@ -11,14 +11,14 @@ import java.lang.annotation.*;
 @Repeatable(StartBeforeEnd.List.class)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface StartBeforeEnd {
-    String message() default  "startTime must be before endTime";
+    String message() default  "start must be before end";
 
     Class<?>[] groups() default {};
 
     Class<? extends Payload>[] payload() default {};
 
-    String startField() default "startTime";
-    String endField() default "endTime";
+    String startField() default "start";
+    String endField() default "end";
 
     @Target(ElementType.TYPE)
     @Retention(RetentionPolicy.RUNTIME)
