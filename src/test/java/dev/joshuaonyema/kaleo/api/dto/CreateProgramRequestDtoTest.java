@@ -1,11 +1,13 @@
 package dev.joshuaonyema.kaleo.api.dto;
 
+import dev.joshuaonyema.kaleo.domain.entity.ProgramStatus;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import jakarta.validation.ValidatorFactory;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import java.math.BigInteger;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -25,7 +27,9 @@ class CreateProgramRequestDtoTest {
         var dto = new CreateProgramRequestDto();
         dto.setName("");
         dto.setStartTime(LocalDateTime.now());
+        dto.setEndTime(LocalDateTime.now().plusHours(1));
         dto.setVenue("Spring Church");
+        dto.setStatus(ProgramStatus.DRAFT);
         dto.setPassTypes(List.of());
 
         var violations = validator.validate(dto);
@@ -49,6 +53,22 @@ class CreateProgramRequestDtoTest {
         assertTrue(validations.stream()
                 .anyMatch(v -> v.getMessage()
                         .toLowerCase().contains("starttime")));
+    }
+
+    @Test
+    void whenEndTimeMissing_thenViolation() {
+        var dto = new CreateProgramRequestDto();
+        dto.setName("Sunday Service");
+        dto.setStartTime(LocalDateTime.now());
+        dto.setEndTime(null);
+        dto.setVenue("Spring Church");
+        dto.setStatus(ProgramStatus.DRAFT);
+        dto.setPassTypes(List.of(new CreatePassTypeRequestDto("General", BigInteger.ZERO, null, 100)));
+
+        var violations = validator.validate(dto);
+
+        assertTrue(violations.stream()
+                .anyMatch(v -> v.getPropertyPath().toString().equals("endTime")));
     }
 
 }

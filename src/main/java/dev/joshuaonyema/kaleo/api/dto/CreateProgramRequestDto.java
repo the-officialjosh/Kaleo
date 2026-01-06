@@ -32,7 +32,7 @@ public class CreateProgramRequestDto {
     private String venue;
 
     private LocalDateTime registrationStart;
-    private LocalDateTime registrationEndTime;
+    private LocalDateTime registrationEnd;
 
     @NotNull(message = "Program Status is required")
     private ProgramStatus status;
