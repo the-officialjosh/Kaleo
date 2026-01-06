@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-import java.math.BigInteger;
+import java.math.BigDecimal;
 import java.util.UUID;
 
 @Data
@@ -16,7 +16,7 @@ import java.util.UUID;
 public class CreatePassTypeResponseDto extends TimestampedEntity {
     private UUID id;
     private String name;
-    private BigInteger price;
+    private BigDecimal price;
     private String description;
     private Integer totalAvailable;
 }

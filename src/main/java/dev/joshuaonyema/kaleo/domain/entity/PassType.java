@@ -3,7 +3,7 @@ package dev.joshuaonyema.kaleo.domain.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.math.BigInteger;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -26,7 +26,7 @@ public class PassType extends TimestampedEntity {
     private String name;
 
     @Column(name = "price", nullable = false)
-    private BigInteger price;
+    private BigDecimal price;
 
     @Column (name = "description")
     private String description;

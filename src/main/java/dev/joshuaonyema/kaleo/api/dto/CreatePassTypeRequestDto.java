@@ -7,7 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.math.BigInteger;
+import java.math.BigDecimal;
 
 @Data
 @AllArgsConstructor
@@ -19,7 +19,7 @@ public class CreatePassTypeRequestDto {
 
     @NotNull(message = "Price is required")
     @PositiveOrZero(message = "Price must be 0 or greater")
-    private BigInteger price;
+    private BigDecimal price;
 
     private String description;
     private Integer totalAvailable;
