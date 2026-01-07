@@ -11,7 +11,7 @@ import java.util.UUID;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreatePassTypeResponseDto {
+public class UpdatePassTypeResponseDto  {
     private UUID id;
     private String name;
     private BigDecimal price;

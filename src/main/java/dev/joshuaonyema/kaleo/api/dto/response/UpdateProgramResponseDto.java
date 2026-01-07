@@ -12,7 +12,7 @@ import java.util.UUID;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreateProgramResponseDto {
+public class UpdateProgramResponseDto {
     private UUID id;
     private String name;
     private LocalDateTime startTime;
@@ -21,7 +21,7 @@ public class CreateProgramResponseDto {
     private LocalDateTime registrationStart;
     private LocalDateTime registrationEnd;
     private ProgramStatus status;
-    private List<CreatePassTypeResponseDto> passTypes;
+    private List<UpdatePassTypeResponseDto> passTypes;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 }

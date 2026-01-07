@@ -1,10 +1,8 @@
 package dev.joshuaonyema.kaleo.api.dto.response;
 
 import dev.joshuaonyema.kaleo.domain.entity.ProgramStatus;
-import dev.joshuaonyema.kaleo.domain.entity.TimestampedEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
@@ -15,8 +13,7 @@ import java.util.UUID;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode(callSuper = true)
-public class GetProgramDetailsResponseDto extends TimestampedEntity {
+public class GetProgramDetailsResponseDto {
     private UUID id;
     private String name;
     private LocalDateTime startTime;
@@ -26,4 +23,6 @@ public class GetProgramDetailsResponseDto extends TimestampedEntity {
     private LocalDateTime registrationEnd;
     private ProgramStatus status;
     private List<GetPassTypesResponseDto> passTypes = new ArrayList<>();
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 }
