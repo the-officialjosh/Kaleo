@@ -46,6 +46,67 @@
 
 ---
 
+## 🔌 API Endpoints
+
+### Programs
+
+All program endpoints require authentication via JWT token and `ORGANIZER` role.
+
+| Method | Endpoint | Description | Request Body | Response |
+|--------|----------|-------------|--------------|----------|
+| `POST` | `/api/v1/programs` | Create a new program | `CreateProgramRequestDto` | `201 Created` |
+| `GET` | `/api/v1/programs` | List programs for current organizer | — | `200 OK` (Paginated) |
+
+#### Create Program Request
+
+```json
+{
+  "name": "Sunday Service",
+  "startTime": "2026-01-11T09:00:00",
+  "endTime": "2026-01-11T12:00:00",
+  "venue": "Main Auditorium",
+  "registrationStart": "2026-01-07T00:00:00",
+  "registrationEnd": "2026-01-10T23:59:59",
+  "status": "DRAFT",
+  "passTypes": [
+    {
+      "name": "General Admission",
+      "price": 0.00,
+      "description": "Free entry",
+      "totalAvailable": 500
+    }
+  ]
+}
+```
+
+#### Program Response
+
+```json
+{
+  "id": "550e8400-e29b-41d4-a716-446655440000",
+  "name": "Sunday Service",
+  "startTime": "2026-01-11T09:00:00",
+  "endTime": "2026-01-11T12:00:00",
+  "venue": "Main Auditorium",
+  "registrationStart": "2026-01-07T00:00:00",
+  "registrationEnd": "2026-01-10T23:59:59",
+  "status": "DRAFT",
+  "passTypes": [...],
+  "createdAt": "2026-01-07T10:30:00",
+  "updatedAt": "2026-01-07T10:30:00"
+}
+```
+
+### Authentication
+
+All endpoints require a valid JWT token from Keycloak in the `Authorization` header:
+
+```
+Authorization: Bearer <your_jwt_token>
+```
+
+---
+
 ## 📚 Documentation
 
 | Document                                     | Description |
