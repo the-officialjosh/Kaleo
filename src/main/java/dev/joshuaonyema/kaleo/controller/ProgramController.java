@@ -2,6 +2,7 @@ package dev.joshuaonyema.kaleo.controller;
 
 import dev.joshuaonyema.kaleo.api.dto.CreateProgramRequestDto;
 import dev.joshuaonyema.kaleo.api.dto.CreateProgramResponseDto;
+import dev.joshuaonyema.kaleo.api.dto.GetProgramDetailsResponseDto;
 import dev.joshuaonyema.kaleo.api.dto.ListProgramResponseDto;
 import dev.joshuaonyema.kaleo.domain.entity.Program;
 import dev.joshuaonyema.kaleo.mappers.ProgramMapper;
@@ -14,6 +15,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.UUID;
 
 
 @RestController
@@ -42,5 +45,14 @@ public class ProgramController {
     {
         Page<Program> programs = programService.listProgamsForOrganizer(pageable);
         return ResponseEntity.ok(programs.map( programMapper::toListProgramResponseDto));
+    }
+
+    @GetMapping("/{programId}")
+    public ResponseEntity<GetProgramDetailsResponseDto> getEvent(@PathVariable UUID programId)
+    {
+        return programService.getProgramForOrganizer(programId)
+                .map(programMapper::toGetProgramDetailsResponseDto)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 }

@@ -56,6 +56,7 @@ All program endpoints require authentication via JWT token and `ORGANIZER` role.
 |--------|----------|-------------|--------------|----------|
 | `POST` | `/api/v1/programs` | Create a new program | `CreateProgramRequestDto` | `201 Created` |
 | `GET` | `/api/v1/programs` | List programs for current organizer | — | `200 OK` (Paginated) |
+| `GET` | `/api/v1/programs/{programId}` | Get program details by ID | — | `200 OK` / `404 Not Found` |
 
 #### Create Program Request
 
