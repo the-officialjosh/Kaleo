@@ -32,9 +32,7 @@ public class ProgramController {
 
     @PostMapping
     public ResponseEntity<CreateProgramResponseDto> createProgram(
-            @Valid @RequestBody CreateProgramRequestDto createProgramRequestDto
-            )
-    {
+            @Valid @RequestBody CreateProgramRequestDto createProgramRequestDto) {
 
         CreateProgramCommand createProgramRequest = programMapper.fromDto(createProgramRequestDto);
         Program createdProgram = programService.createProgram(createProgramRequest);
@@ -45,9 +43,7 @@ public class ProgramController {
 
     @PutMapping("/{programId}")
     public ResponseEntity<UpdateProgramResponseDto> updateProgram(
-            @Valid @RequestBody UpdateProgramRequestDto updateProgramRequestDto,
-            @PathVariable UUID programId)
-    {
+            @Valid @RequestBody UpdateProgramRequestDto updateProgramRequestDto, @PathVariable UUID programId) {
         UpdateProgramCommand updateProgramCommand = programMapper.fromDto(updateProgramRequestDto);
         Program updatedProgram = programService.updateProgramForOrganizer(programId, updateProgramCommand);
 
@@ -57,18 +53,23 @@ public class ProgramController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<ListProgramResponseDto>> listPrograms(Pageable pageable)
-    {
+    public ResponseEntity<Page<ListProgramResponseDto>> listPrograms(Pageable pageable) {
         Page<Program> programs = programService.listProgramsForOrganizer(pageable);
-        return ResponseEntity.ok(programs.map( programMapper::toListProgramResponseDto));
+        return ResponseEntity.ok(programs.map(programMapper::toListProgramResponseDto));
     }
 
     @GetMapping("/{programId}")
-    public ResponseEntity<GetProgramDetailsResponseDto> getProgram(@PathVariable UUID programId)
-    {
+    public ResponseEntity<GetProgramDetailsResponseDto> getProgram(@PathVariable UUID programId) {
         return programService.getProgramForOrganizer(programId)
                 .map(programMapper::toGetProgramDetailsResponseDto)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
+    }
+
+
+    @DeleteMapping("/{programId}")
+    public ResponseEntity<Void> deleteProgram(@PathVariable UUID programId) {
+        programService.deleteEventForOrganizer(programId);
+        return ResponseEntity.noContent().build();
     }
 }
