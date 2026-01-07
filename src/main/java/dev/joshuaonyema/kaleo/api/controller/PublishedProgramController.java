@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 @RestController
-@RequestMapping("/api/v1/published-events")
+@RequestMapping("/api/v1/published-programs")
 @RequiredArgsConstructor
 public class PublishedProgramController {
 
