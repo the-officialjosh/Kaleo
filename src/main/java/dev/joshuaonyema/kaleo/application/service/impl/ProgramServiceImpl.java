@@ -36,18 +36,15 @@ public class ProgramServiceImpl implements ProgramService {
     @Transactional
     public Program createProgram(CreateProgramCommand command) {
         User organizer = currentUserService.getCurrentUser();
-
         Program program = new Program();
         program.setOrganizer(organizer);
         applyProgramFields(program, command);
-
         if (command.getPassTypes() != null) {
             List<PassType> passTypes = command.getPassTypes().stream()
                     .map(passType -> newPassType(program, passType))
                     .toList();
             program.setPassTypes(passTypes);
         }
-
         return programRepository.save(program);
     }
 
@@ -70,19 +67,11 @@ public class ProgramServiceImpl implements ProgramService {
     @Transactional
     public Program updateProgramForOrganizer(UUID id, UpdateProgramCommand command) {
         validateUpdateCommand(id, command);
-
-        User organizer = currentUserService.getCurrentUser();
-        Program program = programRepository.findByIdAndOrganizer(id, organizer)
-                .orElseThrow(() -> new ProgramNotFoundException(
-                        String.format("Program with ID '%s' not found or you don't have access", id)
-                ));
-
+        Program program = getOwnedProgram(id);
         applyProgramFields(program, command);
-
         if (command.getPassTypes() != null) {
             syncPassTypes(program, command.getPassTypes());
         }
-
         return programRepository.save(program);
     }
 
@@ -90,14 +79,16 @@ public class ProgramServiceImpl implements ProgramService {
     @Transactional
     @PreAuthorize("hasRole('ORGANIZER')")
     public void deleteProgramForOrganizer(UUID id) {
-        User organizer = currentUserService.getCurrentUser();
+        Program program = getOwnedProgram(id);
+        programRepository.delete(program);
+    }
 
-        Program program = programRepository.findByIdAndOrganizer(id, organizer)
+    private Program getOwnedProgram(UUID id) {
+        User organizer = currentUserService.getCurrentUser();
+        return programRepository.findByIdAndOrganizer(id, organizer)
                 .orElseThrow(() -> new ProgramNotFoundException(
                         String.format("Program with ID '%s' not found or you don't have access", id)
                 ));
-
-        programRepository.delete(program);
     }
 
     private void validateUpdateCommand(UUID pathId, UpdateProgramCommand command) {
@@ -146,7 +137,6 @@ public class ProgramServiceImpl implements ProgramService {
                 .filter(Objects::nonNull)
                 .collect(Collectors.toSet());
 
-        // remove deleted (only persisted ones)
         program.getPassTypes().removeIf(passType ->
                 passType.getId() != null && !requestedIds.contains(passType.getId()));
 
