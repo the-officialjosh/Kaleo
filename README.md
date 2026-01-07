@@ -9,7 +9,7 @@
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-18-336791?style=flat-square&logo=postgresql&logoColor=white)](https://www.postgresql.org/)
 [![Keycloak](https://img.shields.io/badge/Keycloak-26.4.7-4D4D4D?style=flat-square&logo=keycloak&logoColor=white)](https://www.keycloak.org/)
 [![Adminer](https://img.shields.io/badge/Adminer-4.8.1-34567C?style=flat-square&logo=adminer&logoColor=white)](https://www.adminer.org/)
-[![Tests](https://img.shields.io/badge/tests-136%20passing-success?style=flat-square)](docs/TEST_COVERAGE.md)
+[![Tests](https://img.shields.io/badge/tests-160-success?style=flat-square)](docs/TEST_COVERAGE.md)
 
 <div align="center">
 
@@ -25,13 +25,14 @@ A secure REST API for church and ministry event management. Organizers create pr
 
 ## ✨ What It Does
 
-- 📋 **Program Management**: Create and manage church programs/events
-- 🎟️ **Registration**: Capacity-controlled registration with automatic pass generation
-- 📱 **QR Passes**: Generate unique QR codes for event check-in
-- ✅ **Validation**: Staff-managed check-in with duplicate prevention
-- 📊 **Analytics**: Track attendance and generate reports
+- 📋 **Program Management**: Create and manage church programs/events with role-based access
+- 🎟️ **Registration**: Capacity-controlled registration with automatic pass generation (Coming Soon)
+- 📱 **QR Passes**: Generate unique QR codes for event check-in (Coming Soon)
+- ✅ **Validation**: Staff-managed check-in with duplicate prevention (Coming Soon)
+- 📊 **Analytics**: Track attendance and generate reports (Coming Soon)
+- 🔐 **Security**: JWT-based authentication with Keycloak OAuth2/OIDC integration
 
-> 🚧 **Status**: In Development — Core domain model, security, and program management complete
+> 🚧 **Status**: In Development — Core domain model, security infrastructure, program management API, and comprehensive test suite complete
 
 ---
 
@@ -120,12 +121,13 @@ API available at: `http://localhost:8080`
 ./mvnw verify jacoco:report
 ```
 
-**Test Coverage:** 136 tests across 11 test classes
-- API Layer: Controllers, DTOs, Validators, Exception Handlers
-- Application Layer: Services, Mappers, Security
-- Infrastructure: Filters
+**Test Coverage:** 14 test classes with 160+ tests
+- **API Layer**: Controllers (ProgramController, PublishedProgramController), DTOs, Validators, Exception Handlers
+- **Application Layer**: Services, Mappers, Security (CurrentUserService)
+- **Infrastructure**: Security Filters (UserProvisioningFilter)
+- **Configuration**: Security Config (HttpSecurityConfig, SecurityFilterChain), JPA Config
 
-See [Test Coverage Documentation](docs/TEST_COVERAGE.md) for details.
+See [Test Coverage Documentation](docs/TEST_COVERAGE.md) for detailed breakdown.
 
 ---
 

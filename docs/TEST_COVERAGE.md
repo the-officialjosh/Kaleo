@@ -11,7 +11,8 @@ src/test/java/dev/joshuaonyema/kaleo/
 ├── KaleoApplicationTests.java
 ├── api/
 │   ├── controller/
-│   │   └── ProgramControllerTest.java
+│   │   ├── ProgramControllerTest.java
+│   │   └── PublishedProgramControllerTest.java (NEW)
 │   ├── dto/
 │   │   ├── CreatePassTypeRequestDtoTest.java
 │   │   └── CreateProgramRequestDtoTest.java
@@ -24,10 +25,16 @@ src/test/java/dev/joshuaonyema/kaleo/
 │   ├── mapper/
 │   │   └── ProgramMapperTest.java
 │   ├── security/
-│   │   └── CurrentUserServiceTest.java (NEW)
+│   │   └── CurrentUserServiceTest.java
 │   └── service/
 │       └── impl/
 │           └── ProgramServiceImplTest.java
+├── config/
+│   ├── jpa/
+│   │   └── JpaConfigTest.java (NEW)
+│   └── security/
+│       ├── HttpSecurityConfigTest.java (NEW)
+│       └── SecurityFilterChainIntegrationTest.java (NEW)
 └── infrastructure/
     └── security/
         └── filter/
@@ -44,6 +51,13 @@ src/test/java/dev/joshuaonyema/kaleo/
   - List programs endpoint (with pagination)
   - Get program details endpoint
   - Update program endpoint
+
+- **PublishedProgramControllerTest** (5 tests) **[NEW]**
+  - List published programs (public endpoint)
+  - Pagination support
+  - Empty result handling
+  - Multiple programs scenarios
+  - Mapper integration
 
 #### DTOs
 - **CreatePassTypeRequestDtoTest** (17 tests)
@@ -92,7 +106,7 @@ src/test/java/dev/joshuaonyema/kaleo/
   - Pass type linking validation
 
 #### Security
-- **CurrentUserServiceTest** (10 tests) **[NEW]**
+- **CurrentUserServiceTest** (10 tests)
   - Get current user when authenticated
   - Get current user when not found
   - Get current user when not authenticated
@@ -107,6 +121,32 @@ src/test/java/dev/joshuaonyema/kaleo/
   - PassType mapping
   - Null handling
   - All mapper methods covered
+
+### ✅ Configuration Layer Tests
+
+#### Security Configuration
+- **HttpSecurityConfigTest** (9 tests) **[NEW]**
+  - JWT authentication converter configuration
+  - Keycloak realm roles extraction
+  - Role prefix mapping (ROLE_*)
+  - Empty roles handling
+  - Invalid JWT claims handling
+  - Non-string role filtering
+  - Special characters in role names
+
+- **SecurityFilterChainIntegrationTest** (7 tests) **[NEW]**
+  - Spring context loading
+  - Security beans registration
+  - Filter chain configuration
+  - `@EnableMethodSecurity` annotation verification
+  - UserProvisioningFilter integration
+  - JWT authentication converter bean
+
+#### JPA Configuration
+- **JpaConfigTest** (3 tests) **[NEW]**
+  - JPA configuration bean loading
+  - `@EnableJpaAuditing` annotation verification
+  - Spring context integration
 
 ### ✅ Infrastructure Layer Tests
 
@@ -126,36 +166,50 @@ src/test/java/dev/joshuaonyema/kaleo/
 
 | Component | Test Files | Total Tests |
 |-----------|------------|-------------|
-| API Layer | 6 | 80 |
+| API Layer | 7 | 85 |
 | Application Layer | 3 | 45 |
+| Configuration Layer | 3 | 19 |
 | Infrastructure Layer | 1 | 10 |
 | Integration | 1 | 1 |
-| **TOTAL** | **11** | **136** |
+| **TOTAL** | **15** | **160** |
 
 ## Code Coverage Goals
 
-- **Controllers**: ✅ 100% (All endpoints tested)
+- **Controllers**: ✅ 100% (All endpoints tested including public endpoints)
 - **Services**: ✅ 100% (All business logic tested)
 - **Validators**: ✅ 100% (All validation scenarios tested)
 - **Mappers**: ✅ 100% (All mapping methods tested)
 - **Exception Handlers**: ✅ 100% (All exception types tested)
-- **Security**: ✅ 100% (Authentication and authorization tested)
+- **Security**: ✅ 100% (Authentication, authorization, JWT processing tested)
+- **Configuration**: ✅ 100% (Security and JPA configuration tested)
 
 ## Recent Changes
 
-### Restructuring (January 7, 2026)
+### Security & Configuration Tests (January 7, 2026)
+1. ✅ Added `HttpSecurityConfigTest` - Unit tests for JWT authentication converter and Keycloak role extraction
+2. ✅ Added `SecurityFilterChainIntegrationTest` - Integration tests for security filter chain configuration
+3. ✅ Added `JpaConfigTest` - Configuration tests for JPA auditing setup
+4. ✅ Added `PublishedProgramControllerTest` - Controller tests for public endpoints
+5. ✅ Comprehensive JWT role mapping tests (realm_access claims, ROLE_ prefix, edge cases)
+6. ✅ Spring Security integration verification
+7. ✅ Configuration annotation validation (using Spring's AnnotationUtils for proxy-safe checks)
+
+### Restructuring (Prior)
 1. ✅ Moved tests to match source code structure
 2. ✅ Created `CurrentUserServiceTest` to handle authentication tests
 3. ✅ Updated package declarations for all moved tests
 4. ✅ Removed duplicate/obsolete test directories
 5. ✅ Fixed all import statements
 
-### New Tests Added
+### New Tests Added (Latest)
+- `HttpSecurityConfigTest` - JWT converter and role extraction logic
+- `SecurityFilterChainIntegrationTest` - Security configuration integration
+- `JpaConfigTest` - JPA auditing configuration
+- `PublishedProgramControllerTest` - Public API endpoint testing
+
+### Tests Previously Added
 - `CurrentUserServiceTest` - Comprehensive authentication and user lookup testing
 
-### Tests Refactored
-- `ProgramServiceImplTest` - Removed authentication tests (moved to CurrentUserServiceTest)
-- All test files - Updated to match new folder structure
 
 ## Running Tests
 
