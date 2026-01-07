@@ -69,7 +69,7 @@ public class ProgramController {
 
     @DeleteMapping("/{programId}")
     public ResponseEntity<Void> deleteProgram(@PathVariable UUID programId) {
-        programService.deleteEventForOrganizer(programId);
+        programService.deleteProgramForOrganizer(programId);
         return ResponseEntity.noContent().build();
     }
 }

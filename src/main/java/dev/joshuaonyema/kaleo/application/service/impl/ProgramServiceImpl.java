@@ -89,8 +89,15 @@ public class ProgramServiceImpl implements ProgramService {
     @Override
     @Transactional
     @PreAuthorize("hasRole('ORGANIZER')")
-    public void deleteEventForOrganizer(UUID id) {
-        getProgramForOrganizer(id).ifPresent(programRepository::delete);
+    public void deleteProgramForOrganizer(UUID id) {
+        User organizer = currentUserService.getCurrentUser();
+
+        Program program = programRepository.findByIdAndOrganizer(id, organizer)
+                .orElseThrow(() -> new ProgramNotFoundException(
+                        String.format("Program with ID '%s' not found or you don't have access", id)
+                ));
+
+        programRepository.delete(program);
     }
 
     private void validateUpdateCommand(UUID pathId, UpdateProgramCommand command) {
