@@ -1,6 +1,5 @@
-package dev.joshuaonyema.kaleo.controller;
+package dev.joshuaonyema.kaleo.api.controller;
 
-import dev.joshuaonyema.kaleo.api.controller.ProgramController;
 import dev.joshuaonyema.kaleo.api.dto.request.CreatePassTypeRequestDto;
 import dev.joshuaonyema.kaleo.api.dto.request.CreateProgramRequestDto;
 import dev.joshuaonyema.kaleo.api.dto.response.CreateProgramResponseDto;

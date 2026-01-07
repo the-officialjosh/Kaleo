@@ -1,16 +1,13 @@
-package dev.joshuaonyema.kaleo.service.impl;
+package dev.joshuaonyema.kaleo.application.service.impl;
 
 import dev.joshuaonyema.kaleo.application.command.CreatePassTypeCommand;
 import dev.joshuaonyema.kaleo.application.command.CreateProgramCommand;
-import dev.joshuaonyema.kaleo.application.service.impl.ProgramServiceImpl;
+import dev.joshuaonyema.kaleo.application.security.CurrentUserService;
 import dev.joshuaonyema.kaleo.domain.entity.PassType;
 import dev.joshuaonyema.kaleo.domain.entity.Program;
 import dev.joshuaonyema.kaleo.domain.entity.ProgramStatus;
 import dev.joshuaonyema.kaleo.domain.entity.User;
-import dev.joshuaonyema.kaleo.exception.UserNotFoundException;
 import dev.joshuaonyema.kaleo.repository.ProgramRepository;
-import dev.joshuaonyema.kaleo.repository.UserRepository;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -22,11 +19,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.oauth2.jwt.Jwt;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -42,32 +34,21 @@ import static org.mockito.Mockito.*;
 class ProgramServiceImplTest {
 
     @Mock
-    private UserRepository userRepository;
-
-    @Mock
     private ProgramRepository programRepository;
 
     @Mock
-    private SecurityContext securityContext;
-
-    @Mock
-    private Authentication authentication;
-
-    @Mock
-    private Jwt jwt;
+    private CurrentUserService currentUserService;
 
     @InjectMocks
     private ProgramServiceImpl programService;
 
-    private UUID userId;
     private User user;
     private CreateProgramCommand validRequest;
 
     @BeforeEach
     void setUp() {
-        userId = UUID.randomUUID();
         user = new User();
-        user.setId(userId);
+        user.setId(UUID.randomUUID());
         user.setName("Test Organizer");
         user.setEmail("organizer@test.com");
 
@@ -84,22 +65,9 @@ class ProgramServiceImplTest {
         );
     }
 
-    @AfterEach
-    void tearDown() {
-        SecurityContextHolder.clearContext();
-    }
-
-    private void setupSecurityContext() {
-        SecurityContextHolder.setContext(securityContext);
-        when(securityContext.getAuthentication()).thenReturn(authentication);
-        when(authentication.getPrincipal()).thenReturn(jwt);
-        when(jwt.getSubject()).thenReturn(userId.toString());
-    }
-
     @Test
     void createProgram_whenValidRequest_thenSavesAndReturnsProgram() {
-        setupSecurityContext();
-        when(userRepository.findById(userId)).thenReturn(Optional.of(user));
+        when(currentUserService.getCurrentUser()).thenReturn(user);
         when(programRepository.save(any(Program.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
         Program result = programService.createProgram(validRequest);
@@ -119,8 +87,8 @@ class ProgramServiceImplTest {
 
     @Test
     void createProgram_whenValidRequest_thenCreatesPassTypes() {
-        setupSecurityContext();
-        when(userRepository.findById(userId)).thenReturn(Optional.of(user));
+        // Security context setup no longer needed
+        when(currentUserService.getCurrentUser()).thenReturn(user);
         when(programRepository.save(any(Program.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
         Program result = programService.createProgram(validRequest);
@@ -138,8 +106,8 @@ class ProgramServiceImplTest {
 
     @Test
     void createProgram_whenMultiplePassTypes_thenCreatesAll() {
-        setupSecurityContext();
-        when(userRepository.findById(userId)).thenReturn(Optional.of(user));
+        // Security context setup no longer needed
+        when(currentUserService.getCurrentUser()).thenReturn(user);
         when(programRepository.save(any(Program.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
         validRequest.setPassTypes(List.of(
@@ -154,51 +122,14 @@ class ProgramServiceImplTest {
         assertTrue(result.getPassTypes().stream().allMatch(pt -> pt.getProgram() == result));
     }
 
-    @Test
-    void createProgram_whenUserNotFound_thenThrowsUserNotFoundException() {
-        setupSecurityContext();
-        when(userRepository.findById(userId)).thenReturn(Optional.empty());
 
-        UserNotFoundException exception = assertThrows(
-                UserNotFoundException.class,
-                () -> programService.createProgram(validRequest)
-        );
-
-        assertTrue(exception.getMessage().contains(userId.toString()));
-        verify(programRepository, never()).save(any());
-    }
-
-    @Test
-    void createProgram_whenNotAuthenticated_thenThrowsAuthenticationCredentialsNotFoundException() {
-        SecurityContextHolder.setContext(securityContext);
-        when(securityContext.getAuthentication()).thenReturn(null);
-
-        assertThrows(
-                AuthenticationCredentialsNotFoundException.class,
-                () -> programService.createProgram(validRequest)
-        );
-
-        verify(programRepository, never()).save(any());
-    }
-
-    @Test
-    void createProgram_whenPrincipalNotJwt_thenThrowsAuthenticationCredentialsNotFoundException() {
-        SecurityContextHolder.setContext(securityContext);
-        when(securityContext.getAuthentication()).thenReturn(authentication);
-        when(authentication.getPrincipal()).thenReturn("not-a-jwt");
-
-        assertThrows(
-                AuthenticationCredentialsNotFoundException.class,
-                () -> programService.createProgram(validRequest)
-        );
-
-        verify(programRepository, never()).save(any());
-    }
+    // Note: Authentication and user lookup tests have been moved to CurrentUserServiceTest
+    // since CurrentUserService now handles those responsibilities
 
     @Test
     void createProgram_whenCalled_thenSavesProgramWithCorrectData() {
-        setupSecurityContext();
-        when(userRepository.findById(userId)).thenReturn(Optional.of(user));
+        // Security context setup no longer needed
+        when(currentUserService.getCurrentUser()).thenReturn(user);
         when(programRepository.save(any(Program.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
         programService.createProgram(validRequest);
@@ -215,8 +146,8 @@ class ProgramServiceImplTest {
 
     @Test
     void createProgram_whenOptionalFieldsNull_thenCreatesSuccessfully() {
-        setupSecurityContext();
-        when(userRepository.findById(userId)).thenReturn(Optional.of(user));
+        // Security context setup no longer needed
+        when(currentUserService.getCurrentUser()).thenReturn(user);
         when(programRepository.save(any(Program.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
         validRequest.setRegistrationStart(null);
@@ -231,8 +162,8 @@ class ProgramServiceImplTest {
 
     @Test
     void createProgram_whenPassTypeHasNullOptionalFields_thenCreatesSuccessfully() {
-        setupSecurityContext();
-        when(userRepository.findById(userId)).thenReturn(Optional.of(user));
+        // Security context setup no longer needed
+        when(currentUserService.getCurrentUser()).thenReturn(user);
         when(programRepository.save(any(Program.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
         validRequest.setPassTypes(List.of(
@@ -251,8 +182,8 @@ class ProgramServiceImplTest {
 
     @Test
     void createProgram_whenDifferentStatuses_thenSetsCorrectStatus() {
-        setupSecurityContext();
-        when(userRepository.findById(userId)).thenReturn(Optional.of(user));
+        // Security context setup no longer needed
+        when(currentUserService.getCurrentUser()).thenReturn(user);
         when(programRepository.save(any(Program.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
         for (ProgramStatus status : ProgramStatus.values()) {
@@ -266,20 +197,20 @@ class ProgramServiceImplTest {
 
     @Test
     void createProgram_whenCalled_thenCallsRepositorySaveOnce() {
-        setupSecurityContext();
-        when(userRepository.findById(userId)).thenReturn(Optional.of(user));
+        // Security context setup no longer needed
+        when(currentUserService.getCurrentUser()).thenReturn(user);
         when(programRepository.save(any(Program.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
         programService.createProgram(validRequest);
 
         verify(programRepository, times(1)).save(any(Program.class));
-        verify(userRepository, times(1)).findById(userId);
+        verify(currentUserService, times(1)).getCurrentUser();
     }
 
     @Test
     void createProgram_whenCalled_thenPassTypesAreLinkedToProgram() {
-        setupSecurityContext();
-        when(userRepository.findById(userId)).thenReturn(Optional.of(user));
+        // Security context setup no longer needed
+        when(currentUserService.getCurrentUser()).thenReturn(user);
         when(programRepository.save(any(Program.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
         validRequest.setPassTypes(List.of(
@@ -294,39 +225,13 @@ class ProgramServiceImplTest {
         }
     }
 
-    @Test
-    void createProgram_whenSecurityContextNotSet_thenThrowsAuthenticationCredentialsNotFoundException() {
-        SecurityContextHolder.clearContext();
-
-        assertThrows(
-                AuthenticationCredentialsNotFoundException.class,
-                () -> programService.createProgram(validRequest)
-        );
-
-        verify(programRepository, never()).save(any());
-    }
-
-    @Test
-    void createProgram_whenInvalidUuidInJwt_thenThrowsIllegalArgumentException() {
-        SecurityContextHolder.setContext(securityContext);
-        when(securityContext.getAuthentication()).thenReturn(authentication);
-        when(authentication.getPrincipal()).thenReturn(jwt);
-        when(jwt.getSubject()).thenReturn("not-a-valid-uuid");
-
-        assertThrows(
-                IllegalArgumentException.class,
-                () -> programService.createProgram(validRequest)
-        );
-
-        verify(programRepository, never()).save(any());
-    }
 
     // ==================== listProgramsForOrganizer Tests ====================
 
     @Test
-    void listProgamsForOrganizer_whenValidRequest_thenReturnsPageOfPrograms() {
-        setupSecurityContext();
-        when(userRepository.findById(userId)).thenReturn(Optional.of(user));
+    void listProgramsForOrganizer_whenValidRequest_thenReturnsPageOfPrograms() {
+        // Security context setup no longer needed
+        when(currentUserService.getCurrentUser()).thenReturn(user);
 
         Program program1 = createTestProgram("Program 1");
         Program program2 = createTestProgram("Program 2");
@@ -343,9 +248,9 @@ class ProgramServiceImplTest {
     }
 
     @Test
-    void listProgamsForOrganizer_whenNoPrograms_thenReturnsEmptyPage() {
-        setupSecurityContext();
-        when(userRepository.findById(userId)).thenReturn(Optional.of(user));
+    void listProgramsForOrganizer_whenNoPrograms_thenReturnsEmptyPage() {
+        // Security context setup no longer needed
+        when(currentUserService.getCurrentUser()).thenReturn(user);
 
         Page<Program> emptyPage = Page.empty();
         Pageable pageable = PageRequest.of(0, 10);
@@ -359,41 +264,11 @@ class ProgramServiceImplTest {
         assertTrue(result.isEmpty());
     }
 
-    @Test
-    void listProgamsForOrganizer_whenNotAuthenticated_thenThrowsAuthenticationCredentialsNotFoundException() {
-        SecurityContextHolder.setContext(securityContext);
-        when(securityContext.getAuthentication()).thenReturn(null);
-
-        Pageable pageable = PageRequest.of(0, 10);
-
-        assertThrows(
-                AuthenticationCredentialsNotFoundException.class,
-                () -> programService.listProgramsForOrganizer(pageable)
-        );
-
-        verify(programRepository, never()).findByOrganizer(any(), any());
-    }
 
     @Test
-    void listProgamsForOrganizer_whenUserNotFound_thenThrowsUserNotFoundException() {
-        setupSecurityContext();
-        when(userRepository.findById(userId)).thenReturn(Optional.empty());
-
-        Pageable pageable = PageRequest.of(0, 10);
-
-        UserNotFoundException exception = assertThrows(
-                UserNotFoundException.class,
-                () -> programService.listProgramsForOrganizer(pageable)
-        );
-
-        assertTrue(exception.getMessage().contains(userId.toString()));
-        verify(programRepository, never()).findByOrganizer(any(), any());
-    }
-
-    @Test
-    void listProgamsForOrganizer_whenPaginationApplied_thenRespectsPageable() {
-        setupSecurityContext();
-        when(userRepository.findById(userId)).thenReturn(Optional.of(user));
+    void listProgramsForOrganizer_whenPaginationApplied_thenRespectsPageable() {
+        // Security context setup no longer needed
+        when(currentUserService.getCurrentUser()).thenReturn(user);
 
         Program program = createTestProgram("Test Program");
         Pageable pageable = PageRequest.of(2, 5);
@@ -412,8 +287,8 @@ class ProgramServiceImplTest {
 
     @Test
     void getProgramForOrganizer_whenProgramExists_thenReturnsProgram() {
-        setupSecurityContext();
-        when(userRepository.findById(userId)).thenReturn(Optional.of(user));
+        // Security context setup no longer needed
+        when(currentUserService.getCurrentUser()).thenReturn(user);
 
         UUID programId = UUID.randomUUID();
         Program program = createTestProgram("Test Program");
@@ -430,8 +305,8 @@ class ProgramServiceImplTest {
 
     @Test
     void getProgramForOrganizer_whenProgramNotFound_thenReturnsEmpty() {
-        setupSecurityContext();
-        when(userRepository.findById(userId)).thenReturn(Optional.of(user));
+        // Security context setup no longer needed
+        when(currentUserService.getCurrentUser()).thenReturn(user);
 
         UUID programId = UUID.randomUUID();
         when(programRepository.findByIdAndOrganizer(programId, user)).thenReturn(Optional.empty());
@@ -443,8 +318,8 @@ class ProgramServiceImplTest {
 
     @Test
     void getProgramForOrganizer_whenProgramBelongsToDifferentOrganizer_thenReturnsEmpty() {
-        setupSecurityContext();
-        when(userRepository.findById(userId)).thenReturn(Optional.of(user));
+        // Security context setup no longer needed
+        when(currentUserService.getCurrentUser()).thenReturn(user);
 
         UUID programId = UUID.randomUUID();
         when(programRepository.findByIdAndOrganizer(programId, user)).thenReturn(Optional.empty());
@@ -455,36 +330,6 @@ class ProgramServiceImplTest {
         verify(programRepository).findByIdAndOrganizer(programId, user);
     }
 
-    @Test
-    void getProgramForOrganizer_whenNotAuthenticated_thenThrowsAuthenticationCredentialsNotFoundException() {
-        SecurityContextHolder.setContext(securityContext);
-        when(securityContext.getAuthentication()).thenReturn(null);
-
-        UUID programId = UUID.randomUUID();
-
-        assertThrows(
-                AuthenticationCredentialsNotFoundException.class,
-                () -> programService.getProgramForOrganizer(programId)
-        );
-
-        verify(programRepository, never()).findByIdAndOrganizer(any(), any());
-    }
-
-    @Test
-    void getProgramForOrganizer_whenUserNotFound_thenThrowsUserNotFoundException() {
-        setupSecurityContext();
-        when(userRepository.findById(userId)).thenReturn(Optional.empty());
-
-        UUID programId = UUID.randomUUID();
-
-        UserNotFoundException exception = assertThrows(
-                UserNotFoundException.class,
-                () -> programService.getProgramForOrganizer(programId)
-        );
-
-        assertTrue(exception.getMessage().contains(userId.toString()));
-        verify(programRepository, never()).findByIdAndOrganizer(any(), any());
-    }
 
     // ==================== Helper Methods ====================
 
