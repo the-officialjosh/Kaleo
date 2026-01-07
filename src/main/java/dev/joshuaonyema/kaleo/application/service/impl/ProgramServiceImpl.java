@@ -9,6 +9,7 @@ import dev.joshuaonyema.kaleo.application.security.CurrentUserService;
 import dev.joshuaonyema.kaleo.application.service.ProgramService;
 import dev.joshuaonyema.kaleo.domain.entity.PassType;
 import dev.joshuaonyema.kaleo.domain.entity.Program;
+import dev.joshuaonyema.kaleo.domain.entity.ProgramStatus;
 import dev.joshuaonyema.kaleo.domain.entity.User;
 import dev.joshuaonyema.kaleo.exception.PassTypeNotFoundException;
 import dev.joshuaonyema.kaleo.exception.ProgramNotFoundException;
@@ -81,6 +82,13 @@ public class ProgramServiceImpl implements ProgramService {
     public void deleteProgramForOrganizer(UUID id) {
         Program program = getOwnedProgram(id);
         programRepository.delete(program);
+    }
+
+    @Override
+    @Transactional
+    @PreAuthorize("hasRole('ORGANIZER')")
+    public Page<Program> listPublishedPrograms(Pageable pageable) {
+        return programRepository.findByStatus(ProgramStatus.PUBLISHED, pageable);
     }
 
     private Program getOwnedProgram(UUID id) {
