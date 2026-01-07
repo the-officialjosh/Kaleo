@@ -11,7 +11,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreateProgramCommand {
+public class CreateProgramCommand implements ProgramUpsertCommand{
     private String name;
     private LocalDateTime startTime;
     private LocalDateTime endTime;

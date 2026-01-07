@@ -12,7 +12,7 @@ import java.util.UUID;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UpdateProgramCommand {
+public class UpdateProgramCommand implements ProgramUpsertCommand{
     private UUID id;
     private String name;
     private LocalDateTime startTime;

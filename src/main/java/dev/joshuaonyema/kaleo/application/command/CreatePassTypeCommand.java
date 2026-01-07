@@ -9,7 +9,7 @@ import java.math.BigDecimal;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreatePassTypeCommand {
+public class CreatePassTypeCommand implements PassTypeUpsertCommand{
     private String name;
     private BigDecimal price;
     private String description;

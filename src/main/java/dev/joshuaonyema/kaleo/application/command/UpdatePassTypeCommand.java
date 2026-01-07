@@ -10,7 +10,7 @@ import java.util.UUID;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UpdatePassTypeCommand {
+public class UpdatePassTypeCommand implements PassTypeUpsertCommand {
     private UUID id;
     private String name;
     private BigDecimal price;
