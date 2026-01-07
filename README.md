@@ -10,6 +10,7 @@
 [![Spring Boot](https://img.shields.io/badge/Spring_Boot-4.0.1-6DB33F?style=for-the-badge&logo=spring&logoColor=white)](https://spring.io/projects/spring-boot)
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-18-336791?style=for-the-badge&logo=postgresql&logoColor=white)](https://www.postgresql.org/)
 [![Keycloak](https://img.shields.io/badge/Keycloak-OIDC-4D4D4D?style=for-the-badge&logo=keycloak&logoColor=white)](https://www.keycloak.org/)
+[![CI/CD](https://img.shields.io/github/actions/workflow/status/yourusername/kaleo/ci.yml?style=for-the-badge&logo=github&label=CI%2FCD)](../../actions)
 
 *Kaleo is a secure REST API for church and ministry program management. Organizers publish programs, participants register for limited capacity gatherings, and staff validate attendance using QR coded passes.*
 
