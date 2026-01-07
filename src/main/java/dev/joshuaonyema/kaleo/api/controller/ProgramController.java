@@ -1,10 +1,13 @@
 package dev.joshuaonyema.kaleo.api.controller;
 
 import dev.joshuaonyema.kaleo.api.dto.request.CreateProgramRequestDto;
+import dev.joshuaonyema.kaleo.api.dto.request.UpdateProgramRequestDto;
 import dev.joshuaonyema.kaleo.api.dto.response.CreateProgramResponseDto;
 import dev.joshuaonyema.kaleo.api.dto.response.GetProgramDetailsResponseDto;
 import dev.joshuaonyema.kaleo.api.dto.response.ListProgramResponseDto;
+import dev.joshuaonyema.kaleo.api.dto.response.UpdateProgramResponseDto;
 import dev.joshuaonyema.kaleo.application.command.CreateProgramCommand;
+import dev.joshuaonyema.kaleo.application.command.UpdateProgramCommand;
 import dev.joshuaonyema.kaleo.application.service.ProgramService;
 import dev.joshuaonyema.kaleo.domain.entity.Program;
 import dev.joshuaonyema.kaleo.mapper.ProgramMapper;
@@ -38,6 +41,19 @@ public class ProgramController {
         CreateProgramResponseDto createProgramResponseDto = programMapper.toDto(createdProgram);
 
         return new ResponseEntity<>(createProgramResponseDto, HttpStatus.CREATED);
+    }
+
+    @PutMapping("/{programId}")
+    public ResponseEntity<UpdateProgramResponseDto> updateProgram(
+            @Valid @RequestBody UpdateProgramRequestDto updateProgramRequestDto,
+            @PathVariable UUID programId)
+    {
+        UpdateProgramCommand updateProgramCommand = programMapper.fromDto(updateProgramRequestDto);
+        Program updatedProgram = programService.updateProgramForOrganizer(programId, updateProgramCommand);
+
+        UpdateProgramResponseDto updateProgramResponseDto = programMapper.toUpdateProgramResponseDto(updatedProgram);
+
+        return ResponseEntity.ok(updateProgramResponseDto);
     }
 
     @GetMapping

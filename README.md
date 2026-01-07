@@ -42,7 +42,6 @@
 | ![Spring Boot](https://img.shields.io/badge/-Spring_Boot-6DB33F?style=flat-square&logo=spring&logoColor=white) | 4.0.1   | Application framework |
 | ![PostgreSQL](https://img.shields.io/badge/-PostgreSQL-336791?style=flat-square&logo=postgresql&logoColor=white) | 18      | Database |
 | ![Keycloak](https://img.shields.io/badge/-Keycloak-4D4D4D?style=flat-square&logo=keycloak&logoColor=white) | 26.4.7  | OIDC & RBAC |
-| ![MapStruct](https://img.shields.io/badge/-MapStruct-FF6600?style=flat-square&logo=java&logoColor=white) | 1.6.3   | DTO mapping |
 | ![JUnit](https://img.shields.io/badge/-JUnit_5-25A162?style=flat-square&logo=junit5&logoColor=white) | 5       | Testing |
 
 ---
@@ -58,6 +57,7 @@ All program endpoints require authentication via JWT token and `ORGANIZER` role.
 | `POST` | `/api/v1/programs` | Create a new program | `CreateProgramRequestDto` | `201 Created` |
 | `GET` | `/api/v1/programs` | List programs for current organizer | — | `200 OK` (Paginated) |
 | `GET` | `/api/v1/programs/{programId}` | Get program details by ID | — | `200 OK` / `404 Not Found` |
+| `PUT` | `/api/v1/programs/{programId}` | Update an existing program | `UpdateProgramRequestDto` | `200 OK` |
 
 #### Create Program Request
 
@@ -80,6 +80,42 @@ All program endpoints require authentication via JWT token and `ORGANIZER` role.
   ]
 }
 ```
+
+#### Update Program Request
+
+```json
+{
+  "id": "550e8400-e29b-41d4-a716-446655440000",
+  "name": "Sunday Service - Updated",
+  "startTime": "2026-01-11T10:00:00",
+  "endTime": "2026-01-11T13:00:00",
+  "venue": "Main Auditorium - Hall B",
+  "registrationStart": "2026-01-07T00:00:00",
+  "registrationEnd": "2026-01-10T23:59:59",
+  "status": "PUBLISHED",
+  "passTypes": [
+    {
+      "id": "650e8400-e29b-41d4-a716-446655440001",
+      "name": "General Admission",
+      "price": 0.00,
+      "description": "Free entry",
+      "totalAvailable": 600
+    },
+    {
+      "name": "VIP",
+      "price": 25.00,
+      "description": "Premium seating",
+      "totalAvailable": 50
+    }
+  ]
+}
+```
+
+**Note:** In the update request:
+- Include `id` in the request body (must match the path parameter)
+- For existing PassTypes, include their `id` to update them
+- For new PassTypes, omit the `id` field to create them
+- PassTypes not included in the request will be deleted
 
 #### Program Response
 
