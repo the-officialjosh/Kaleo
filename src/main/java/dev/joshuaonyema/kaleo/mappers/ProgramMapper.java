@@ -1,8 +1,7 @@
 package dev.joshuaonyema.kaleo.mappers;
 
-import dev.joshuaonyema.kaleo.api.dto.CreatePassTypeRequestDto;
-import dev.joshuaonyema.kaleo.api.dto.CreateProgramRequestDto;
-import dev.joshuaonyema.kaleo.api.dto.CreateProgramResponseDto;
+import dev.joshuaonyema.kaleo.api.dto.*;
+import dev.joshuaonyema.kaleo.domain.entity.PassType;
 import dev.joshuaonyema.kaleo.domain.entity.Program;
 import dev.joshuaonyema.kaleo.service.request.CreatePassTypeRequest;
 import dev.joshuaonyema.kaleo.service.request.CreateProgramRequest;
@@ -17,4 +16,8 @@ public interface ProgramMapper {
     CreateProgramRequest fromDto(CreateProgramRequestDto dto);
 
     CreateProgramResponseDto toDto(Program program);
+
+    ListPassTypeResponseDto toDto(PassType passType);
+
+    ListProgramResponseDto toListProgramResponseDto(Program program);
 }
