@@ -2,7 +2,10 @@ package dev.joshuaonyema.kaleo.domain.entity;
 
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -16,7 +19,6 @@ import java.util.UUID;
 @NoArgsConstructor
 @Getter
 @Setter
-@Builder
 public class Program extends TimestampedEntity {
     @Id
     @Column(name = "id", updatable = false, nullable = false)

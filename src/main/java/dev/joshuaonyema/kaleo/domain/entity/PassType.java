@@ -1,7 +1,10 @@
 package dev.joshuaonyema.kaleo.domain.entity;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -15,7 +18,6 @@ import java.util.UUID;
 @AllArgsConstructor
 @Getter
 @Setter
-@Builder
 public class PassType extends TimestampedEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
