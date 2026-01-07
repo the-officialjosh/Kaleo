@@ -1,4 +1,4 @@
-package dev.joshuaonyema.kaleo.mappers;
+package dev.joshuaonyema.kaleo.mapper;
 
 import dev.joshuaonyema.kaleo.api.dto.request.CreatePassTypeRequestDto;
 import dev.joshuaonyema.kaleo.api.dto.request.CreateProgramRequestDto;

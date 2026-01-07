@@ -7,7 +7,7 @@ import dev.joshuaonyema.kaleo.api.dto.response.ListProgramResponseDto;
 import dev.joshuaonyema.kaleo.application.command.CreateProgramCommand;
 import dev.joshuaonyema.kaleo.application.service.ProgramService;
 import dev.joshuaonyema.kaleo.domain.entity.Program;
-import dev.joshuaonyema.kaleo.mappers.ProgramMapper;
+import dev.joshuaonyema.kaleo.mapper.ProgramMapper;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
