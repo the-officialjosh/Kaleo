@@ -1,225 +1,154 @@
-<div align="center">
-
 # Kaleo
 
-### A Church and Program Events Management API
+### Church & Ministry Event Management API
 
-![Kaleo banner](docs/images/kaleo-banner.png)
+[![CI/CD](https://img.shields.io/github/actions/workflow/status/the-officialjosh/kaleo/ci.yml?style=flat-square&logo=github&label=CI%2FCD)](../../actions)
+[![Java](https://img.shields.io/badge/Java-25-ED8B00?style=flat-square&logo=openjdk&logoColor=white)](https://openjdk.org/)
+[![Spring Boot](https://img.shields.io/badge/Spring_Boot-4.0.1-6DB33F?style=flat-square&logo=spring&logoColor=white)](https://spring.io/projects/spring-boot)
+[![Spring Security](https://img.shields.io/badge/Spring_Security-7.0.2-6DB33F?style=flat-square&logo=springsecurity&logoColor=white)](https://spring.io/projects/spring-security)
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-18-336791?style=flat-square&logo=postgresql&logoColor=white)](https://www.postgresql.org/)
+[![Keycloak](https://img.shields.io/badge/Keycloak-26.4.7-4D4D4D?style=flat-square&logo=keycloak&logoColor=white)](https://www.keycloak.org/)
+[![Adminer](https://img.shields.io/badge/Adminer-4.8.1-34567C?style=flat-square&logo=adminer&logoColor=white)](https://www.adminer.org/)
+[![Tests](https://img.shields.io/badge/tests-136%20passing-success?style=flat-square)](docs/TEST_COVERAGE.md)
 
-[![CI/CD](https://img.shields.io/github/actions/workflow/status/the-officialjosh/kaleo/ci.yml?style=for-the-badge&logo=github&label=CI%2FCD)](../../actions)
-[![Java](https://img.shields.io/badge/Java-25-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white)](https://openjdk.org/)
-[![Spring Boot](https://img.shields.io/badge/Spring_Boot-4.0.1-6DB33F?style=for-the-badge&logo=spring&logoColor=white)](https://spring.io/projects/spring-boot)
-[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-18-336791?style=for-the-badge&logo=postgresql&logoColor=white)](https://www.postgresql.org/)
-[![Keycloak](https://img.shields.io/badge/Keycloak-OIDC-4D4D4D?style=for-the-badge&logo=keycloak&logoColor=white)](https://www.keycloak.org/)
+<div align="center">
 
-*Kaleo is a secure REST API for church and ministry program management. Organizers publish programs, participants register for limited capacity gatherings, and staff validate attendance using QR coded passes.*
+<img src="docs/images/kaleo-banner.png" alt="Kaleo Banner" width="100%" />
+
+A secure REST API for church and ministry event management. Organizers create programs, participants register for limited-capacity events, and staff validate attendance using QR-coded passes.
+
+[Features](#what-it-does) • [Quick Start](#quick-start) • [API Docs](docs/API.md) • [Architecture](#architecture)
 
 ---
 
 </div>
 
-## ✨ Features
+## ✨ What It Does
 
-- 📋 **Program Management** — Create, publish, and manage church programs and events
-- 🎟️ **Registration System** — Capacity-safe registration with automatic pass generation
-- 📱 **QR Code Passes** — Unique QR coded passes for easy check-in
-- ✅ **Check-in Validation** — Prevent duplicate check-ins with staff validation
-- 📊 **Reporting** — Attendance tracking and comprehensive analytics
+- 📋 **Program Management**: Create and manage church programs/events
+- 🎟️ **Registration**: Capacity-controlled registration with automatic pass generation
+- 📱 **QR Passes**: Generate unique QR codes for event check-in
+- ✅ **Validation**: Staff-managed check-in with duplicate prevention
+- 📊 **Analytics**: Track attendance and generate reports
 
----
-
-## 🚧 Status
-
-> **In Development** — Core domain model, security configuration, and program management foundation are in place.
+> 🚧 **Status**: In Development — Core domain model, security, and program management complete
 
 ---
 
 ## 🛠️ Tech Stack
 
-| Technology | Version | Purpose |
-|------------|---------|---------|
-| ![Java](https://img.shields.io/badge/-Java-ED8B00?style=flat-square&logo=openjdk&logoColor=white) | 25      | Core language |
-| ![Spring Boot](https://img.shields.io/badge/-Spring_Boot-6DB33F?style=flat-square&logo=spring&logoColor=white) | 4.0.1   | Application framework |
-| ![PostgreSQL](https://img.shields.io/badge/-PostgreSQL-336791?style=flat-square&logo=postgresql&logoColor=white) | 18      | Database |
-| ![Keycloak](https://img.shields.io/badge/-Keycloak-4D4D4D?style=flat-square&logo=keycloak&logoColor=white) | 26.4.7  | OIDC & RBAC |
-| ![JUnit](https://img.shields.io/badge/-JUnit_5-25A162?style=flat-square&logo=junit5&logoColor=white) | 5       | Testing |
+| Component | Technology | Purpose |
+|-----------|------------|---------|
+| **Language** | Java 25 | Modern JVM features |
+| **Framework** | Spring Boot 4.0.1 | Application framework with Data JPA, Validation |
+| **Security** | Spring Security 7.0.2 | Authentication & authorization framework |
+| **Database** | PostgreSQL 18 | Relational database |
+| **DB Admin** | Adminer 4.8.1 | Database management UI |
+| **Auth Provider** | Keycloak 26.4.7 | OAuth2/OIDC authentication & RBAC |
+| **Mapping** | MapStruct | Type-safe bean mapping |
+| **Testing** | JUnit 5 + Mockito | Unit & integration testing |
 
 ---
 
-## 🔌 API Endpoints
-
-### Programs
-
-All program endpoints require authentication via JWT token and `ORGANIZER` role.
-
-| Method | Endpoint | Description | Request Body | Response |
-|--------|----------|-------------|--------------|----------|
-| `POST` | `/api/v1/programs` | Create a new program | `CreateProgramRequestDto` | `201 Created` |
-| `GET` | `/api/v1/programs` | List programs for current organizer | — | `200 OK` (Paginated) |
-| `GET` | `/api/v1/programs/{programId}` | Get program details by ID | — | `200 OK` / `404 Not Found` |
-| `PUT` | `/api/v1/programs/{programId}` | Update an existing program | `UpdateProgramRequestDto` | `200 OK` |
-
-#### Create Program Request
-
-```json
-{
-  "name": "Sunday Service",
-  "startTime": "2026-01-11T09:00:00",
-  "endTime": "2026-01-11T12:00:00",
-  "venue": "Main Auditorium",
-  "registrationStart": "2026-01-07T00:00:00",
-  "registrationEnd": "2026-01-10T23:59:59",
-  "status": "DRAFT",
-  "passTypes": [
-    {
-      "name": "General Admission",
-      "price": 0.00,
-      "description": "Free entry",
-      "totalAvailable": 500
-    }
-  ]
-}
-```
-
-#### Update Program Request
-
-```json
-{
-  "id": "550e8400-e29b-41d4-a716-446655440000",
-  "name": "Sunday Service - Updated",
-  "startTime": "2026-01-11T10:00:00",
-  "endTime": "2026-01-11T13:00:00",
-  "venue": "Main Auditorium - Hall B",
-  "registrationStart": "2026-01-07T00:00:00",
-  "registrationEnd": "2026-01-10T23:59:59",
-  "status": "PUBLISHED",
-  "passTypes": [
-    {
-      "id": "650e8400-e29b-41d4-a716-446655440001",
-      "name": "General Admission",
-      "price": 0.00,
-      "description": "Free entry",
-      "totalAvailable": 600
-    },
-    {
-      "name": "VIP",
-      "price": 25.00,
-      "description": "Premium seating",
-      "totalAvailable": 50
-    }
-  ]
-}
-```
-
-**Note:** In the update request:
-- Include `id` in the request body (must match the path parameter)
-- For existing PassTypes, include their `id` to update them
-- For new PassTypes, omit the `id` field to create them
-- PassTypes not included in the request will be deleted
-
-#### Program Response
-
-```json
-{
-  "id": "550e8400-e29b-41d4-a716-446655440000",
-  "name": "Sunday Service",
-  "startTime": "2026-01-11T09:00:00",
-  "endTime": "2026-01-11T12:00:00",
-  "venue": "Main Auditorium",
-  "registrationStart": "2026-01-07T00:00:00",
-  "registrationEnd": "2026-01-10T23:59:59",
-  "status": "DRAFT",
-  "passTypes": [...],
-  "createdAt": "2026-01-07T10:30:00",
-  "updatedAt": "2026-01-07T10:30:00"
-}
-```
-
-### Authentication
-
-All endpoints require a valid JWT token from Keycloak in the `Authorization` header:
+## 🏗️ Architecture
 
 ```
-Authorization: Bearer <your_jwt_token>
+┌─────────────────┐
+│   Keycloak      │  OAuth2/OIDC Provider
+│   (Port 9090)   │
+└────────┬────────┘
+         │ JWT
+         ▼
+┌─────────────────┐
+│  Spring Boot    │  REST API Layer
+│  (Port 8080)    │  • Security Filter Chain
+│                 │  • Controllers
+│                 │  • Service Layer
+│                 │  • Repository Layer
+└────────┬────────┘
+         │
+         ▼
+┌─────────────────┐
+│   PostgreSQL    │  Persistent Storage
+│   (Port 5432)   │
+└─────────────────┘
 ```
+
+**Key Components:**
+- **Security**: JWT-based authentication with role-based access (`ORGANIZER`, `PARTICIPANT`, `STAFF`)
+- **Domain Model**: Program → PassType → Pass → QrCode → PassValidation
+- **Validation**: Custom validators for date ranges and conditional fields
+- **Mapping**: MapStruct for DTO ↔ Entity conversions
+
+---
+
+## 🚀 Quick Start
+
+**Prerequisites:** Java 25, Docker, Docker Compose
+
+```bash
+# Clone repository
+git clone https://github.com/yourusername/kaleo.git
+cd kaleo
+
+# Start dependencies (PostgreSQL + Keycloak)
+docker-compose up -d
+
+# Run application
+./mvnw spring-boot:run
+```
+
+API available at: `http://localhost:8080`
+
+**⚙️ Configuration:**
+- Keycloak: `http://localhost:9090` (create `kaleo-events` realm)
+- Database: `localhost:5432` (credentials in `.env`)
+- Adminer: `http://localhost:8888`
+
+---
+
+## 🧪 Running Tests
+
+```bash
+# Run all tests
+./mvnw test
+
+# Run specific test class
+./mvnw test -Dtest=ProgramServiceImplTest
+
+# Run with coverage
+./mvnw verify jacoco:report
+```
+
+**Test Coverage:** 136 tests across 11 test classes
+- API Layer: Controllers, DTOs, Validators, Exception Handlers
+- Application Layer: Services, Mappers, Security
+- Infrastructure: Filters
+
+See [Test Coverage Documentation](docs/TEST_COVERAGE.md) for details.
 
 ---
 
 ## 📚 Documentation
 
-| Document                                     | Description |
-|----------------------------------------------|-------------|
-| [Project Plan](docs/project-plan.md)         | Detailed project overview and specifications |
-| [Domain Model](docs/images/Kaleo-domain.png) | Domain model diagram |
-
-### 🏗️ Domain Model
-![Kaleo Domain Model](docs/images/Kaleo-domain.png)
-
----
-
-## 📋 Prerequisites
-
-- **Java 25** or later
-- **Docker** and **Docker Compose**
-- **Maven** (or use the included Maven Wrapper)
-
----
-
-## 🚀 Running Locally
-
-### 1. Clone the repository
-
-```bash
-git clone https://github.com/yourusername/kaleo.git
-cd kaleo
-```
-
-### 2. Configure environment variables
-
-Create a `.env` file in the project root:
-
-```env
-POSTGRES_USER=your_db_user
-POSTGRES_PASSWORD=your_db_password
-KEYCLOAK_ADMIN=admin
-KEYCLOAK_ADMIN_PASSWORD=your_keycloak_password
-```
-
-### 3. Start dependencies
-
-```bash
-docker-compose up -d
-```
-
-This starts:
-- **PostgreSQL 18** on port `5432`
-- **Keycloak 26.4.7** on port `9090`
-- **Adminer** (DB admin UI) on port `8888`
-
-### 4. Configure Keycloak
-
-1. Open http://localhost:9090 and login with your admin credentials
-2. Create a realm named `kaleo-events`
-3. Configure clients and roles as needed
-
-### 5. Run the application
-
-```bash
-./mvnw spring-boot:run
-```
-
-The API will be available at http://localhost:8080
+- [📖 API Documentation](docs/API.md) — Endpoints, request/response examples
+- [📋 Project Plan](docs/project-plan.md) — Detailed specifications
+- [🗺️ Domain Model](docs/images/Kaleo-domain.png) — Entity relationships
+- [✅ Test Coverage](docs/TEST_COVERAGE.md) — Test structure and statistics
 
 ---
 
 ## 📄 License
 
-This project is licensed under the MIT License.
+MIT License
 
 ---
 
 <div align="center">
 
-**[Report Bug](../../issues) · [Request Feature](../../issues)**
+**[Report Bug](../../issues)** • **[Request Feature](../../issues)** • **[Discussions](../../discussions)**
+
+Made with ❤️ for churches and ministries
 
 </div>
+
