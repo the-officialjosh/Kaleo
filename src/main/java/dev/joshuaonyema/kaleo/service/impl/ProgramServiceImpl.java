@@ -9,6 +9,8 @@ import dev.joshuaonyema.kaleo.repository.UserRepository;
 import dev.joshuaonyema.kaleo.service.ProgramService;
 import dev.joshuaonyema.kaleo.service.request.CreateProgramRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.core.Authentication;
@@ -26,8 +28,8 @@ public class ProgramServiceImpl implements ProgramService {
     private final UserRepository userRepository;
     private final ProgramRepository programRepository;
 
-    @PreAuthorize("hasRole('ORGANIZER')")
     @Override
+    @PreAuthorize("hasRole('ORGANIZER')")
     public Program createProgram(CreateProgramRequest programRequest) {
         Program programToCreate = new Program();
 
@@ -42,6 +44,12 @@ public class ProgramServiceImpl implements ProgramService {
         programToCreate.setPassTypes(createPassTypes(programRequest, programToCreate));
 
         return programRepository.save(programToCreate);
+    }
+
+    @Override
+    @PreAuthorize("hasRole('ORGANIZER')")
+    public Page<Program> listEventsForOrganizer(Pageable pageable) {
+        return programRepository.findByOrganizer(currentUser(), pageable);
     }
 
     private static List<PassType> createPassTypes(CreateProgramRequest programRequest, Program program) {
