@@ -16,4 +16,5 @@ public interface ProgramService {
     Optional<Program> getProgramForOrganizer(UUID id);
     Program updateProgramForOrganizer(UUID id, UpdateProgramCommand program);
     void deleteProgramForOrganizer(UUID id);
+    Page<Program> listPublishedEvent(Pageable pageable);
 }
