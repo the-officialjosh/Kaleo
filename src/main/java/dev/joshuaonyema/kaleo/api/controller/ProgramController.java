@@ -48,7 +48,7 @@ public class ProgramController {
     }
 
     @GetMapping("/{programId}")
-    public ResponseEntity<GetProgramDetailsResponseDto> getEvent(@PathVariable UUID programId)
+    public ResponseEntity<GetProgramDetailsResponseDto> getProgram(@PathVariable UUID programId)
     {
         return programService.getProgramForOrganizer(programId)
                 .map(programMapper::toGetProgramDetailsResponseDto)

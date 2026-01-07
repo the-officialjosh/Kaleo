@@ -13,6 +13,32 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 @Slf4j
 public class GlobalExceptionHandler {
+    @ExceptionHandler(ProgramUpdateException.class)
+    public  ResponseEntity<ErrorDto> handleUserNotFoundException(ProgramUpdateException notFoundException){
+        log.error("Caught ProgramUpdateException: {}", String.valueOf(notFoundException));
+
+        ErrorDto errorDto = new ErrorDto();
+        errorDto.setError("Unable to update program");
+        return new ResponseEntity<>(errorDto, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(PassTypeNotFoundException.class)
+    public  ResponseEntity<ErrorDto> handleUserNotFoundException(PassTypeNotFoundException notFoundException){
+        log.error("Caught PassTypeNotFoundException: {}", String.valueOf(notFoundException));
+
+        ErrorDto errorDto = new ErrorDto();
+        errorDto.setError("Pass type not found");
+        return new ResponseEntity<>(errorDto, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(ProgramNotFoundException.class)
+    public  ResponseEntity<ErrorDto> handleUserNotFoundException(ProgramNotFoundException notFoundException){
+        log.error("Caught ProgramNotFoundException: {}", String.valueOf(notFoundException));
+
+        ErrorDto errorDto = new ErrorDto();
+        errorDto.setError("Program not found");
+        return new ResponseEntity<>(errorDto, HttpStatus.BAD_REQUEST);
+    }
 
     @ExceptionHandler(UserNotFoundException.class)
     public  ResponseEntity<ErrorDto> handleUserNotFoundException(UserNotFoundException notFoundException){

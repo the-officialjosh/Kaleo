@@ -37,7 +37,7 @@ public class PassType extends TimestampedEntity {
     private Integer totalAvailable;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "event_id")
+    @JoinColumn(name = "program_id")
     private Program program;
 
     @OneToMany(mappedBy = "passType", cascade = CascadeType.ALL)

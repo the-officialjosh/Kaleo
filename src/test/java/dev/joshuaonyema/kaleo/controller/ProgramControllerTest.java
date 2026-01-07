@@ -221,14 +221,14 @@ class ProgramControllerTest {
         verify(programMapper, times(2)).toListProgramResponseDto(any(Program.class));
     }
 
-    // ==================== getEvent Tests ====================
+    // ==================== getProgram Tests ====================
 
     @Test
-    void getEvent_whenProgramExists_thenReturnsOkWithProgram() {
+    void getProgram_whenProgramExists_thenReturnsOkWithProgram() {
         when(programService.getProgramForOrganizer(programId)).thenReturn(Optional.of(program));
         when(programMapper.toGetProgramDetailsResponseDto(program)).thenReturn(getProgramDetailsResponseDto);
 
-        ResponseEntity<GetProgramDetailsResponseDto> response = programController.getEvent(programId);
+        ResponseEntity<GetProgramDetailsResponseDto> response = programController.getProgram(programId);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertNotNull(response.getBody());
@@ -238,10 +238,10 @@ class ProgramControllerTest {
     }
 
     @Test
-    void getEvent_whenProgramNotFound_thenReturnsNotFound() {
+    void getProgram_whenProgramNotFound_thenReturnsNotFound() {
         when(programService.getProgramForOrganizer(programId)).thenReturn(Optional.empty());
 
-        ResponseEntity<GetProgramDetailsResponseDto> response = programController.getEvent(programId);
+        ResponseEntity<GetProgramDetailsResponseDto> response = programController.getProgram(programId);
 
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
         assertNull(response.getBody());
@@ -249,21 +249,21 @@ class ProgramControllerTest {
     }
 
     @Test
-    void getEvent_whenCalled_thenCallsServiceWithCorrectId() {
+    void getProgram_whenCalled_thenCallsServiceWithCorrectId() {
         UUID specificId = UUID.randomUUID();
         when(programService.getProgramForOrganizer(specificId)).thenReturn(Optional.empty());
 
-        programController.getEvent(specificId);
+        programController.getProgram(specificId);
 
         verify(programService).getProgramForOrganizer(specificId);
     }
 
     @Test
-    void getEvent_whenProgramExists_thenCallsMapper() {
+    void getProgram_whenProgramExists_thenCallsMapper() {
         when(programService.getProgramForOrganizer(programId)).thenReturn(Optional.of(program));
         when(programMapper.toGetProgramDetailsResponseDto(program)).thenReturn(getProgramDetailsResponseDto);
 
-        programController.getEvent(programId);
+        programController.getProgram(programId);
 
         verify(programService).getProgramForOrganizer(programId);
         verify(programMapper).toGetProgramDetailsResponseDto(program);

@@ -1,6 +1,7 @@
 package dev.joshuaonyema.kaleo.application.impl;
 
 import dev.joshuaonyema.kaleo.application.command.CreateProgramCommand;
+import dev.joshuaonyema.kaleo.application.command.UpdateProgramCommand;
 import dev.joshuaonyema.kaleo.application.service.ProgramService;
 import dev.joshuaonyema.kaleo.domain.entity.PassType;
 import dev.joshuaonyema.kaleo.domain.entity.Program;
@@ -69,6 +70,11 @@ public class ProgramServiceImpl implements ProgramService {
     @PreAuthorize("hasRole('ORGANIZER')")
     public Optional<Program> getProgramForOrganizer(UUID id) {
         return programRepository.findByIdAndOrganizer(id, currentUser());
+    }
+
+    @Override
+    public Program updateProgramForOrganizer(UUID id, UpdateProgramCommand program) {
+        return null;
     }
 
     private static List<PassType> createPassTypes(CreateProgramCommand programRequest, Program program) {

@@ -136,7 +136,7 @@ class ProgramMapperTest {
     @Test
     void fromDto_whenCreateProgramRequestDtoWithNullOptionalFields_thenMapsCorrectly() {
         CreateProgramRequestDto dto = new CreateProgramRequestDto();
-        dto.setName("Quick Event");
+        dto.setName("Quick Program");
         dto.setStartTime(now.plusDays(1));
         dto.setEndTime(now.plusDays(1).plusHours(1));
         dto.setVenue("Room 101");
