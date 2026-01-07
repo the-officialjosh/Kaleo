@@ -86,6 +86,13 @@ public class ProgramServiceImpl implements ProgramService {
         return programRepository.save(program);
     }
 
+    @Override
+    @Transactional
+    @PreAuthorize("hasRole('ORGANIZER')")
+    public void deleteEventForOrganizer(UUID id) {
+        getProgramForOrganizer(id).ifPresent(programRepository::delete);
+    }
+
     private void validateUpdateCommand(UUID pathId, UpdateProgramCommand command) {
         if (command.getId() == null) {
             throw new dev.joshuaonyema.kaleo.exception.ProgramUpdateException("Program ID is required in the request body");
