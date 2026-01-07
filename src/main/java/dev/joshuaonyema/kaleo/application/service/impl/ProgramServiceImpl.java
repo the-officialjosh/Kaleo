@@ -86,7 +86,6 @@ public class ProgramServiceImpl implements ProgramService {
 
     @Override
     @Transactional
-    @PreAuthorize("hasRole('ORGANIZER')")
     public Page<Program> listPublishedPrograms(Pageable pageable) {
         return programRepository.findByStatus(ProgramStatus.PUBLISHED, pageable);
     }
