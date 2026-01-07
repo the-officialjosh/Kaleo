@@ -20,4 +20,8 @@ public interface ProgramMapper {
     ListPassTypeResponseDto toDto(PassType passType);
 
     ListProgramResponseDto toListProgramResponseDto(Program program);
+
+    GetPassTypesResponseDto toGetPassTypesResponseDto(PassType passType);
+
+    GetProgramDetailsResponseDto toGetProgramDetailsResponseDto(Program program);
 }

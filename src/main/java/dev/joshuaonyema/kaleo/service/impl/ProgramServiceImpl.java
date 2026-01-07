@@ -29,6 +29,18 @@ public class ProgramServiceImpl implements ProgramService {
     private final UserRepository userRepository;
     private final ProgramRepository programRepository;
 
+    private User currentUser(){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth == null || !(auth.getPrincipal() instanceof Jwt jwt)){
+            throw  new AuthenticationCredentialsNotFoundException("Not authenticated");
+        }
+
+
+        UUID organizerId = UUID.fromString(jwt.getSubject());
+        return userRepository.findById(organizerId)
+                .orElseThrow(()-> new UserNotFoundException(String.format("User with ID '%s' not found", organizerId)));
+    }
+
     @Override
     @PreAuthorize("hasRole('ORGANIZER')")
     public Program createProgram(CreateProgramRequest programRequest) {
@@ -72,16 +84,5 @@ public class ProgramServiceImpl implements ProgramService {
         }).toList();
     }
 
-    private User currentUser(){
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth == null || !(auth.getPrincipal() instanceof Jwt jwt)){
-            throw  new AuthenticationCredentialsNotFoundException("Not authenticated");
-        }
-
-
-        UUID organizerId = UUID.fromString(jwt.getSubject());
-        return userRepository.findById(organizerId)
-                .orElseThrow(()-> new UserNotFoundException(String.format("User with ID '%s' not found", organizerId)));
-    }
 }
 
