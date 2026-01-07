@@ -11,6 +11,6 @@ import java.util.UUID;
 
 public interface ProgramService {
     Program createProgram(CreateProgramRequest program);
-    Page<Program> listEventsForOrganizer(Pageable pageable);
-    Optional<Program> getEventForOrganizer(UUID id);
+    Page<Program> listProgamsForOrganizer(Pageable pageable);
+    Optional<Program> getProgramForOrganizer(UUID id);
 }

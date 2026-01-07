@@ -49,13 +49,13 @@ public class ProgramServiceImpl implements ProgramService {
 
     @Override
     @PreAuthorize("hasRole('ORGANIZER')")
-    public Page<Program> listEventsForOrganizer(Pageable pageable) {
+    public Page<Program> listProgamsForOrganizer(Pageable pageable) {
         return programRepository.findByOrganizer(currentUser(), pageable);
     }
 
     @Override
     @PreAuthorize("hasRole('ORGANIZER')")
-    public Optional<Program> getEventForOrganizer(UUID id) {
+    public Optional<Program> getProgramForOrganizer(UUID id) {
         return programRepository.findByIdAndOrganizer(id, currentUser());
     }
 

@@ -40,7 +40,7 @@ public class ProgramController {
     @GetMapping
     public ResponseEntity<Page<ListProgramResponseDto>> listPrograms(Pageable pageable)
     {
-        Page<Program> programs = programService.listEventsForOrganizer(pageable);
+        Page<Program> programs = programService.listProgamsForOrganizer(pageable);
         return ResponseEntity.ok(programs.map( programMapper::toListProgramResponseDto));
     }
 }
