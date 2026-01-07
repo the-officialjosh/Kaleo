@@ -28,7 +28,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-class UserProvisioningTest {
+class UserProvisioningFilterTest {
 
     @Mock
     private UserRepository userRepository;
@@ -46,7 +46,7 @@ class UserProvisioningTest {
     private FilterChain filterChain;
 
     @InjectMocks
-    private UserProvisioning userProvisioning;
+    private UserProvisioningFilter userProvisioningFilter;
 
     private MockHttpServletRequest request;
     private MockHttpServletResponse response;
@@ -74,7 +74,7 @@ class UserProvisioningTest {
         when(jwt.getClaimAsString("email")).thenReturn("test@example.com");
         when(userRepository.existsById(userId)).thenReturn(false);
 
-        userProvisioning.doFilterInternal(request, response, filterChain);
+        userProvisioningFilter.doFilterInternal(request, response, filterChain);
 
         ArgumentCaptor<User> userCaptor = ArgumentCaptor.forClass(User.class);
         verify(userRepository).save(userCaptor.capture());
@@ -91,7 +91,7 @@ class UserProvisioningTest {
         when(jwt.getSubject()).thenReturn(userId.toString());
         when(userRepository.existsById(userId)).thenReturn(true);
 
-        userProvisioning.doFilterInternal(request, response, filterChain);
+        userProvisioningFilter.doFilterInternal(request, response, filterChain);
 
         verify(userRepository, never()).save(any(User.class));
     }
@@ -102,7 +102,7 @@ class UserProvisioningTest {
         when(jwt.getSubject()).thenReturn(userId.toString());
         when(userRepository.existsById(userId)).thenReturn(true);
 
-        userProvisioning.doFilterInternal(request, response, filterChain);
+        userProvisioningFilter.doFilterInternal(request, response, filterChain);
 
         verify(filterChain).doFilter(request, response);
     }
@@ -115,7 +115,7 @@ class UserProvisioningTest {
         when(jwt.getClaimAsString("email")).thenReturn("test@example.com");
         when(userRepository.existsById(userId)).thenReturn(false);
 
-        userProvisioning.doFilterInternal(request, response, filterChain);
+        userProvisioningFilter.doFilterInternal(request, response, filterChain);
 
         verify(userRepository).save(any(User.class));
         verify(filterChain).doFilter(request, response);
@@ -128,7 +128,7 @@ class UserProvisioningTest {
         SecurityContextHolder.setContext(securityContext);
         when(securityContext.getAuthentication()).thenReturn(null);
 
-        userProvisioning.doFilterInternal(request, response, filterChain);
+        userProvisioningFilter.doFilterInternal(request, response, filterChain);
 
         verify(userRepository, never()).existsById(any());
         verify(userRepository, never()).save(any());
@@ -141,7 +141,7 @@ class UserProvisioningTest {
         when(securityContext.getAuthentication()).thenReturn(authentication);
         when(authentication.isAuthenticated()).thenReturn(false);
 
-        userProvisioning.doFilterInternal(request, response, filterChain);
+        userProvisioningFilter.doFilterInternal(request, response, filterChain);
 
         verify(userRepository, never()).existsById(any());
         verify(userRepository, never()).save(any());
@@ -155,7 +155,7 @@ class UserProvisioningTest {
         when(authentication.isAuthenticated()).thenReturn(true);
         when(authentication.getPrincipal()).thenReturn("not-a-jwt");
 
-        userProvisioning.doFilterInternal(request, response, filterChain);
+        userProvisioningFilter.doFilterInternal(request, response, filterChain);
 
         verify(userRepository, never()).existsById(any());
         verify(userRepository, never()).save(any());
@@ -172,7 +172,7 @@ class UserProvisioningTest {
         when(jwt.getClaimAsString("email")).thenReturn("test@example.com");
         when(userRepository.existsById(userId)).thenReturn(false);
 
-        userProvisioning.doFilterInternal(request, response, filterChain);
+        userProvisioningFilter.doFilterInternal(request, response, filterChain);
 
         ArgumentCaptor<User> userCaptor = ArgumentCaptor.forClass(User.class);
         verify(userRepository).save(userCaptor.capture());
@@ -190,7 +190,7 @@ class UserProvisioningTest {
         when(jwt.getClaimAsString("email")).thenReturn(null);
         when(userRepository.existsById(userId)).thenReturn(false);
 
-        userProvisioning.doFilterInternal(request, response, filterChain);
+        userProvisioningFilter.doFilterInternal(request, response, filterChain);
 
         ArgumentCaptor<User> userCaptor = ArgumentCaptor.forClass(User.class);
         verify(userRepository).save(userCaptor.capture());
@@ -206,7 +206,7 @@ class UserProvisioningTest {
     void doFilterInternal_whenSecurityContextCleared_thenContinuesFilterChain() throws ServletException, IOException {
         SecurityContextHolder.clearContext();
 
-        userProvisioning.doFilterInternal(request, response, filterChain);
+        userProvisioningFilter.doFilterInternal(request, response, filterChain);
 
         verify(userRepository, never()).existsById(any());
         verify(userRepository, never()).save(any());

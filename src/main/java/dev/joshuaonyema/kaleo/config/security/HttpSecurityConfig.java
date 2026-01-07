@@ -1,6 +1,6 @@
 package dev.joshuaonyema.kaleo.config.security;
 
-import dev.joshuaonyema.kaleo.config.security.filter.UserProvisioning;
+import dev.joshuaonyema.kaleo.config.security.filter.UserProvisioningFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.convert.converter.Converter;
@@ -25,7 +25,7 @@ import java.util.Map;
 public class HttpSecurityConfig {
 
     @Bean
-    SecurityFilterChain securityFilterChain(HttpSecurity http, UserProvisioning userProvisioning) throws Exception {
+    SecurityFilterChain securityFilterChain(HttpSecurity http, UserProvisioningFilter userProvisioningFilter) throws Exception {
         return http
                 .authorizeHttpRequests(auth -> auth
                         .anyRequest().authenticated()
@@ -35,7 +35,7 @@ public class HttpSecurityConfig {
                 .oauth2ResourceServer(oauth2 -> oauth2
                         .jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthenticationConverter()))
                 )
-                .addFilterAfter(userProvisioning, BearerTokenAuthenticationFilter.class)
+                .addFilterAfter(userProvisioningFilter, BearerTokenAuthenticationFilter.class)
                 .build();
     }
 

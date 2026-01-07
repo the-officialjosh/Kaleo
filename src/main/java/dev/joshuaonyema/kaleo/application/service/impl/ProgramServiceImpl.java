@@ -1,4 +1,4 @@
-package dev.joshuaonyema.kaleo.application.impl;
+package dev.joshuaonyema.kaleo.application.service.impl;
 
 import dev.joshuaonyema.kaleo.application.command.CreateProgramCommand;
 import dev.joshuaonyema.kaleo.application.command.UpdatePassTypeCommand;

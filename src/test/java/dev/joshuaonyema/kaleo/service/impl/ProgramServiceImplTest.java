@@ -2,7 +2,7 @@ package dev.joshuaonyema.kaleo.service.impl;
 
 import dev.joshuaonyema.kaleo.application.command.CreatePassTypeCommand;
 import dev.joshuaonyema.kaleo.application.command.CreateProgramCommand;
-import dev.joshuaonyema.kaleo.application.impl.ProgramServiceImpl;
+import dev.joshuaonyema.kaleo.application.service.impl.ProgramServiceImpl;
 import dev.joshuaonyema.kaleo.domain.entity.PassType;
 import dev.joshuaonyema.kaleo.domain.entity.Program;
 import dev.joshuaonyema.kaleo.domain.entity.ProgramStatus;
