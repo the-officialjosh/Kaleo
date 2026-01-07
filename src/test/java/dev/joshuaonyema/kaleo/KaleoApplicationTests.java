@@ -2,12 +2,10 @@ package dev.joshuaonyema.kaleo;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.ActiveProfiles;
 
 @SpringBootTest
-@TestPropertySource(properties = {
-        "spring.jpa.hibernate.ddl-auto=none"
-})
+@ActiveProfiles("test")
 class KaleoApplicationTests {
 
     @Test
