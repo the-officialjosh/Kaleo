@@ -1,13 +1,13 @@
-package dev.joshuaonyema.kaleo.controller;
+package dev.joshuaonyema.kaleo.api.controller;
 
-import dev.joshuaonyema.kaleo.api.dto.CreateProgramRequestDto;
-import dev.joshuaonyema.kaleo.api.dto.CreateProgramResponseDto;
-import dev.joshuaonyema.kaleo.api.dto.GetProgramDetailsResponseDto;
-import dev.joshuaonyema.kaleo.api.dto.ListProgramResponseDto;
+import dev.joshuaonyema.kaleo.api.dto.request.CreateProgramRequestDto;
+import dev.joshuaonyema.kaleo.api.dto.response.CreateProgramResponseDto;
+import dev.joshuaonyema.kaleo.api.dto.response.GetProgramDetailsResponseDto;
+import dev.joshuaonyema.kaleo.api.dto.response.ListProgramResponseDto;
+import dev.joshuaonyema.kaleo.application.command.CreateProgramCommand;
+import dev.joshuaonyema.kaleo.application.service.ProgramService;
 import dev.joshuaonyema.kaleo.domain.entity.Program;
 import dev.joshuaonyema.kaleo.mappers.ProgramMapper;
-import dev.joshuaonyema.kaleo.service.ProgramService;
-import dev.joshuaonyema.kaleo.service.request.CreateProgramRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -33,7 +33,7 @@ public class ProgramController {
             )
     {
 
-        CreateProgramRequest createProgramRequest = programMapper.fromDto(createProgramRequestDto);
+        CreateProgramCommand createProgramRequest = programMapper.fromDto(createProgramRequestDto);
         Program createdProgram = programService.createProgram(createProgramRequest);
         CreateProgramResponseDto createProgramResponseDto = programMapper.toDto(createdProgram);
 

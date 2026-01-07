@@ -1,6 +1,6 @@
 package dev.joshuaonyema.kaleo.exception;
 
-import dev.joshuaonyema.kaleo.api.dto.ErrorDto;
+import dev.joshuaonyema.kaleo.api.dto.response.ErrorDto;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Path;

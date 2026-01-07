@@ -1,12 +1,17 @@
 package dev.joshuaonyema.kaleo.controller;
 
-import dev.joshuaonyema.kaleo.api.dto.*;
+import dev.joshuaonyema.kaleo.api.controller.ProgramController;
+import dev.joshuaonyema.kaleo.api.dto.request.CreatePassTypeRequestDto;
+import dev.joshuaonyema.kaleo.api.dto.request.CreateProgramRequestDto;
+import dev.joshuaonyema.kaleo.api.dto.response.CreateProgramResponseDto;
+import dev.joshuaonyema.kaleo.api.dto.response.GetProgramDetailsResponseDto;
+import dev.joshuaonyema.kaleo.api.dto.response.ListProgramResponseDto;
+import dev.joshuaonyema.kaleo.application.command.CreateProgramCommand;
+import dev.joshuaonyema.kaleo.application.service.ProgramService;
 import dev.joshuaonyema.kaleo.domain.entity.Program;
 import dev.joshuaonyema.kaleo.domain.entity.ProgramStatus;
 import dev.joshuaonyema.kaleo.domain.entity.User;
 import dev.joshuaonyema.kaleo.mappers.ProgramMapper;
-import dev.joshuaonyema.kaleo.service.ProgramService;
-import dev.joshuaonyema.kaleo.service.request.CreateProgramRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -109,8 +114,8 @@ class ProgramControllerTest {
 
     @Test
     void createProgram_whenValidRequest_thenReturnsCreatedStatus() {
-        when(programMapper.fromDto(any(CreateProgramRequestDto.class))).thenReturn(new CreateProgramRequest());
-        when(programService.createProgram(any(CreateProgramRequest.class))).thenReturn(program);
+        when(programMapper.fromDto(any(CreateProgramRequestDto.class))).thenReturn(new CreateProgramCommand());
+        when(programService.createProgram(any(CreateProgramCommand.class))).thenReturn(program);
         when(programMapper.toDto(any(Program.class))).thenReturn(createProgramResponseDto);
 
         ResponseEntity<CreateProgramResponseDto> response = programController.createProgram(createProgramRequestDto);
@@ -124,21 +129,21 @@ class ProgramControllerTest {
 
     @Test
     void createProgram_whenCalled_thenMapperAndServiceAreCalled() {
-        when(programMapper.fromDto(any(CreateProgramRequestDto.class))).thenReturn(new CreateProgramRequest());
-        when(programService.createProgram(any(CreateProgramRequest.class))).thenReturn(program);
+        when(programMapper.fromDto(any(CreateProgramRequestDto.class))).thenReturn(new CreateProgramCommand());
+        when(programService.createProgram(any(CreateProgramCommand.class))).thenReturn(program);
         when(programMapper.toDto(any(Program.class))).thenReturn(createProgramResponseDto);
 
         programController.createProgram(createProgramRequestDto);
 
         verify(programMapper, times(1)).fromDto(any(CreateProgramRequestDto.class));
-        verify(programService, times(1)).createProgram(any(CreateProgramRequest.class));
+        verify(programService, times(1)).createProgram(any(CreateProgramCommand.class));
         verify(programMapper, times(1)).toDto(any(Program.class));
     }
 
     @Test
     void createProgram_whenCalled_thenReturnsResponseDto() {
-        when(programMapper.fromDto(any(CreateProgramRequestDto.class))).thenReturn(new CreateProgramRequest());
-        when(programService.createProgram(any(CreateProgramRequest.class))).thenReturn(program);
+        when(programMapper.fromDto(any(CreateProgramRequestDto.class))).thenReturn(new CreateProgramCommand());
+        when(programService.createProgram(any(CreateProgramCommand.class))).thenReturn(program);
         when(programMapper.toDto(any(Program.class))).thenReturn(createProgramResponseDto);
 
         ResponseEntity<CreateProgramResponseDto> response = programController.createProgram(createProgramRequestDto);

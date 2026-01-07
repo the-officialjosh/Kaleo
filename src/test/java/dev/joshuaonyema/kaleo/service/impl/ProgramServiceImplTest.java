@@ -1,5 +1,8 @@
 package dev.joshuaonyema.kaleo.service.impl;
 
+import dev.joshuaonyema.kaleo.application.command.CreatePassTypeCommand;
+import dev.joshuaonyema.kaleo.application.command.CreateProgramCommand;
+import dev.joshuaonyema.kaleo.application.impl.ProgramServiceImpl;
 import dev.joshuaonyema.kaleo.domain.entity.PassType;
 import dev.joshuaonyema.kaleo.domain.entity.Program;
 import dev.joshuaonyema.kaleo.domain.entity.ProgramStatus;
@@ -7,8 +10,6 @@ import dev.joshuaonyema.kaleo.domain.entity.User;
 import dev.joshuaonyema.kaleo.exception.UserNotFoundException;
 import dev.joshuaonyema.kaleo.repository.ProgramRepository;
 import dev.joshuaonyema.kaleo.repository.UserRepository;
-import dev.joshuaonyema.kaleo.service.request.CreatePassTypeRequest;
-import dev.joshuaonyema.kaleo.service.request.CreateProgramRequest;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -60,7 +61,7 @@ class ProgramServiceImplTest {
 
     private UUID userId;
     private User user;
-    private CreateProgramRequest validRequest;
+    private CreateProgramCommand validRequest;
 
     @BeforeEach
     void setUp() {
@@ -71,7 +72,7 @@ class ProgramServiceImplTest {
         user.setEmail("organizer@test.com");
 
         var now = LocalDateTime.now();
-        validRequest = new CreateProgramRequest(
+        validRequest = new CreateProgramCommand(
                 "Sunday Service",
                 now.plusDays(1),
                 now.plusDays(1).plusHours(2),
@@ -79,7 +80,7 @@ class ProgramServiceImplTest {
                 now.plusHours(1),
                 now.plusDays(1),
                 ProgramStatus.DRAFT,
-                List.of(new CreatePassTypeRequest("General", BigDecimal.TEN, "Standard entry", 100))
+                List.of(new CreatePassTypeCommand("General", BigDecimal.TEN, "Standard entry", 100))
         );
     }
 
@@ -142,9 +143,9 @@ class ProgramServiceImplTest {
         when(programRepository.save(any(Program.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
         validRequest.setPassTypes(List.of(
-                new CreatePassTypeRequest("General", BigDecimal.TEN, "Standard entry", 100),
-                new CreatePassTypeRequest("VIP", BigDecimal.valueOf(50), "VIP access", 20),
-                new CreatePassTypeRequest("Free", BigDecimal.ZERO, null, null)
+                new CreatePassTypeCommand("General", BigDecimal.TEN, "Standard entry", 100),
+                new CreatePassTypeCommand("VIP", BigDecimal.valueOf(50), "VIP access", 20),
+                new CreatePassTypeCommand("Free", BigDecimal.ZERO, null, null)
         ));
 
         Program result = programService.createProgram(validRequest);
@@ -235,7 +236,7 @@ class ProgramServiceImplTest {
         when(programRepository.save(any(Program.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
         validRequest.setPassTypes(List.of(
-                new CreatePassTypeRequest("Free Entry", BigDecimal.ZERO, null, null)
+                new CreatePassTypeCommand("Free Entry", BigDecimal.ZERO, null, null)
         ));
 
         Program result = programService.createProgram(validRequest);
@@ -282,8 +283,8 @@ class ProgramServiceImplTest {
         when(programRepository.save(any(Program.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
         validRequest.setPassTypes(List.of(
-                new CreatePassTypeRequest("General", BigDecimal.TEN, "desc1", 100),
-                new CreatePassTypeRequest("VIP", BigDecimal.valueOf(50), "desc2", 20)
+                new CreatePassTypeCommand("General", BigDecimal.TEN, "desc1", 100),
+                new CreatePassTypeCommand("VIP", BigDecimal.valueOf(50), "desc2", 20)
         ));
 
         Program result = programService.createProgram(validRequest);

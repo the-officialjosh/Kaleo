@@ -1,4 +1,4 @@
-package dev.joshuaonyema.kaleo.api.dto;
+package dev.joshuaonyema.kaleo.api.dto.request;
 
 import dev.joshuaonyema.kaleo.api.validation.BothOrNone;
 import dev.joshuaonyema.kaleo.api.validation.StartBeforeEnd;

@@ -1,4 +1,4 @@
-package dev.joshuaonyema.kaleo.api.dto;
+package dev.joshuaonyema.kaleo.api.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

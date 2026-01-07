@@ -1,12 +1,14 @@
 package dev.joshuaonyema.kaleo.mappers;
 
-import dev.joshuaonyema.kaleo.api.dto.*;
+import dev.joshuaonyema.kaleo.api.dto.request.CreatePassTypeRequestDto;
+import dev.joshuaonyema.kaleo.api.dto.request.CreateProgramRequestDto;
+import dev.joshuaonyema.kaleo.api.dto.response.*;
+import dev.joshuaonyema.kaleo.application.command.CreatePassTypeCommand;
+import dev.joshuaonyema.kaleo.application.command.CreateProgramCommand;
 import dev.joshuaonyema.kaleo.domain.entity.PassType;
 import dev.joshuaonyema.kaleo.domain.entity.Program;
 import dev.joshuaonyema.kaleo.domain.entity.ProgramStatus;
 import dev.joshuaonyema.kaleo.domain.entity.User;
-import dev.joshuaonyema.kaleo.service.request.CreatePassTypeRequest;
-import dev.joshuaonyema.kaleo.service.request.CreateProgramRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
@@ -75,7 +77,7 @@ class ProgramMapperTest {
                 20
         );
 
-        CreatePassTypeRequest result = mapper.fromDto(dto);
+        CreatePassTypeCommand result = mapper.fromDto(dto);
 
         assertNotNull(result);
         assertEquals("VIP Pass", result.getName());
@@ -93,7 +95,7 @@ class ProgramMapperTest {
                 null
         );
 
-        CreatePassTypeRequest result = mapper.fromDto(dto);
+        CreatePassTypeCommand result = mapper.fromDto(dto);
 
         assertNotNull(result);
         assertEquals("Free Pass", result.getName());
@@ -118,7 +120,7 @@ class ProgramMapperTest {
                 new CreatePassTypeRequestDto("General", BigDecimal.TEN, "desc", 100)
         ));
 
-        CreateProgramRequest result = mapper.fromDto(dto);
+        CreateProgramCommand result = mapper.fromDto(dto);
 
         assertNotNull(result);
         assertEquals("Sunday Service", result.getName());
@@ -143,7 +145,7 @@ class ProgramMapperTest {
         dto.setStatus(ProgramStatus.PUBLISHED);
         dto.setPassTypes(List.of());
 
-        CreateProgramRequest result = mapper.fromDto(dto);
+        CreateProgramCommand result = mapper.fromDto(dto);
 
         assertNotNull(result);
         assertNull(result.getRegistrationStart());
@@ -276,13 +278,13 @@ class ProgramMapperTest {
 
     @Test
     void fromDto_whenCreatePassTypeRequestDtoNull_thenReturnsNull() {
-        CreatePassTypeRequest result = mapper.fromDto((CreatePassTypeRequestDto) null);
+        CreatePassTypeCommand result = mapper.fromDto((CreatePassTypeRequestDto) null);
         assertNull(result);
     }
 
     @Test
     void fromDto_whenCreateProgramRequestDtoNull_thenReturnsNull() {
-        CreateProgramRequest result = mapper.fromDto((CreateProgramRequestDto) null);
+        CreateProgramCommand result = mapper.fromDto((CreateProgramRequestDto) null);
         assertNull(result);
     }
 

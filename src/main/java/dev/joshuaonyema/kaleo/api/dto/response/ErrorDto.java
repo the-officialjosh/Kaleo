@@ -1,4 +1,4 @@
-package dev.joshuaonyema.kaleo.api.dto;
+package dev.joshuaonyema.kaleo.api.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

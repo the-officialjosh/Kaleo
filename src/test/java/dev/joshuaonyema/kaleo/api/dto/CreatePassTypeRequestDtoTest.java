@@ -1,5 +1,6 @@
 package dev.joshuaonyema.kaleo.api.dto;
 
+import dev.joshuaonyema.kaleo.api.dto.request.CreatePassTypeRequestDto;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import jakarta.validation.ValidatorFactory;

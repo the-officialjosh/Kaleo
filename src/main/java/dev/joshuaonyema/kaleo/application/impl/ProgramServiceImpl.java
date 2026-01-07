@@ -1,13 +1,13 @@
-package dev.joshuaonyema.kaleo.service.impl;
+package dev.joshuaonyema.kaleo.application.impl;
 
+import dev.joshuaonyema.kaleo.application.command.CreateProgramCommand;
+import dev.joshuaonyema.kaleo.application.service.ProgramService;
 import dev.joshuaonyema.kaleo.domain.entity.PassType;
 import dev.joshuaonyema.kaleo.domain.entity.Program;
 import dev.joshuaonyema.kaleo.domain.entity.User;
 import dev.joshuaonyema.kaleo.exception.UserNotFoundException;
 import dev.joshuaonyema.kaleo.repository.ProgramRepository;
 import dev.joshuaonyema.kaleo.repository.UserRepository;
-import dev.joshuaonyema.kaleo.service.ProgramService;
-import dev.joshuaonyema.kaleo.service.request.CreateProgramRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -43,7 +43,7 @@ public class ProgramServiceImpl implements ProgramService {
 
     @Override
     @PreAuthorize("hasRole('ORGANIZER')")
-    public Program createProgram(CreateProgramRequest programRequest) {
+    public Program createProgram(CreateProgramCommand programRequest) {
         Program programToCreate = new Program();
 
         programToCreate.setOrganizer(currentUser());
@@ -71,7 +71,7 @@ public class ProgramServiceImpl implements ProgramService {
         return programRepository.findByIdAndOrganizer(id, currentUser());
     }
 
-    private static List<PassType> createPassTypes(CreateProgramRequest programRequest, Program program) {
+    private static List<PassType> createPassTypes(CreateProgramCommand programRequest, Program program) {
         return programRequest.getPassTypes().stream().map(passType ->
         {
             PassType passTypeToCreate = new PassType();

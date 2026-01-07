@@ -1,4 +1,4 @@
-package dev.joshuaonyema.kaleo.service.request;
+package dev.joshuaonyema.kaleo.application.command;
 
 import dev.joshuaonyema.kaleo.domain.entity.ProgramStatus;
 import lombok.AllArgsConstructor;
@@ -11,7 +11,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreateProgramRequest {
+public class CreateProgramCommand {
     private String name;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
@@ -19,5 +19,5 @@ public class CreateProgramRequest {
     private LocalDateTime registrationStart;
     private LocalDateTime registrationEnd;
     private ProgramStatus status;
-    private List<CreatePassTypeRequest> passTypes;
+    private List<CreatePassTypeCommand> passTypes;
 }
