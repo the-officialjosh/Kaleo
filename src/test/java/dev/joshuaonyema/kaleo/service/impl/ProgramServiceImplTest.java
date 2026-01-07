@@ -17,7 +17,11 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.security.access.AccessDeniedException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -164,12 +168,12 @@ class ProgramServiceImplTest {
     }
 
     @Test
-    void createProgram_whenNotAuthenticated_thenThrowsAccessDeniedException() {
+    void createProgram_whenNotAuthenticated_thenThrowsAuthenticationCredentialsNotFoundException() {
         SecurityContextHolder.setContext(securityContext);
         when(securityContext.getAuthentication()).thenReturn(null);
 
         assertThrows(
-                AccessDeniedException.class,
+                AuthenticationCredentialsNotFoundException.class,
                 () -> programService.createProgram(validRequest)
         );
 
@@ -177,13 +181,13 @@ class ProgramServiceImplTest {
     }
 
     @Test
-    void createProgram_whenPrincipalNotJwt_thenThrowsAccessDeniedException() {
+    void createProgram_whenPrincipalNotJwt_thenThrowsAuthenticationCredentialsNotFoundException() {
         SecurityContextHolder.setContext(securityContext);
         when(securityContext.getAuthentication()).thenReturn(authentication);
         when(authentication.getPrincipal()).thenReturn("not-a-jwt");
 
         assertThrows(
-                AccessDeniedException.class,
+                AuthenticationCredentialsNotFoundException.class,
                 () -> programService.createProgram(validRequest)
         );
 
@@ -290,11 +294,11 @@ class ProgramServiceImplTest {
     }
 
     @Test
-    void createProgram_whenSecurityContextNotSet_thenThrowsAccessDeniedException() {
+    void createProgram_whenSecurityContextNotSet_thenThrowsAuthenticationCredentialsNotFoundException() {
         SecurityContextHolder.clearContext();
 
         assertThrows(
-                AccessDeniedException.class,
+                AuthenticationCredentialsNotFoundException.class,
                 () -> programService.createProgram(validRequest)
         );
 
@@ -314,5 +318,184 @@ class ProgramServiceImplTest {
         );
 
         verify(programRepository, never()).save(any());
+    }
+
+    // ==================== listProgamsForOrganizer Tests ====================
+
+    @Test
+    void listProgamsForOrganizer_whenValidRequest_thenReturnsPageOfPrograms() {
+        setupSecurityContext();
+        when(userRepository.findById(userId)).thenReturn(Optional.of(user));
+
+        Program program1 = createTestProgram("Program 1");
+        Program program2 = createTestProgram("Program 2");
+        Page<Program> expectedPage = new PageImpl<>(List.of(program1, program2));
+        Pageable pageable = PageRequest.of(0, 10);
+
+        when(programRepository.findByOrganizer(user, pageable)).thenReturn(expectedPage);
+
+        Page<Program> result = programService.listProgamsForOrganizer(pageable);
+
+        assertNotNull(result);
+        assertEquals(2, result.getTotalElements());
+        verify(programRepository).findByOrganizer(user, pageable);
+    }
+
+    @Test
+    void listProgamsForOrganizer_whenNoPrograms_thenReturnsEmptyPage() {
+        setupSecurityContext();
+        when(userRepository.findById(userId)).thenReturn(Optional.of(user));
+
+        Page<Program> emptyPage = Page.empty();
+        Pageable pageable = PageRequest.of(0, 10);
+
+        when(programRepository.findByOrganizer(user, pageable)).thenReturn(emptyPage);
+
+        Page<Program> result = programService.listProgamsForOrganizer(pageable);
+
+        assertNotNull(result);
+        assertEquals(0, result.getTotalElements());
+        assertTrue(result.isEmpty());
+    }
+
+    @Test
+    void listProgamsForOrganizer_whenNotAuthenticated_thenThrowsAuthenticationCredentialsNotFoundException() {
+        SecurityContextHolder.setContext(securityContext);
+        when(securityContext.getAuthentication()).thenReturn(null);
+
+        Pageable pageable = PageRequest.of(0, 10);
+
+        assertThrows(
+                AuthenticationCredentialsNotFoundException.class,
+                () -> programService.listProgamsForOrganizer(pageable)
+        );
+
+        verify(programRepository, never()).findByOrganizer(any(), any());
+    }
+
+    @Test
+    void listProgamsForOrganizer_whenUserNotFound_thenThrowsUserNotFoundException() {
+        setupSecurityContext();
+        when(userRepository.findById(userId)).thenReturn(Optional.empty());
+
+        Pageable pageable = PageRequest.of(0, 10);
+
+        UserNotFoundException exception = assertThrows(
+                UserNotFoundException.class,
+                () -> programService.listProgamsForOrganizer(pageable)
+        );
+
+        assertTrue(exception.getMessage().contains(userId.toString()));
+        verify(programRepository, never()).findByOrganizer(any(), any());
+    }
+
+    @Test
+    void listProgamsForOrganizer_whenPaginationApplied_thenRespectsPageable() {
+        setupSecurityContext();
+        when(userRepository.findById(userId)).thenReturn(Optional.of(user));
+
+        Program program = createTestProgram("Test Program");
+        Pageable pageable = PageRequest.of(2, 5);
+        Page<Program> expectedPage = new PageImpl<>(List.of(program), pageable, 15);
+
+        when(programRepository.findByOrganizer(user, pageable)).thenReturn(expectedPage);
+
+        Page<Program> result = programService.listProgamsForOrganizer(pageable);
+
+        assertEquals(2, result.getNumber());
+        assertEquals(5, result.getSize());
+        assertEquals(15, result.getTotalElements());
+    }
+
+    // ==================== getProgramForOrganizer Tests ====================
+
+    @Test
+    void getProgramForOrganizer_whenProgramExists_thenReturnsProgram() {
+        setupSecurityContext();
+        when(userRepository.findById(userId)).thenReturn(Optional.of(user));
+
+        UUID programId = UUID.randomUUID();
+        Program program = createTestProgram("Test Program");
+        program.setId(programId);
+
+        when(programRepository.findByIdAndOrganizer(programId, user)).thenReturn(Optional.of(program));
+
+        Optional<Program> result = programService.getProgramForOrganizer(programId);
+
+        assertTrue(result.isPresent());
+        assertEquals(programId, result.get().getId());
+        assertEquals("Test Program", result.get().getName());
+    }
+
+    @Test
+    void getProgramForOrganizer_whenProgramNotFound_thenReturnsEmpty() {
+        setupSecurityContext();
+        when(userRepository.findById(userId)).thenReturn(Optional.of(user));
+
+        UUID programId = UUID.randomUUID();
+        when(programRepository.findByIdAndOrganizer(programId, user)).thenReturn(Optional.empty());
+
+        Optional<Program> result = programService.getProgramForOrganizer(programId);
+
+        assertTrue(result.isEmpty());
+    }
+
+    @Test
+    void getProgramForOrganizer_whenProgramBelongsToDifferentOrganizer_thenReturnsEmpty() {
+        setupSecurityContext();
+        when(userRepository.findById(userId)).thenReturn(Optional.of(user));
+
+        UUID programId = UUID.randomUUID();
+        when(programRepository.findByIdAndOrganizer(programId, user)).thenReturn(Optional.empty());
+
+        Optional<Program> result = programService.getProgramForOrganizer(programId);
+
+        assertTrue(result.isEmpty());
+        verify(programRepository).findByIdAndOrganizer(programId, user);
+    }
+
+    @Test
+    void getProgramForOrganizer_whenNotAuthenticated_thenThrowsAuthenticationCredentialsNotFoundException() {
+        SecurityContextHolder.setContext(securityContext);
+        when(securityContext.getAuthentication()).thenReturn(null);
+
+        UUID programId = UUID.randomUUID();
+
+        assertThrows(
+                AuthenticationCredentialsNotFoundException.class,
+                () -> programService.getProgramForOrganizer(programId)
+        );
+
+        verify(programRepository, never()).findByIdAndOrganizer(any(), any());
+    }
+
+    @Test
+    void getProgramForOrganizer_whenUserNotFound_thenThrowsUserNotFoundException() {
+        setupSecurityContext();
+        when(userRepository.findById(userId)).thenReturn(Optional.empty());
+
+        UUID programId = UUID.randomUUID();
+
+        UserNotFoundException exception = assertThrows(
+                UserNotFoundException.class,
+                () -> programService.getProgramForOrganizer(programId)
+        );
+
+        assertTrue(exception.getMessage().contains(userId.toString()));
+        verify(programRepository, never()).findByIdAndOrganizer(any(), any());
+    }
+
+    // ==================== Helper Methods ====================
+
+    private Program createTestProgram(String name) {
+        Program program = new Program();
+        program.setId(UUID.randomUUID());
+        program.setName(name);
+        program.setOrganizer(user);
+        program.setStartTime(LocalDateTime.now().plusDays(1));
+        program.setEndTime(LocalDateTime.now().plusDays(1).plusHours(2));
+        program.setVenue("Test Venue");
+        program.setStatus(ProgramStatus.DRAFT);
+        return program;
     }
 }
