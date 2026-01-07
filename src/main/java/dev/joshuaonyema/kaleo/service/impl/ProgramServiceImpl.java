@@ -19,6 +19,7 @@ import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -50,6 +51,12 @@ public class ProgramServiceImpl implements ProgramService {
     @PreAuthorize("hasRole('ORGANIZER')")
     public Page<Program> listEventsForOrganizer(Pageable pageable) {
         return programRepository.findByOrganizer(currentUser(), pageable);
+    }
+
+    @Override
+    @PreAuthorize("hasRole('ORGANIZER')")
+    public Optional<Program> getEventForOrganizer(UUID id) {
+        return programRepository.findByIdAndOrganizer(id, currentUser());
     }
 
     private static List<PassType> createPassTypes(CreateProgramRequest programRequest, Program program) {
