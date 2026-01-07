@@ -1,5 +1,6 @@
-package dev.joshuaonyema.kaleo.config.security.filter;
+package dev.joshuaonyema.kaleo.infrastructure.security.filter;
 
+import dev.joshuaonyema.kaleo.config.security.filter.UserProvisioningFilter;
 import dev.joshuaonyema.kaleo.domain.entity.User;
 import dev.joshuaonyema.kaleo.repository.UserRepository;
 import jakarta.servlet.FilterChain;
@@ -67,14 +68,14 @@ class UserProvisioningFilterTest {
     // ==================== User Provisioning Tests ====================
 
     @Test
-    void doFilterInternal_whenNewUser_thenCreatesUser() throws ServletException, IOException {
+    void doFilter_whenNewUser_thenCreatesUser() throws ServletException, IOException {
         setupSecurityContext();
         when(jwt.getSubject()).thenReturn(userId.toString());
         when(jwt.getClaimAsString("preferred_username")).thenReturn("testuser");
         when(jwt.getClaimAsString("email")).thenReturn("test@example.com");
         when(userRepository.existsById(userId)).thenReturn(false);
 
-        userProvisioningFilter.doFilterInternal(request, response, filterChain);
+        userProvisioningFilter.doFilter(request, response, filterChain);
 
         ArgumentCaptor<User> userCaptor = ArgumentCaptor.forClass(User.class);
         verify(userRepository).save(userCaptor.capture());
@@ -86,36 +87,36 @@ class UserProvisioningFilterTest {
     }
 
     @Test
-    void doFilterInternal_whenExistingUser_thenDoesNotCreateUser() throws ServletException, IOException {
+    void doFilter_whenExistingUser_thenDoesNotCreateUser() throws ServletException, IOException {
         setupSecurityContext();
         when(jwt.getSubject()).thenReturn(userId.toString());
         when(userRepository.existsById(userId)).thenReturn(true);
 
-        userProvisioningFilter.doFilterInternal(request, response, filterChain);
+        userProvisioningFilter.doFilter(request, response, filterChain);
 
         verify(userRepository, never()).save(any(User.class));
     }
 
     @Test
-    void doFilterInternal_whenCalled_thenAlwaysContinuesFilterChain() throws ServletException, IOException {
+    void doFilter_whenCalled_thenAlwaysContinuesFilterChain() throws ServletException, IOException {
         setupSecurityContext();
         when(jwt.getSubject()).thenReturn(userId.toString());
         when(userRepository.existsById(userId)).thenReturn(true);
 
-        userProvisioningFilter.doFilterInternal(request, response, filterChain);
+        userProvisioningFilter.doFilter(request, response, filterChain);
 
         verify(filterChain).doFilter(request, response);
     }
 
     @Test
-    void doFilterInternal_whenNewUser_thenContinuesFilterChainAfterSave() throws ServletException, IOException {
+    void doFilter_whenNewUser_thenContinuesFilterChainAfterSave() throws ServletException, IOException {
         setupSecurityContext();
         when(jwt.getSubject()).thenReturn(userId.toString());
         when(jwt.getClaimAsString("preferred_username")).thenReturn("testuser");
         when(jwt.getClaimAsString("email")).thenReturn("test@example.com");
         when(userRepository.existsById(userId)).thenReturn(false);
 
-        userProvisioningFilter.doFilterInternal(request, response, filterChain);
+        userProvisioningFilter.doFilter(request, response, filterChain);
 
         verify(userRepository).save(any(User.class));
         verify(filterChain).doFilter(request, response);
@@ -124,11 +125,11 @@ class UserProvisioningFilterTest {
     // ==================== No Authentication Tests ====================
 
     @Test
-    void doFilterInternal_whenNoAuthentication_thenDoesNotCreateUser() throws ServletException, IOException {
+    void doFilter_whenNoAuthentication_thenDoesNotCreateUser() throws ServletException, IOException {
         SecurityContextHolder.setContext(securityContext);
         when(securityContext.getAuthentication()).thenReturn(null);
 
-        userProvisioningFilter.doFilterInternal(request, response, filterChain);
+        userProvisioningFilter.doFilter(request, response, filterChain);
 
         verify(userRepository, never()).existsById(any());
         verify(userRepository, never()).save(any());
@@ -136,12 +137,12 @@ class UserProvisioningFilterTest {
     }
 
     @Test
-    void doFilterInternal_whenNotAuthenticated_thenDoesNotCreateUser() throws ServletException, IOException {
+    void doFilter_whenNotAuthenticated_thenDoesNotCreateUser() throws ServletException, IOException {
         SecurityContextHolder.setContext(securityContext);
         when(securityContext.getAuthentication()).thenReturn(authentication);
         when(authentication.isAuthenticated()).thenReturn(false);
 
-        userProvisioningFilter.doFilterInternal(request, response, filterChain);
+        userProvisioningFilter.doFilter(request, response, filterChain);
 
         verify(userRepository, never()).existsById(any());
         verify(userRepository, never()).save(any());
@@ -149,13 +150,13 @@ class UserProvisioningFilterTest {
     }
 
     @Test
-    void doFilterInternal_whenPrincipalNotJwt_thenDoesNotCreateUser() throws ServletException, IOException {
+    void doFilter_whenPrincipalNotJwt_thenDoesNotCreateUser() throws ServletException, IOException {
         SecurityContextHolder.setContext(securityContext);
         when(securityContext.getAuthentication()).thenReturn(authentication);
         when(authentication.isAuthenticated()).thenReturn(true);
         when(authentication.getPrincipal()).thenReturn("not-a-jwt");
 
-        userProvisioningFilter.doFilterInternal(request, response, filterChain);
+        userProvisioningFilter.doFilter(request, response, filterChain);
 
         verify(userRepository, never()).existsById(any());
         verify(userRepository, never()).save(any());
@@ -165,14 +166,14 @@ class UserProvisioningFilterTest {
     // ==================== JWT Claims Tests ====================
 
     @Test
-    void doFilterInternal_whenJwtHasNullUsername_thenCreatesUserWithNullName() throws ServletException, IOException {
+    void doFilter_whenJwtHasNullUsername_thenCreatesUserWithNullName() throws ServletException, IOException {
         setupSecurityContext();
         when(jwt.getSubject()).thenReturn(userId.toString());
         when(jwt.getClaimAsString("preferred_username")).thenReturn(null);
         when(jwt.getClaimAsString("email")).thenReturn("test@example.com");
         when(userRepository.existsById(userId)).thenReturn(false);
 
-        userProvisioningFilter.doFilterInternal(request, response, filterChain);
+        userProvisioningFilter.doFilter(request, response, filterChain);
 
         ArgumentCaptor<User> userCaptor = ArgumentCaptor.forClass(User.class);
         verify(userRepository).save(userCaptor.capture());
@@ -183,14 +184,14 @@ class UserProvisioningFilterTest {
     }
 
     @Test
-    void doFilterInternal_whenJwtHasNullEmail_thenCreatesUserWithNullEmail() throws ServletException, IOException {
+    void doFilter_whenJwtHasNullEmail_thenCreatesUserWithNullEmail() throws ServletException, IOException {
         setupSecurityContext();
         when(jwt.getSubject()).thenReturn(userId.toString());
         when(jwt.getClaimAsString("preferred_username")).thenReturn("testuser");
         when(jwt.getClaimAsString("email")).thenReturn(null);
         when(userRepository.existsById(userId)).thenReturn(false);
 
-        userProvisioningFilter.doFilterInternal(request, response, filterChain);
+        userProvisioningFilter.doFilter(request, response, filterChain);
 
         ArgumentCaptor<User> userCaptor = ArgumentCaptor.forClass(User.class);
         verify(userRepository).save(userCaptor.capture());
@@ -203,10 +204,10 @@ class UserProvisioningFilterTest {
     // ==================== Security Context Not Set Tests ====================
 
     @Test
-    void doFilterInternal_whenSecurityContextCleared_thenContinuesFilterChain() throws ServletException, IOException {
+    void doFilter_whenSecurityContextCleared_thenContinuesFilterChain() throws ServletException, IOException {
         SecurityContextHolder.clearContext();
 
-        userProvisioningFilter.doFilterInternal(request, response, filterChain);
+        userProvisioningFilter.doFilter(request, response, filterChain);
 
         verify(userRepository, never()).existsById(any());
         verify(userRepository, never()).save(any());

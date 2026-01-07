@@ -1,6 +1,8 @@
-package dev.joshuaonyema.kaleo.exception;
+package dev.joshuaonyema.kaleo.api.exception;
 
 import dev.joshuaonyema.kaleo.api.dto.response.ErrorDto;
+import dev.joshuaonyema.kaleo.exception.GlobalExceptionHandler;
+import dev.joshuaonyema.kaleo.exception.UserNotFoundException;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Path;
@@ -197,4 +199,5 @@ class GlobalExceptionHandlerTest {
         return new ConstraintViolationException(Set.of(violation));
     }
 }
+
 

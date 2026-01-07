@@ -1,4 +1,4 @@
-package dev.joshuaonyema.kaleo.mapper;
+package dev.joshuaonyema.kaleo.application.mapper;
 
 import dev.joshuaonyema.kaleo.api.dto.request.CreatePassTypeRequestDto;
 import dev.joshuaonyema.kaleo.api.dto.request.CreateProgramRequestDto;
@@ -9,6 +9,7 @@ import dev.joshuaonyema.kaleo.domain.entity.PassType;
 import dev.joshuaonyema.kaleo.domain.entity.Program;
 import dev.joshuaonyema.kaleo.domain.entity.ProgramStatus;
 import dev.joshuaonyema.kaleo.domain.entity.User;
+import dev.joshuaonyema.kaleo.mapper.ProgramMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
@@ -318,4 +319,5 @@ class ProgramMapperTest {
         assertNull(result);
     }
 }
+
 
