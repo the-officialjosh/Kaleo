@@ -1,5 +1,6 @@
 package dev.joshuaonyema.kaleo.application.command;
 
+import dev.joshuaonyema.kaleo.application.command.common.ProgramUpsertCommand;
 import dev.joshuaonyema.kaleo.domain.entity.ProgramStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,7 +13,7 @@ import java.util.UUID;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UpdateProgramCommand implements ProgramUpsertCommand{
+public class UpdateProgramCommand implements ProgramUpsertCommand {
     private UUID id;
     private String name;
     private LocalDateTime startTime;

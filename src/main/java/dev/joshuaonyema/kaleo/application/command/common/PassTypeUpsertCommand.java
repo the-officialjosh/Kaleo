@@ -1,4 +1,4 @@
-package dev.joshuaonyema.kaleo.application.command;
+package dev.joshuaonyema.kaleo.application.command.common;
 
 import java.math.BigDecimal;
 

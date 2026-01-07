@@ -57,7 +57,7 @@ public class Program extends TimestampedEntity {
     @ManyToMany(mappedBy = "staffingProgram")
     private  List<User> staff = new ArrayList<>();
 
-    @OneToMany(mappedBy = "program", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "program", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PassType> passTypes = new ArrayList<>();
 
     @Override

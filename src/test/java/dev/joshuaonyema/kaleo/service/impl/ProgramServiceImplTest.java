@@ -321,7 +321,7 @@ class ProgramServiceImplTest {
         verify(programRepository, never()).save(any());
     }
 
-    // ==================== listProgamsForOrganizer Tests ====================
+    // ==================== listProgramsForOrganizer Tests ====================
 
     @Test
     void listProgamsForOrganizer_whenValidRequest_thenReturnsPageOfPrograms() {
@@ -335,7 +335,7 @@ class ProgramServiceImplTest {
 
         when(programRepository.findByOrganizer(user, pageable)).thenReturn(expectedPage);
 
-        Page<Program> result = programService.listProgamsForOrganizer(pageable);
+        Page<Program> result = programService.listProgramsForOrganizer(pageable);
 
         assertNotNull(result);
         assertEquals(2, result.getTotalElements());
@@ -352,7 +352,7 @@ class ProgramServiceImplTest {
 
         when(programRepository.findByOrganizer(user, pageable)).thenReturn(emptyPage);
 
-        Page<Program> result = programService.listProgamsForOrganizer(pageable);
+        Page<Program> result = programService.listProgramsForOrganizer(pageable);
 
         assertNotNull(result);
         assertEquals(0, result.getTotalElements());
@@ -368,7 +368,7 @@ class ProgramServiceImplTest {
 
         assertThrows(
                 AuthenticationCredentialsNotFoundException.class,
-                () -> programService.listProgamsForOrganizer(pageable)
+                () -> programService.listProgramsForOrganizer(pageable)
         );
 
         verify(programRepository, never()).findByOrganizer(any(), any());
@@ -383,7 +383,7 @@ class ProgramServiceImplTest {
 
         UserNotFoundException exception = assertThrows(
                 UserNotFoundException.class,
-                () -> programService.listProgamsForOrganizer(pageable)
+                () -> programService.listProgramsForOrganizer(pageable)
         );
 
         assertTrue(exception.getMessage().contains(userId.toString()));
@@ -401,7 +401,7 @@ class ProgramServiceImplTest {
 
         when(programRepository.findByOrganizer(user, pageable)).thenReturn(expectedPage);
 
-        Page<Program> result = programService.listProgamsForOrganizer(pageable);
+        Page<Program> result = programService.listProgramsForOrganizer(pageable);
 
         assertEquals(2, result.getNumber());
         assertEquals(5, result.getSize());

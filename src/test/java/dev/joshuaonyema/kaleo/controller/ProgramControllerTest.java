@@ -158,7 +158,7 @@ class ProgramControllerTest {
     void listPrograms_whenCalled_thenReturnsOkWithPageOfPrograms() {
         Page<Program> programPage = new PageImpl<>(List.of(program));
         Pageable pageable = PageRequest.of(0, 10);
-        when(programService.listProgamsForOrganizer(pageable)).thenReturn(programPage);
+        when(programService.listProgramsForOrganizer(pageable)).thenReturn(programPage);
         when(programMapper.toListProgramResponseDto(any(Program.class))).thenReturn(listProgramResponseDto);
 
         ResponseEntity<Page<ListProgramResponseDto>> response = programController.listPrograms(pageable);
@@ -173,7 +173,7 @@ class ProgramControllerTest {
     void listPrograms_whenNoPrograms_thenReturnsEmptyPage() {
         Page<Program> emptyPage = Page.empty();
         Pageable pageable = PageRequest.of(0, 10);
-        when(programService.listProgamsForOrganizer(pageable)).thenReturn(emptyPage);
+        when(programService.listProgramsForOrganizer(pageable)).thenReturn(emptyPage);
 
         ResponseEntity<Page<ListProgramResponseDto>> response = programController.listPrograms(pageable);
 
@@ -187,7 +187,7 @@ class ProgramControllerTest {
     void listPrograms_whenPaginationProvided_thenUsesPageable() {
         Pageable pageable = PageRequest.of(2, 5);
         Page<Program> programPage = new PageImpl<>(List.of(program), pageable, 15);
-        when(programService.listProgamsForOrganizer(pageable)).thenReturn(programPage);
+        when(programService.listProgramsForOrganizer(pageable)).thenReturn(programPage);
         when(programMapper.toListProgramResponseDto(any(Program.class))).thenReturn(listProgramResponseDto);
 
         ResponseEntity<Page<ListProgramResponseDto>> response = programController.listPrograms(pageable);
@@ -211,7 +211,7 @@ class ProgramControllerTest {
 
         Page<Program> programPage = new PageImpl<>(List.of(program, program2));
         Pageable pageable = PageRequest.of(0, 10);
-        when(programService.listProgamsForOrganizer(pageable)).thenReturn(programPage);
+        when(programService.listProgramsForOrganizer(pageable)).thenReturn(programPage);
         when(programMapper.toListProgramResponseDto(program)).thenReturn(listProgramResponseDto);
         when(programMapper.toListProgramResponseDto(program2)).thenReturn(listDto2);
 

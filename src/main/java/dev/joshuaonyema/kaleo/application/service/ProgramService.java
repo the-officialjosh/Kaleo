@@ -12,7 +12,7 @@ import java.util.UUID;
 
 public interface ProgramService {
     Program createProgram(CreateProgramCommand program);
-    Page<Program> listProgamsForOrganizer(Pageable pageable);
+    Page<Program> listProgramsForOrganizer(Pageable pageable);
     Optional<Program> getProgramForOrganizer(UUID id);
     Program updateProgramForOrganizer(UUID id, UpdateProgramCommand program);
 }

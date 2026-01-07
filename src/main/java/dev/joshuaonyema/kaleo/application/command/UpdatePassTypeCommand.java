@@ -1,5 +1,6 @@
 package dev.joshuaonyema.kaleo.application.command;
 
+import dev.joshuaonyema.kaleo.application.command.common.PassTypeUpsertCommand;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
