@@ -17,7 +17,6 @@ import java.util.UUID;
 @Setter
 public class QrCode extends TimestampedEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id", updatable = false, nullable = false)
     private UUID id;
 
@@ -25,7 +24,7 @@ public class QrCode extends TimestampedEntity {
     @Column(name = "status", nullable = false)
     private QrCodeStatus status;
 
-    @Column(name = "value", nullable = false)
+    @Column(name = "value", columnDefinition = "TEXT", nullable = false)
     private String value;
 
     @ManyToOne(fetch = FetchType.LAZY)
