@@ -1,5 +1,6 @@
 package dev.joshuaonyema.kaleo.api.controller;
 
+import dev.joshuaonyema.kaleo.api.dto.response.GetPublishedProgramDetailsResponseDto;
 import dev.joshuaonyema.kaleo.api.dto.response.ListPublishedProgramResponseDto;
 import dev.joshuaonyema.kaleo.application.service.ProgramService;
 import dev.joshuaonyema.kaleo.domain.entity.Program;
@@ -8,10 +9,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.UUID;
 
 
 @RestController
@@ -39,4 +39,14 @@ public class PublishedProgramController {
                 .map(programMapper::toListPublishedProgramResponseDto));
     }
 
+
+    @GetMapping("/{programId}")
+    public  ResponseEntity<GetPublishedProgramDetailsResponseDto> getPublishedProgramDetails(
+            @PathVariable UUID programId){
+        return programService.getPublishedProgram(programId)
+                .map(programMapper::toGetPublishedProgramDetailsResponseDto)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+
+    }
 }
