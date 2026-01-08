@@ -51,6 +51,7 @@ src/test/java/dev/joshuaonyema/kaleo/
   - List programs endpoint (with pagination)
   - Get program details endpoint
   - Update program endpoint
+  - Delete program endpoint
 
 - **PublishedProgramControllerTest** (5 tests) **[NEW]**
   - List published programs (public endpoint)

@@ -131,6 +131,29 @@ See [Test Coverage Documentation](docs/TEST_COVERAGE.md) for detailed breakdown.
 
 ---
 
+## 🖥️ Demo UI (Development)
+
+A minimal React-based demo UI is included for testing and development purposes. This is **not a production component** — Kaleo is primarily an API service.
+
+**Tech Stack:**
+- React 19 with Vite
+- React Router for navigation
+- Radix UI for components
+- Lightning CSS for styling
+
+**Running the Demo UI:**
+```bash
+cd demo-ui
+npm install
+npm run dev
+```
+
+The demo UI will be available at `http://localhost:5173` and connects to the API at `http://localhost:8080`.
+
+> **Note:** Ensure the backend API and Keycloak are running before starting the demo UI.
+
+---
+
 ## 📚 Documentation
 
 - [📖 API Documentation](docs/API.md) — Endpoints, request/response examples
