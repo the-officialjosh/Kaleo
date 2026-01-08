@@ -13,8 +13,19 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 @Slf4j
 public class GlobalExceptionHandler {
+
+    @ExceptionHandler(QrCodeGenerationException.class)
+    public  ResponseEntity<ErrorDto> handleUQrCodeGenerationException(QrCodeGenerationException notFoundException){
+        log.error("Caught QrCodeGenerationException: {}", String.valueOf(notFoundException));
+
+        ErrorDto errorDto = new ErrorDto();
+        errorDto.setError("Unable to generate QR Code");
+        return new ResponseEntity<>(errorDto, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+
     @ExceptionHandler(ProgramUpdateException.class)
-    public  ResponseEntity<ErrorDto> handleUserNotFoundException(ProgramUpdateException notFoundException){
+    public  ResponseEntity<ErrorDto> handleProgramUpdateException(ProgramUpdateException notFoundException){
         log.error("Caught ProgramUpdateException: {}", String.valueOf(notFoundException));
 
         ErrorDto errorDto = new ErrorDto();
@@ -23,7 +34,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(PassTypeNotFoundException.class)
-    public  ResponseEntity<ErrorDto> handleUserNotFoundException(PassTypeNotFoundException notFoundException){
+    public  ResponseEntity<ErrorDto> handlePassTypeNotFoundException(PassTypeNotFoundException notFoundException){
         log.error("Caught PassTypeNotFoundException: {}", String.valueOf(notFoundException));
 
         ErrorDto errorDto = new ErrorDto();
@@ -32,7 +43,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(ProgramNotFoundException.class)
-    public  ResponseEntity<ErrorDto> handleUserNotFoundException(ProgramNotFoundException notFoundException){
+    public  ResponseEntity<ErrorDto> handleProgramNotFoundException(ProgramNotFoundException notFoundException){
         log.error("Caught ProgramNotFoundException: {}", String.valueOf(notFoundException));
 
         ErrorDto errorDto = new ErrorDto();
