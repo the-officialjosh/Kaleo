@@ -47,6 +47,5 @@ public class PublishedProgramController {
                 .map(programMapper::toGetPublishedProgramDetailsResponseDto)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
-
     }
 }

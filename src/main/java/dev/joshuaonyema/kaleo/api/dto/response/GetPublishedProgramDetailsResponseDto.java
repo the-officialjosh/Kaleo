@@ -19,5 +19,6 @@ public class GetPublishedProgramDetailsResponseDto {
     private LocalDateTime endTime;
     private String venue;
     private List<GetPublishedPassTypesResponseDto> passTypes = new ArrayList<>();
-
+    private LocalDateTime registrationStart;
+    private LocalDateTime registrationEnd;
 }
