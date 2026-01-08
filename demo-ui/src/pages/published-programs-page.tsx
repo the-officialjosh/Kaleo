@@ -125,11 +125,11 @@ const PublishedProgramsPage: React.FC = () => {
               <MapPin className="w-5 h-5" />
               <span>{publishedProgram?.venue}</span>
             </div>
-            {publishedProgram?.startDate && (
+            {publishedProgram?.start && (
               <div className="event-meta-item">
                 <Calendar className="w-5 h-5" />
                 <span>
-                  {new Date(publishedProgram.startDate).toLocaleDateString('en-US', {
+                  {new Date(publishedProgram.start).toLocaleDateString('en-US', {
                     weekday: 'long',
                     year: 'numeric',
                     month: 'long',
