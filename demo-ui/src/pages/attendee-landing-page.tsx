@@ -1,8 +1,8 @@
 import {useAuth} from "react-oidc-context";
 import {Button} from "../components/ui/button";
 import {useNavigate} from "react-router";
-import {AlertCircle, Search, Sparkles} from "lucide-react";
-import {useEffect, useState} from "react";
+import {AlertCircle, Search, Sparkles, X} from "lucide-react";
+import {useEffect, useRef, useState} from "react";
 import {PublishedProgramSummary, SpringBootPagination} from "@/domain/domain";
 import {listPublishedPrograms, searchPublishedPrograms} from "@/lib/api";
 import {Alert, AlertDescription, AlertTitle} from "@/components/ui/alert";
@@ -22,6 +22,9 @@ const AttendeeLandingPage: React.FC = () => {
   const [error, setError] = useState<string | undefined>();
   const [query, setQuery] = useState<string | undefined>();
   const [isSearchFocused, setIsSearchFocused] = useState(false);
+  const [isSearchActive, setIsSearchActive] = useState(false);
+  const [isSearching, setIsSearching] = useState(false);
+  const resultsRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
     if (query && query.length > 0) {
@@ -51,8 +54,15 @@ const AttendeeLandingPage: React.FC = () => {
       return;
     }
 
+    setIsSearching(true);
+    setIsSearchActive(true);
+
     try {
       setPublishedPrograms(await searchPublishedPrograms(query, page));
+      // Smooth scroll to results after a brief delay for the animation
+      setTimeout(() => {
+        resultsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 300);
     } catch (err) {
       if (err instanceof Error) {
         setError(err.message);
@@ -61,7 +71,15 @@ const AttendeeLandingPage: React.FC = () => {
       } else {
         setError("An unknown error has occurred");
       }
+    } finally {
+      setIsSearching(false);
     }
+  };
+
+  const clearSearch = () => {
+    setQuery("");
+    setIsSearchActive(false);
+    refreshPublishedPrograms();
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -91,9 +109,9 @@ const AttendeeLandingPage: React.FC = () => {
   }
 
   return (
-    <div className="landing-page">
+    <div className={`landing-page ${isSearchActive ? 'search-mode' : ''}`}>
       {/* Hero Section */}
-      <section className="hero-section">
+      <section className={`hero-section ${isSearchActive ? 'collapsed' : ''}`}>
         {/* Background */}
         <div className="hero-background" />
         <div className="hero-overlay" />
@@ -141,7 +159,7 @@ const AttendeeLandingPage: React.FC = () => {
           </p>
 
           {/* Search Bar */}
-          <div className={`search-container ${isSearchFocused ? 'focused' : ''}`}>
+          <div className={`search-container ${isSearchFocused ? 'focused' : ''} ${isSearchActive ? 'active' : ''}`}>
             <div className="search-icon">
               <Search className="w-5 h-5" />
             </div>
@@ -155,8 +173,21 @@ const AttendeeLandingPage: React.FC = () => {
               onBlur={() => setIsSearchFocused(false)}
               onKeyDown={handleKeyDown}
             />
-            <button className="search-button" onClick={queryPublishedPrograms}>
-              Search
+            {isSearchActive && (
+              <button className="search-clear-btn" onClick={clearSearch} aria-label="Clear search">
+                <X className="w-4 h-4" />
+              </button>
+            )}
+            <button 
+              className={`search-button ${isSearching ? 'loading' : ''}`} 
+              onClick={queryPublishedPrograms}
+              disabled={isSearching}
+            >
+              {isSearching ? (
+                <span className="search-spinner" />
+              ) : (
+                'Search'
+              )}
             </button>
           </div>
         </div>
@@ -168,12 +199,24 @@ const AttendeeLandingPage: React.FC = () => {
       </section>
 
       {/* Programs Section */}
-      <section className="programs-section">
+      <section className={`programs-section ${isSearchActive ? 'search-results-mode' : ''}`} ref={resultsRef}>
         <div className="programs-container">
           <div className="programs-header">
-            <h2 className="programs-title">Upcoming Programs</h2>
+            <h2 className="programs-title">
+              {isSearchActive ? (
+                <>
+                  <span className="results-label">Results for</span>
+                  <span className="results-query">"{query}"</span>
+                </>
+              ) : (
+                'Upcoming Programs'
+              )}
+            </h2>
             <p className="programs-subtitle">
-              Explore what's happening in your community
+              {isSearchActive 
+                ? `Found ${publishedPrograms?.totalElements || 0} program${(publishedPrograms?.totalElements || 0) !== 1 ? 's' : ''}` 
+                : 'Explore what\'s happening in your community'
+              }
             </p>
           </div>
 

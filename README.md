@@ -56,7 +56,7 @@ A secure REST API for church and ministry event management. Organizers create pr
 ```
 ┌─────────────────┐
 │   Keycloak      │  OAuth2/OIDC Provider
-│   (Port 9090)   │
+│   (Port 9095)   │
 └────────┬────────┘
          │ JWT
          ▼
@@ -102,7 +102,7 @@ docker-compose up -d
 API available at: `http://localhost:8080`
 
 **⚙️ Configuration:**
-- Keycloak: `http://localhost:9090` (create `kaleo-events` realm)
+- Keycloak: `http://localhost:9095` (create `kaleo-events` realm)
 - Database: `localhost:5432` (credentials in `.env`)
 - Adminer: `http://localhost:8888`
 
@@ -140,6 +140,25 @@ See [Test Coverage Documentation](docs/TEST_COVERAGE.md) for detailed breakdown.
 
 ---
 
+### 🖥️ Demo UI (Development Only)
+
+A minimal React demo for testing the API during development.
+
+[![React](https://img.shields.io/badge/React-19-61DAFB?style=flat-square&logo=react&logoColor=white)](https://react.dev/)
+[![Vite](https://img.shields.io/badge/Vite-6-646CFF?style=flat-square&logo=vite&logoColor=white)](https://vite.dev/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.7-3178C6?style=flat-square&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4-06B6D4?style=flat-square&logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
+[![React Router](https://img.shields.io/badge/React_Router-7-CA4245?style=flat-square&logo=reactrouter&logoColor=white)](https://reactrouter.com/)
+[![Radix UI](https://img.shields.io/badge/Radix_UI-1.1-161618?style=flat-square&logo=radixui&logoColor=white)](https://www.radix-ui.com/)
+
+```bash
+cd demo-ui && npm install && npm run dev
+```
+
+Runs at `http://localhost:5173`. Requires the API and Keycloak to be running.
+
+---
+
 ## 📄 License
 
 MIT License
@@ -153,4 +172,5 @@ MIT License
 Made with ❤️ for churches and ministries
 
 </div>
+
 

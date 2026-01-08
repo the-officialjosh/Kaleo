@@ -29,6 +29,7 @@ All program endpoints require the `ORGANIZER` role.
 | `GET` | `/programs` | List programs (paginated) |
 | `GET` | `/programs/{id}` | Get program details |
 | `PUT` | `/programs/{id}` | Update a program |
+| `DELETE` | `/programs/{id}` | Delete a program |
 
 ---
 
@@ -270,6 +271,50 @@ GET /programs?page=0&size=10&sort=startTime,desc
   "path": "/api/v1/programs/550e8400-e29b-41d4-a716-446655440000"
 }
 ```
+
+---
+
+### Delete Program
+
+**Endpoint:** `DELETE /programs/{id}`
+
+**Response:** `204 No Content`
+
+**Error Response:** `404 Not Found`
+```json
+{
+  "timestamp": "2026-01-07T11:45:00",
+  "message": "Program with ID '550e8400-e29b-41d4-a716-446655440000' not found or you don't have access",
+  "path": "/api/v1/programs/550e8400-e29b-41d4-a716-446655440000"
+}
+```
+
+---
+
+## Published Programs API (Public)
+
+Publicly accessible endpoints returning only `PUBLISHED` programs. No authentication required.
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `GET` | `/published-programs` | List published programs (with search) |
+| `GET` | `/published-programs/{id}` | Get published program details |
+
+### List Published Programs
+
+**Endpoint:** `GET /published-programs`
+
+**Query Parameters:**
+- `q` (optional): Search query to filter by name
+- `page`, `size`, `sort`: Pagination (same as Programs API)
+
+**Example:** `GET /published-programs?q=Sunday&page=0&size=10`
+
+### Get Published Program Details
+
+**Endpoint:** `GET /published-programs/{id}`
+
+Returns program details including pass types for the specified published program.
 
 ---
 
