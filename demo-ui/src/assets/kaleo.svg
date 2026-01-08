@@ -1,0 +1,46 @@
+<!-- KALEO logo (LIGHT scheme) for dark-blue backgrounds. Horizontal lockup. No external fonts required. -->
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="240" viewBox="0 0 900 240" role="img" aria-label="KALEO logo light">
+  <defs>
+    <!-- Bright gradient that pops on dark blue -->
+    <linearGradient id="kaleoBright" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#FFFFFF"/>
+      <stop offset="0.45" stop-color="#E9D5FF"/>
+      <stop offset="0.75" stop-color="#BFDBFE"/>
+      <stop offset="1" stop-color="#99F6E4"/>
+    </linearGradient>
+
+    <!-- Optional subtle glow for extra contrast on dark backgrounds -->
+    <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="3.5" result="b"/>
+      <feMerge>
+        <feMergeNode in="b"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Icon -->
+  <g transform="translate(40,30)" filter="url(#glow)">
+    <!-- light card -->
+    <rect x="0" y="0" width="180" height="180" rx="42" fill="#F8FAFF" fill-opacity="0.98"/>
+    <!-- K mark -->
+    <path d="M58 52 v96" stroke="#0B1020" stroke-width="16" stroke-linecap="round"/>
+    <path d="M76 100 L136 52" stroke="#0B1020" stroke-width="16" stroke-linecap="round"/>
+    <path d="M76 100 L142 148" stroke="#0B1020" stroke-width="16" stroke-linecap="round"/>
+
+    <!-- gradient accent border -->
+    <rect x="12" y="12" width="156" height="156" rx="36" fill="none" stroke="url(#kaleoBright)" stroke-width="4"/>
+  </g>
+
+  <!-- Wordmark (outlined paths, no font dependency) -->
+  <g transform="translate(260,70)" filter="url(#glow)">
+    <path fill="#F8FAFF" d="M0 112 V0 h20 v52 l52-52 h28 L44 60 l60 52 H74 L20 68 v44z"/>
+    <path fill="#F8FAFF" d="M122 112 L166 0 h22 l44 112 h-22 l-10-26 h-46 l-10 26zm40-46h30l-15-40z"/>
+    <path fill="#F8FAFF" d="M262 112 V0 h20 v92 h64 v20z"/>
+    <path fill="#F8FAFF" d="M372 112 V0 h92 v20 h-72 v26 h66 v20 h-66 v26 h72 v20z"/>
+    <path fill="#F8FAFF" d="M512 56c0-34 26-58 62-58s62 24 62 58-26 58-62 58-62-24-62-58zm20 0c0 22 16 38 42 38s42-16 42-38-16-38-42-38-42 16-42 38z"/>
+
+    <!-- Accent underline -->
+    <rect x="0" y="132" width="310" height="8" rx="4" fill="url(#kaleoBright)"/>
+  </g>
+</svg>
