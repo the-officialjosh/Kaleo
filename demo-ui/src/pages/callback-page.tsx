@@ -16,6 +16,9 @@ const CallbackPage: React.FC = () => {
       if (redirectPath) {
         localStorage.removeItem("redirectPath");
         navigate(redirectPath);
+      } else {
+        // Default redirect to dashboard if no saved path
+        navigate("/dashboard");
       }
     }
   }, [isLoading, isAuthenticated, navigate]);

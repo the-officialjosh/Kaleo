@@ -1,4 +1,4 @@
-import {Button} from "@/components/ui/button";
+import NavBar from "@/components/nav-bar";
 import {Input} from "@/components/ui/input";
 import {useState} from "react";
 import {Scanner} from "@yudiel/react-qr-scanner";
@@ -54,84 +54,95 @@ const DashboardValidateQrPage: React.FC = () => {
   }
 
   return (
-    <div className="dashboard-page flex justify-center items-center">
-      <div
-        className="border border-gray-400 max-w-sm
-w-full p-4"
-      >
-        {error && (
-          <div className="dashboard-page">
-            <Alert variant="destructive" className="bg-gray-900 border-red-700">
+    <div className="dashboard-qr-page">
+      <NavBar />
+      
+      <div className="dashboard-qr-container">
+        <div className="dashboard-qr-card">
+          <div className="dashboard-qr-header">
+            <h1 className="dashboard-qr-title">Validate Pass</h1>
+            <p className="dashboard-qr-subtitle">Scan a QR code or enter ID manually</p>
+          </div>
+
+          {error && (
+            <Alert variant="destructive" className="manage-program-error mb-4">
               <AlertCircle className="h-4 w-4" />
               <AlertTitle>Error</AlertTitle>
               <AlertDescription>{error}</AlertDescription>
             </Alert>
-          </div>
-        )}
-        {/* Scanner Viewport */}
-        <div className="rounded-lg overflow-hidden mx-auto mb-8 relative">
-          <Scanner
-            key={`scanner-${data}-${validationStatus}`}
-            onScan={(result) => {
-              if (result) {
-                const qrCodeId = result[0].rawValue;
-                setData(qrCodeId);
-                handleValidate(qrCodeId, PassValidationMethod.QR_SCAN);
-              }
-            }}
-            onError={handleError}
-          />
-
-          {validationStatus && (
-            <div className="absolute inset-0 flex items-center justify-center">
-              {validationStatus === PassValidationStatus.VALID ? (
-                <div className="bg-green-500 rounded-full p-4">
-                  <Check className="w-20 h-20" />
-                </div>
-              ) : (
-                <div className="bg-red-500 rounded-full p-4">
-                  <X className="w-20 h-20" />
-                </div>
-              )}
-            </div>
           )}
-        </div>
 
-        {isManual ? (
-          <div className="pb-8">
-            <Input
-              className="w-full text-white text-lg mb-8"
-              onChange={(e) => setData(e.target.value)}
+          {/* Scanner */}
+          <div className="dashboard-qr-scanner">
+            <Scanner
+              key={`scanner-${data}-${validationStatus}`}
+              onScan={(result) => {
+                if (result) {
+                  const qrCodeId = result[0].rawValue;
+                  setData(qrCodeId);
+                  handleValidate(qrCodeId, PassValidationMethod.QR_SCAN);
+                }
+              }}
+              onError={handleError}
             />
-            <Button
-              className="bg-purple-500 w-full h-[80px] hover:bg-purple-800"
-              onClick={() =>
-                handleValidate(data || "", PassValidationMethod.MANUAL)
-              }
-            >
-              Submit
-            </Button>
-          </div>
-        ) : (
-          <div>
-            <div className="border-white border-2 h-12 rounded-md font-mono flex justify-center items-center">
-              <span>{data || "Scan for Result"}</span>
-            </div>
-            <Button
-              className="bg-gray-900 hover:bg-gray-600 border-gray-500 border-2 w-full h-[80px] text-xl my-8"
-              onClick={() => setIsManual(true)}
-            >
-              Manual
-            </Button>
-          </div>
-        )}
 
-        <Button
-          className="bg-gray-500 hover:bg-gray-800 w-full h-[80px] text-xl my-8"
-          onClick={handleReset}
-        >
-          Reset
-        </Button>
+            {validationStatus && (
+              <div className="dashboard-qr-result">
+                <div className={`dashboard-qr-result-icon ${validationStatus === PassValidationStatus.VALID ? 'valid' : 'invalid'}`}>
+                  {validationStatus === PassValidationStatus.VALID ? (
+                    <Check />
+                  ) : (
+                    <X />
+                  )}
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Result Display */}
+          <div className="dashboard-qr-display">
+            {data || "Waiting for scan..."}
+          </div>
+
+          {/* Actions */}
+          <div className="dashboard-qr-actions">
+            {isManual ? (
+              <>
+                <Input
+                  className="dashboard-qr-input"
+                  placeholder="Enter pass ID..."
+                  onChange={(e) => setData(e.target.value)}
+                />
+                <button
+                  className="dashboard-qr-btn primary"
+                  onClick={() => handleValidate(data || "", PassValidationMethod.MANUAL)}
+                >
+                  Validate Pass
+                </button>
+                <button
+                  className="dashboard-qr-btn secondary"
+                  onClick={() => setIsManual(false)}
+                >
+                  Back to Scanner
+                </button>
+              </>
+            ) : (
+              <button
+                className="dashboard-qr-btn secondary"
+                onClick={() => setIsManual(true)}
+              >
+                Enter ID Manually
+              </button>
+            )}
+            
+            <button
+              className="dashboard-qr-btn secondary"
+              onClick={handleReset}
+            >
+              Reset
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   );
