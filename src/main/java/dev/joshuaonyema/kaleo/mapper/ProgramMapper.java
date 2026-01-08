@@ -40,4 +40,8 @@ public interface ProgramMapper {
     UpdateProgramResponseDto toUpdateProgramResponseDto(Program program);
 
     ListPublishedProgramResponseDto toListPublishedProgramResponseDto(Program program);
+
+    GetPublishedPassTypesResponseDto toGetPublishedPassTypesResponseDto(PassType passType);
+
+    GetPublishedProgramDetailsResponseDto toGetPublishedProgramDetailsResponseDto(Program program);
 }
