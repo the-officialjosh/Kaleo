@@ -65,7 +65,7 @@ const DashboardViewPassPage: React.FC = () => {
   }
 
   return (
-    <div className="bg-black min-h-screen text-white flex items-center justify-center p-4">
+    <div className="dashboard-page flex items-center justify-center p-4">
       <div className="w-full max-w-md">
         <div className="relative bg-gradient-to-br from-purple-900 via-purple-800 to-indigo-900 rounded-3xl p-8 shadow-2xl">
           {/* Status */}

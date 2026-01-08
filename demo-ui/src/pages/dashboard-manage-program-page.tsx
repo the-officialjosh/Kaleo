@@ -1,9 +1,7 @@
 import NavBar from "@/components/nav-bar";
 import {Alert, AlertDescription, AlertTitle} from "@/components/ui/alert";
-import {Badge} from "@/components/ui/badge";
 import {Button} from "@/components/ui/button";
 import {Calendar} from "@/components/ui/calendar";
-import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
 import {
     Dialog,
     DialogContent,
@@ -471,214 +469,248 @@ const DashboardManageProgramPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-black text-white">
+    <div className="dashboard-page">
       <NavBar />
-      <div className="container mx-auto px-4 py-8 max-w-xl">
-        <div className="mb-6">
-          <h1 className="text-2xl font-bold">
+      
+      {/* Hero Header */}
+      <div className="manage-program-hero">
+        <div className="manage-program-hero-content">
+          <div className="manage-program-hero-badge">
+            {isEditMode ? <Edit className="w-4 h-4" /> : <Plus className="w-4 h-4" />}
+            <span>{isEditMode ? "Edit Mode" : "New Program"}</span>
+          </div>
+          <h1 className="manage-program-hero-title">
             {isEditMode ? "Edit Program" : "Create a New Program"}
           </h1>
-          {isEditMode ? (
-            <>
-              {programData.id && (
-                <p className="text-sm text-gray-400">ID: {programData.id}</p>
-              )}
+          <p className="manage-program-hero-subtitle">
+            {isEditMode 
+              ? "Update your program details and settings below."
+              : "Fill out the form below to create an amazing event experience."}
+          </p>
+          {isEditMode && programData.id && (
+            <div className="manage-program-meta">
+              <span className="manage-program-meta-item">ID: {programData.id.slice(0, 8)}...</span>
               {programData.createdAt && (
-                <p className="text-sm text-gray-400">
-                  Created At: {format(new Date(programData.createdAt), "PPP")}
-                </p>
+                <span className="manage-program-meta-item">Created: {format(new Date(programData.createdAt), "MMM d, yyyy")}</span>
               )}
               {programData.updatedAt && (
-                <p className="text-sm text-gray-400">
-                  Updated At: {format(new Date(programData.updatedAt), "PPP")}
-                </p>
+                <span className="manage-program-meta-item">Updated: {format(new Date(programData.updatedAt), "MMM d, yyyy")}</span>
               )}
-            </>
-          ) : (
-            <p>Fill out the form below to create your program</p>
+            </div>
           )}
         </div>
+      </div>
 
-        <form onSubmit={handleFormSubmit} className="space-y-4">
-          {/* Program Name */}
-          <div>
-            <div>
-              <label htmlFor="program-name" className="text-sm font-medium">
-                Program Name
-              </label>
-              <Input
-                id="program-name"
-                className="bg-gray-900 border-gray-700 text-white"
-                placeholder="Program Name"
-                value={programData.name}
-                onChange={(e) => updateField("name", e.target.value)}
-                required
-              />
+      {/* Main Form Container */}
+      <div className="manage-program-container">
+        <form onSubmit={handleFormSubmit} className="manage-program-form">
+          
+          {/* Basic Info Section */}
+          <div className="manage-program-section">
+            <div className="manage-program-section-header">
+              <div className="manage-program-section-icon">
+                <Ticket className="w-5 h-5" />
+              </div>
+              <div>
+                <h2 className="manage-program-section-title">Basic Information</h2>
+                <p className="manage-program-section-subtitle">Give your program a name and venue</p>
+              </div>
             </div>
-            <p className="text-gray-400 text-xs">
-              This is the public name of your program.
-            </p>
+            
+            <div className="manage-program-section-content">
+              <div className="manage-program-field">
+                <label htmlFor="program-name" className="manage-program-label">
+                  Program Name
+                </label>
+                <Input
+                  id="program-name"
+                  className="manage-program-input"
+                  placeholder="Enter your program name..."
+                  value={programData.name}
+                  onChange={(e) => updateField("name", e.target.value)}
+                  required
+                />
+                <p className="manage-program-hint">This is the public name attendees will see.</p>
+              </div>
+              
+              <div className="manage-program-field">
+                <label htmlFor="venue-details" className="manage-program-label">
+                  Venue Details
+                </label>
+                <Textarea
+                  id="venue-details"
+                  className="manage-program-textarea"
+                  placeholder="Enter venue name, address, and any special instructions..."
+                  value={programData.venueDetails}
+                  onChange={(e) => updateField("venueDetails", e.target.value)}
+                />
+                <p className="manage-program-hint">Include full address and any directions or parking info.</p>
+              </div>
+            </div>
           </div>
 
-          {/* Program Start Date Time */}
-          <div>
-            <label className="text-sm font-medium">Program Start</label>
-            <RequiredDateTimeSelect
-              date={programData.startDate}
-              setDate={(date) => updateField("startDate", date)}
-              time={programData.startTime}
-              setTime={(time) => updateField("startTime", time)}
-            />
-            <p className="text-gray-400 text-xs">
-              The date and time that the program starts.
-            </p>
+          {/* Schedule Section */}
+          <div className="manage-program-section">
+            <div className="manage-program-section-header">
+              <div className="manage-program-section-icon">
+                <CalendarIcon className="w-5 h-5" />
+              </div>
+              <div>
+                <h2 className="manage-program-section-title">Schedule</h2>
+                <p className="manage-program-section-subtitle">Set when your program starts and ends</p>
+              </div>
+            </div>
+            
+            <div className="manage-program-section-content">
+              <div className="manage-program-date-grid">
+                <div className="manage-program-field">
+                  <label className="manage-program-label">Program Start</label>
+                  <RequiredDateTimeSelect
+                    date={programData.startDate}
+                    setDate={(date) => updateField("startDate", date)}
+                    time={programData.startTime}
+                    setTime={(time) => updateField("startTime", time)}
+                  />
+                </div>
+                
+                <div className="manage-program-field">
+                  <label className="manage-program-label">Program End</label>
+                  <RequiredDateTimeSelect
+                    date={programData.endDate}
+                    setDate={(date) => updateField("endDate", date)}
+                    time={programData.endTime}
+                    setTime={(time) => updateField("endTime", time)}
+                  />
+                </div>
+              </div>
+            </div>
           </div>
 
-          {/* Program End Date Time */}
-          <div>
-            <label className="text-sm font-medium">Program End</label>
-            <RequiredDateTimeSelect
-              date={programData.endDate}
-              setDate={(date) => updateField("endDate", date)}
-              time={programData.endTime}
-              setTime={(time) => updateField("endTime", time)}
-            />
-            <p className="text-gray-400 text-xs">
-              The date and time that the program ends.
-            </p>
+          {/* Registration Section */}
+          <div className="manage-program-section">
+            <div className="manage-program-section-header">
+              <div className="manage-program-section-icon">
+                <AlertCircle className="w-5 h-5" />
+              </div>
+              <div>
+                <h2 className="manage-program-section-title">Registration Window</h2>
+                <p className="manage-program-section-subtitle">Optional: Control when passes can be purchased</p>
+              </div>
+            </div>
+            
+            <div className="manage-program-section-content">
+              <div className="manage-program-date-grid">
+                <div className="manage-program-field">
+                  <label className="manage-program-label">Registration Opens</label>
+                  <DateTimeSelect
+                    date={programData.registrationStartDate}
+                    setDate={(date) => updateField("registrationStartDate", date)}
+                    time={programData.registrationStartTime}
+                    setTime={(time) => updateField("registrationStartTime", time)}
+                    enabled={programRegistrationDateEnabled}
+                    setEnabled={setProgramRegistrationDateEnabled}
+                  />
+                </div>
+                
+                <div className="manage-program-field">
+                  <label className="manage-program-label">Registration Closes</label>
+                  <DateTimeSelect
+                    date={programData.registrationEndDate}
+                    setDate={(date) => updateField("registrationEndDate", date)}
+                    time={programData.registrationEndTime}
+                    setTime={(time) => updateField("registrationEndTime", time)}
+                    enabled={programRegistrationDateEnabled}
+                    setEnabled={setProgramRegistrationDateEnabled}
+                  />
+                </div>
+              </div>
+            </div>
           </div>
 
-          <div>
-            <label htmlFor="venue-details" className="text-sm font-medium">
-              Venue Details
-            </label>
-            <Textarea
-              id="venue-details"
-              className="bg-gray-900 border-gray-700 min-h-[100px]"
-              value={programData.venueDetails}
-              onChange={(e) => updateField("venueDetails", e.target.value)}
-            />
-            <p className="text-gray-400 text-xs">
-              Details about the venue, please include as much detail as
-              possible.
-            </p>
-          </div>
-
-          {/* Program Registration Start Date Time */}
-          <div>
-            <label className="text-sm font-medium">Registration Start</label>
-            <DateTimeSelect
-              date={programData.registrationStartDate}
-              setDate={(date) => updateField("registrationStartDate", date)}
-              time={programData.registrationStartTime}
-              setTime={(time) => updateField("registrationStartTime", time)}
-              enabled={programRegistrationDateEnabled}
-              setEnabled={setProgramRegistrationDateEnabled}
-            />
-            <p className="text-gray-400 text-xs">
-              The date and time that pass are available to purchase for the
-              program.
-            </p>
-          </div>
-
-          {/* Program Registration End Date Time */}
-          <div>
-            <label className="text-sm font-medium">Registration End</label>
-            <DateTimeSelect
-              date={programData.registrationEndDate}
-              setDate={(date) => updateField("registrationEndDate", date)}
-              time={programData.registrationEndTime}
-              setTime={(time) => updateField("registrationEndTime", time)}
-              enabled={programRegistrationDateEnabled}
-              setEnabled={setProgramRegistrationDateEnabled}
-            />
-            <p className="text-gray-400 text-xs">
-              The date and time that pass are available to purchase for the
-              program.
-            </p>
-          </div>
-
-          {/* pass Types */}
-          <div>
-            <Card className="bg-gray-900 border-gray-700 text-white">
-              <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-                <CardHeader>
-                  <div className="flex justify-between">
-                    <CardTitle className="flex gap-2 items-center text-sm">
-                      <Ticket />
-                      Pass Types
-                    </CardTitle>
-                    <Button
-                      type="button"
-                      onClick={() => handleAddPassType()}
-                      className="bg-gray-800 border-gray-700 text-white"
-                    >
-                      <Plus /> Add Pass Type
-                    </Button>
+          {/* Pass Types Section */}
+          <div className="manage-program-section">
+            <div className="manage-program-section-header">
+              <div className="manage-program-section-icon">
+                <Ticket className="w-5 h-5" />
+              </div>
+              <div>
+                <h2 className="manage-program-section-title">Pass Types</h2>
+                <p className="manage-program-section-subtitle">Define the different ticket options</p>
+              </div>
+              <Button
+                type="button"
+                onClick={() => handleAddPassType()}
+                className="manage-program-add-btn"
+              >
+                <Plus className="w-4 h-4" /> Add Pass
+              </Button>
+            </div>
+            
+            <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+              <div className="manage-program-section-content">
+                {programData.passTypes.length === 0 ? (
+                  <div className="manage-program-empty-state">
+                    <Ticket className="w-12 h-12 opacity-30" />
+                    <p>No pass types yet</p>
+                    <span>Add your first pass type to get started</span>
                   </div>
-                </CardHeader>
-
-                <CardContent className="space-y-2">
-                  {programData.passTypes.map((passType) => {
-                    return (
-                      <div className="bg-gray-700 w-full p-4 rounded-lg border-gray-600">
-                        <div className="flex justify-between items-center">
-                          {/* Left */}
-                          <div>
-                            <div className="flex gap-4">
-                              <p className="text-small font-medium">
-                                {passType.name}
-                              </p>
-                              <Badge
-                                variant="outline"
-                                className="border-gray-600 text-white font-normal text-xs"
-                              >
-                                ${passType.price}
-                              </Badge>
-                            </div>
-                            {passType.totalAvailable && (
-                              <p className="text-gray-400">
-                                {passType.totalAvailable} passes available
-                              </p>
-                            )}
-                          </div>
-                          {/* Right */}
-                          <div className="flex gap-2">
-                            <Button
+                ) : (
+                  <div className="manage-program-passes-grid">
+                    {programData.passTypes.map((passType) => (
+                      <div key={passType.id} className="manage-program-pass-card">
+                        <div className="manage-program-pass-header">
+                          <h3 className="manage-program-pass-name">{passType.name}</h3>
+                          <div className="manage-program-pass-actions">
+                            <button
                               type="button"
-                              variant="ghost"
+                              className="manage-program-pass-action"
                               onClick={() => handleEditPassType(passType)}
                             >
-                              <Edit />
-                            </Button>
-                            <Button
+                              <Edit className="w-4 h-4" />
+                            </button>
+                            <button
                               type="button"
-                              variant="ghost"
-                              className="text-red-400"
+                              className="manage-program-pass-action delete"
                               onClick={() => handleDeletePassType(passType.id)}
                             >
-                              <Trash />
-                            </Button>
+                              <Trash className="w-4 h-4" />
+                            </button>
                           </div>
                         </div>
+                        <div className="manage-program-pass-price">
+                          <span className="currency">$</span>
+                          <span className="amount">{passType.price}</span>
+                        </div>
+                        {passType.totalAvailable && (
+                          <p className="manage-program-pass-inventory">
+                            {passType.totalAvailable} passes available
+                          </p>
+                        )}
+                        {passType.description && (
+                          <p className="manage-program-pass-description">{passType.description}</p>
+                        )}
                       </div>
-                    );
-                  })}
-                </CardContent>
-                <DialogContent className="bg-gray-900 border-gray-700 text-white">
-                  <DialogHeader>
-                    <DialogTitle>Add Pass Type</DialogTitle>
-                    <DialogDescription className="text-gray-400">
-                      Please enter details of the pass type
-                    </DialogDescription>
-                  </DialogHeader>
+                    ))}
+                  </div>
+                )}
+              </div>
+              
+              <DialogContent className="manage-program-dialog">
+                <DialogHeader>
+                  <DialogTitle>
+                    {currentPassType?.id ? "Edit Pass Type" : "Add Pass Type"}
+                  </DialogTitle>
+                  <DialogDescription>
+                    Configure the details for this pass type
+                  </DialogDescription>
+                </DialogHeader>
 
-                  {/* Pass Type Name */}
-                  <div className="space-y-1">
-                    <Label htmlFor="pass-type-name">Name</Label>
+                <div className="manage-program-dialog-form">
+                  <div className="manage-program-field">
+                    <Label htmlFor="pass-type-name">Pass Name</Label>
                     <Input
                       id="pass-type-name"
-                      className="bg-gray-800 border-gray-700"
+                      className="manage-program-input"
                       value={currentPassType?.name}
                       onChange={(e) =>
                         setCurrentPassType(
@@ -687,14 +719,13 @@ const DashboardManageProgramPage: React.FC = () => {
                             : undefined,
                         )
                       }
-                      placeholder="e.g General Admission, VIP, etc."
+                      placeholder="e.g. General Admission, VIP, Early Bird"
                     />
                   </div>
 
-                  <div className="flex gap-4">
-                    {/* Price */}
-                    <div className="space-y-1 w-full">
-                      <Label htmlFor="pass-type-price">Price</Label>
+                  <div className="manage-program-dialog-row">
+                    <div className="manage-program-field">
+                      <Label htmlFor="pass-type-price">Price ($)</Label>
                       <Input
                         id="pass-type-price"
                         type="number"
@@ -709,15 +740,12 @@ const DashboardManageProgramPage: React.FC = () => {
                               : undefined,
                           )
                         }
-                        className="bg-gray-800 border-gray-700"
+                        className="manage-program-input"
                       />
                     </div>
 
-                    {/* Total Available */}
-                    <div className="space-y-1 w-full">
-                      <Label htmlFor="pass-type-total-available">
-                        Total Available
-                      </Label>
+                    <div className="manage-program-field">
+                      <Label htmlFor="pass-type-total-available">Quantity</Label>
                       <Input
                         id="pass-type-total-available"
                         type="number"
@@ -727,24 +755,22 @@ const DashboardManageProgramPage: React.FC = () => {
                             currentPassType
                               ? {
                                   ...currentPassType,
-                                  totalAvailable: Number.parseFloat(
-                                    e.target.value,
-                                  ),
+                                  totalAvailable: Number.parseFloat(e.target.value),
                                 }
                               : undefined,
                           )
                         }
-                        className="bg-gray-800 border-gray-700"
+                        className="manage-program-input"
+                        placeholder="Leave blank for unlimited"
                       />
                     </div>
                   </div>
 
-                  {/* Pass Type Description */}
-                  <div className="space-y-1">
+                  <div className="manage-program-field">
                     <Label htmlFor="pass-type-description">Description</Label>
                     <Textarea
                       id="pass-type-description"
-                      className="bg-gray-800 border-gray-700"
+                      className="manage-program-textarea"
                       value={currentPassType?.description}
                       onChange={(e) =>
                         setCurrentPassType(
@@ -756,59 +782,83 @@ const DashboardManageProgramPage: React.FC = () => {
                             : undefined,
                         )
                       }
+                      placeholder="What's included with this pass?"
                     />
                   </div>
-                  <DialogFooter>
-                    <Button
-                      className="bg-white text-black hover:bg-gray-300"
-                      onClick={handleSavePassType}
-                    >
-                      Save
-                    </Button>
-                  </DialogFooter>
-                </DialogContent>
-              </Dialog>
-            </Card>
+                </div>
+                
+                <DialogFooter>
+                  <Button
+                    type="button"
+                    className="manage-program-dialog-save"
+                    onClick={handleSavePassType}
+                  >
+                    Save Pass Type
+                  </Button>
+                </DialogFooter>
+              </DialogContent>
+            </Dialog>
           </div>
 
-          {/* Status */}
-          <div className="space-y-1">
-            <Label>Status</Label>
-            <Select
-              value={programData.status}
-              onValueChange={(value) => updateField("status", value)}
-            >
-              <SelectTrigger className="w-[180px] bg-gray-900 border-gray-700 text-white">
-                <SelectValue placeholder="Select Program Status" />
-              </SelectTrigger>
-              <SelectContent className="bg-gray-900 border-gray-700 text-white">
-                <SelectItem value={ProgramStatusEnum.DRAFT}>Draft</SelectItem>
-                <SelectItem value={ProgramStatusEnum.PUBLISHED}>
-                  Published
-                </SelectItem>
-              </SelectContent>
-            </Select>
-            <p className="text-gray-400 text-xs">
-              Please select the status of the new program.
-            </p>
+          {/* Status Section */}
+          <div className="manage-program-section">
+            <div className="manage-program-section-header">
+              <div className="manage-program-section-icon">
+                <AlertCircle className="w-5 h-5" />
+              </div>
+              <div>
+                <h2 className="manage-program-section-title">Publish Status</h2>
+                <p className="manage-program-section-subtitle">Control when your program is visible</p>
+              </div>
+            </div>
+            
+            <div className="manage-program-section-content">
+              <div className="manage-program-status-selector">
+                <Select
+                  value={programData.status}
+                  onValueChange={(value) => updateField("status", value)}
+                >
+                  <SelectTrigger className="manage-program-status-trigger">
+                    <SelectValue placeholder="Select Status" />
+                  </SelectTrigger>
+                  <SelectContent className="manage-program-status-content">
+                    <SelectItem value={ProgramStatusEnum.DRAFT}>
+                      <div className="manage-program-status-option">
+                        <span className="status-dot draft"></span>
+                        Draft
+                      </div>
+                    </SelectItem>
+                    <SelectItem value={ProgramStatusEnum.PUBLISHED}>
+                      <div className="manage-program-status-option">
+                        <span className="status-dot published"></span>
+                        Published
+                      </div>
+                    </SelectItem>
+                  </SelectContent>
+                </Select>
+                <p className="manage-program-hint">
+                  Draft programs are only visible to you. Published programs are live and can accept registrations.
+                </p>
+              </div>
+            </div>
           </div>
 
+          {/* Error Alert */}
           {error && (
-            <Alert variant="destructive" className="bg-gray-900 border-red-700">
+            <Alert variant="destructive" className="manage-program-error">
               <AlertCircle className="h-4 w-4" />
               <AlertTitle>Error</AlertTitle>
               <AlertDescription>{error}</AlertDescription>
             </Alert>
           )}
 
-          <div>
-            <Button onClick={handleFormSubmit}>
-              {isEditMode ? "Update" : "Submit"}
+          {/* Submit Button */}
+          <div className="manage-program-submit">
+            <Button type="submit" className="manage-program-submit-btn">
+              {isEditMode ? "Update Program" : "Create Program"}
             </Button>
           </div>
         </form>
-        {/* For Development Only */}
-        {/* <p className="mt-8 font-mono text-white">{JSON.stringify(programData)}</p> */}
       </div>
     </div>
   );

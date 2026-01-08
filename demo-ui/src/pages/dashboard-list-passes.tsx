@@ -42,7 +42,7 @@ const DashboardListPasses: React.FC = () => {
 
   if (error) {
     return (
-      <div className="bg-black min-h-screen text-white">
+      <div className="dashboard-page">
         <NavBar />
         <Alert variant="destructive" className="bg-gray-900 border-red-700">
           <AlertCircle className="h-4 w-4" />
@@ -54,7 +54,7 @@ const DashboardListPasses: React.FC = () => {
   }
 
   return (
-    <div className="bg-black min-h-screen text-white">
+    <div className="dashboard-page">
       <NavBar />
 
       {/* Title */}

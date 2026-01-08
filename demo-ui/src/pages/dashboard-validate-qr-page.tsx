@@ -54,13 +54,13 @@ const DashboardValidateQrPage: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-black text-white flex justify-center items-center">
+    <div className="dashboard-page flex justify-center items-center">
       <div
         className="border border-gray-400 max-w-sm
 w-full p-4"
       >
         {error && (
-          <div className="min-h-screen bg-black text-white">
+          <div className="dashboard-page">
             <Alert variant="destructive" className="bg-gray-900 border-red-700">
               <AlertCircle className="h-4 w-4" />
               <AlertTitle>Error</AlertTitle>
