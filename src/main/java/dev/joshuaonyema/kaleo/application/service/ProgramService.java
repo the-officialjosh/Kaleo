@@ -18,4 +18,5 @@ public interface ProgramService {
     void deleteProgramForOrganizer(UUID id);
     Page<Program> listPublishedPrograms(Pageable pageable);
     Page<Program> searchPublishedPrograms(String query, Pageable pageable);
+    Optional<Program> getPublishedProgram(UUID id);
 }
