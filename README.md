@@ -56,7 +56,7 @@ A secure REST API for church and ministry event management. Organizers create pr
 ```
 ┌─────────────────┐
 │   Keycloak      │  OAuth2/OIDC Provider
-│   (Port 9090)   │
+│   (Port 9095)   │
 └────────┬────────┘
          │ JWT
          ▼
@@ -102,7 +102,7 @@ docker-compose up -d
 API available at: `http://localhost:8080`
 
 **⚙️ Configuration:**
-- Keycloak: `http://localhost:9090` (create `kaleo-events` realm)
+- Keycloak: `http://localhost:9095` (create `kaleo-events` realm)
 - Database: `localhost:5432` (credentials in `.env`)
 - Adminer: `http://localhost:8888`
 
