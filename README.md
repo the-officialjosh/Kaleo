@@ -131,35 +131,31 @@ See [Test Coverage Documentation](docs/TEST_COVERAGE.md) for detailed breakdown.
 
 ---
 
-## 🖥️ Demo UI (Development)
-
-A minimal React-based demo UI is included for testing and development purposes. This is **not a production component** — Kaleo is primarily an API service.
-
-**Tech Stack:**
-- React 19 with Vite
-- React Router for navigation
-- Radix UI for components
-- Lightning CSS for styling
-
-**Running the Demo UI:**
-```bash
-cd demo-ui
-npm install
-npm run dev
-```
-
-The demo UI will be available at `http://localhost:5173` and connects to the API at `http://localhost:8080`.
-
-> **Note:** Ensure the backend API and Keycloak are running before starting the demo UI.
-
----
-
 ## 📚 Documentation
 
 - [📖 API Documentation](docs/API.md) — Endpoints, request/response examples
 - [📋 Project Plan](docs/project-plan.md) — Detailed specifications
 - [🗺️ Domain Model](docs/images/Kaleo-domain.png) — Entity relationships
 - [✅ Test Coverage](docs/TEST_COVERAGE.md) — Test structure and statistics
+
+---
+
+### 🖥️ Demo UI (Development Only)
+
+A minimal React demo for testing the API during development.
+
+[![React](https://img.shields.io/badge/React-19-61DAFB?style=flat-square&logo=react&logoColor=white)](https://react.dev/)
+[![Vite](https://img.shields.io/badge/Vite-6-646CFF?style=flat-square&logo=vite&logoColor=white)](https://vite.dev/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.7-3178C6?style=flat-square&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4-06B6D4?style=flat-square&logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
+[![React Router](https://img.shields.io/badge/React_Router-7-CA4245?style=flat-square&logo=reactrouter&logoColor=white)](https://reactrouter.com/)
+[![Radix UI](https://img.shields.io/badge/Radix_UI-1.1-161618?style=flat-square&logo=radixui&logoColor=white)](https://www.radix-ui.com/)
+
+```bash
+cd demo-ui && npm install && npm run dev
+```
+
+Runs at `http://localhost:5173`. Requires the API and Keycloak to be running.
 
 ---
 
@@ -176,4 +172,5 @@ MIT License
 Made with ❤️ for churches and ministries
 
 </div>
+
 

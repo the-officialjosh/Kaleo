@@ -293,89 +293,28 @@ GET /programs?page=0&size=10&sort=startTime,desc
 
 ## Published Programs API (Public)
 
-These endpoints are publicly accessible and do not require authentication. They return only programs with `PUBLISHED` status.
-
-### Endpoints
+Publicly accessible endpoints returning only `PUBLISHED` programs. No authentication required.
 
 | Method | Endpoint | Description |
 |--------|----------|-------------|
-| `GET` | `/published-programs` | List published programs (paginated, with search) |
+| `GET` | `/published-programs` | List published programs (with search) |
 | `GET` | `/published-programs/{id}` | Get published program details |
-
----
 
 ### List Published Programs
 
 **Endpoint:** `GET /published-programs`
 
 **Query Parameters:**
-- `q` (optional): Search query to filter programs by name
-- `page` (optional): Page number, default `0`
-- `size` (optional): Page size, default `20`
-- `sort` (optional): Sort field and direction, e.g., `startTime,desc`
+- `q` (optional): Search query to filter by name
+- `page`, `size`, `sort`: Pagination (same as Programs API)
 
-**Example Request:**
-```
-GET /published-programs?q=Sunday&page=0&size=10
-```
-
-**Response:** `200 OK`
-```json
-{
-  "content": [
-    {
-      "id": "550e8400-e29b-41d4-a716-446655440000",
-      "name": "Sunday Service",
-      "startTime": "2026-01-11T09:00:00",
-      "endTime": "2026-01-11T12:00:00",
-      "venue": "Main Auditorium",
-      "status": "PUBLISHED"
-    }
-  ],
-  "pageable": {
-    "pageNumber": 0,
-    "pageSize": 10
-  },
-  "totalElements": 1,
-  "totalPages": 1
-}
-```
-
----
+**Example:** `GET /published-programs?q=Sunday&page=0&size=10`
 
 ### Get Published Program Details
 
 **Endpoint:** `GET /published-programs/{id}`
 
-**Response:** `200 OK`
-```json
-{
-  "id": "550e8400-e29b-41d4-a716-446655440000",
-  "name": "Sunday Service",
-  "startTime": "2026-01-11T09:00:00",
-  "endTime": "2026-01-11T12:00:00",
-  "venue": "Main Auditorium",
-  "status": "PUBLISHED",
-  "passTypes": [
-    {
-      "id": "650e8400-e29b-41d4-a716-446655440001",
-      "name": "General Admission",
-      "price": 0.00,
-      "description": "Free entry",
-      "totalAvailable": 500
-    }
-  ]
-}
-```
-
-**Error Response:** `404 Not Found`
-```json
-{
-  "timestamp": "2026-01-07T11:45:00",
-  "message": "Program not found",
-  "path": "/api/v1/published-programs/550e8400-e29b-41d4-a716-446655440000"
-}
-```
+Returns program details including pass types for the specified published program.
 
 ---
 
