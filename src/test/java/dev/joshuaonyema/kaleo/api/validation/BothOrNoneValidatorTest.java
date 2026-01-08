@@ -127,6 +127,7 @@ class BothOrNoneValidatorTest {
                 return new Class[0];
             }
 
+            @SuppressWarnings("unchecked")
             @Override
             public Class<? extends jakarta.validation.Payload>[] payload() {
                 return new Class[0];
@@ -152,6 +153,7 @@ class BothOrNoneValidatorTest {
 
     // ==================== Test Classes ====================
 
+    @SuppressWarnings("unused")
     private static class TestObject {
         private final String field1;
         private final String field2;
@@ -162,6 +164,7 @@ class BothOrNoneValidatorTest {
         }
     }
 
+    @SuppressWarnings("unused")
     private static class MixedTypeObject {
         private final String stringField;
         private final Integer integerField;
@@ -172,4 +175,3 @@ class BothOrNoneValidatorTest {
         }
     }
 }
-
