@@ -1,10 +1,9 @@
 import RandomProgramImage from "@/components/random-program-image";
 import {Alert, AlertDescription, AlertTitle} from "@/components/ui/alert";
 import {Button} from "@/components/ui/button";
-import {Card, CardContent, CardHeader} from "@/components/ui/card";
 import {PublishedProgramDetails, PublishedProgramPassTypeDetails,} from "@/domain/domain";
 import {getPublishedProgram} from "@/lib/api";
-import {AlertCircle, MapPin} from "lucide-react";
+import {AlertCircle, ArrowLeft, Calendar, Check, MapPin, Sparkles, Ticket} from "lucide-react";
 import {useEffect, useState} from "react";
 import {useAuth} from "react-oidc-context";
 import {Link, useNavigate, useParams} from "react-router";
@@ -50,115 +49,166 @@ const PublishedProgramsPage: React.FC = () => {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-black text-white">
-        <Alert variant="destructive" className="bg-gray-900 border-red-700">
-          <AlertCircle className="h-4 w-4" />
-          <AlertTitle>Error</AlertTitle>
-          <AlertDescription>{error}</AlertDescription>
-        </Alert>
+      <div className="event-page">
+        <div className="event-page-container">
+          <Alert variant="destructive" className="bg-red-900/30 border-red-700">
+            <AlertCircle className="h-4 w-4" />
+            <AlertTitle>Error</AlertTitle>
+            <AlertDescription>{error}</AlertDescription>
+          </Alert>
+        </div>
       </div>
     );
   }
 
   if (isLoading) {
-    return <p>Loading...</p>;
+    return (
+      <div className="event-page">
+        <div className="event-loading">
+          <div className="event-loading-spinner" />
+          <p>Loading event details...</p>
+        </div>
+      </div>
+    );
   }
 
   return (
-    <div className="bg-black min-h-screen text-white">
-      {/* Nav */}
-      <div className="flex justify-end p-4 container mx-auto">
-        {isAuthenticated ? (
-          <div className="flex gap-4">
-            <Button
-              onClick={() => navigate("/dashboard/programs")}
-              className="cursor-pointer"
-            >
-              Dashboard
-            </Button>
-            <Button
-              className="cursor-pointer"
-              onClick={() => signoutRedirect()}
-            >
-              Log out
-            </Button>
-          </div>
-        ) : (
-          <div className="flex gap-4">
-            <Button className="cursor-pointer" onClick={() => signinRedirect()}>
-              Log in
-            </Button>
-          </div>
-        )}
-      </div>
-
-      <main className="container mx-auto px-4 py-16">
-        {/* Header */}
-        <div className="grid grid-cols-2 gap-8 max-w-5xl mx-auto mb-8">
-          {/* Left Column */}
-          <div className="space-y-4">
-            <h1 className="text-3xl font-bold">{publishedProgram?.name}</h1>
-            <p className="text-lg flex gap-2 text-gray-300">
-              <MapPin />
-              {publishedProgram?.venue}
-            </p>
-          </div>
-          {/* Right Column */}
-          <div className="bg-gray-600 rounded-lg w-full max-w-sm overflow-hidden">
-            <RandomProgramImage />
-          </div>
+    <div className="event-page">
+      {/* Hero Header with Image */}
+      <div className="event-hero">
+        <div className="event-hero-image">
+          <RandomProgramImage />
+          <div className="event-hero-overlay" />
         </div>
-
-        <h2 className="text-2xl font-bold mb-6">Available Passes</h2>
-        <div className="flex gap-2">
-          {/* Left */}
-          <div className="w-1/2">
-            {publishedProgram?.passTypes?.map((passType) => (
-              <Card
-                className="bg-gray-800 border-gray-600 hover:bg-gray-700 text-white cursor-pointer gap-0 mb-2"
-                key={passType.id}
-                onClick={() => setSelectedPassType(passType)}
-              >
-                <CardHeader>
-                  <div className="flex justify-between items-center">
-                    <h3 className="text-lg font-semibold">{passType.name}</h3>
-                    <span className="text-xl font-bold ">
-                      ${passType.price}
-                    </span>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-gray-300 text-sm">
-                    {passType.description}
-                  </p>
-                </CardContent>
-              </Card>
-            ))}
+        
+        {/* Navigation */}
+        <nav className="event-nav">
+          <button className="event-back-btn" onClick={() => navigate(-1)}>
+            <ArrowLeft className="w-5 h-5" />
+            <span>Back</span>
+          </button>
+          <div className="event-nav-actions">
+            {isAuthenticated ? (
+              <>
+                <Button
+                  variant="ghost"
+                  onClick={() => navigate("/dashboard")}
+                  className="nav-btn"
+                >
+                  Dashboard
+                </Button>
+                <Button
+                  variant="ghost"
+                  onClick={() => signoutRedirect()}
+                  className="nav-btn"
+                >
+                  Log out
+                </Button>
+              </>
+            ) : (
+              <Button onClick={() => signinRedirect()} className="nav-btn-primary">
+                Sign In
+              </Button>
+            )}
           </div>
+        </nav>
 
-          {/* Right */}
-          <div className="w-1/2 text-white">
-            <div className="bg-gray-800 rounded-lg p-6 border border-gray-600">
-              <h2 className="text-2xl font-bold">{selectedPassType?.name}</h2>
-              <div className="mb-6">
-                <span className="text-3xl font-bold">
-                  ${selectedPassType?.price}
+        {/* Event Title Section */}
+        <div className="event-hero-content">
+          <div className="event-badge">
+            <Sparkles className="w-4 h-4" />
+            <span>Featured Event</span>
+          </div>
+          <h1 className="event-title">{publishedProgram?.name}</h1>
+          <div className="event-meta">
+            <div className="event-meta-item">
+              <MapPin className="w-5 h-5" />
+              <span>{publishedProgram?.venue}</span>
+            </div>
+            {publishedProgram?.startDate && (
+              <div className="event-meta-item">
+                <Calendar className="w-5 h-5" />
+                <span>
+                  {new Date(publishedProgram.startDate).toLocaleDateString('en-US', {
+                    weekday: 'long',
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                  })}
                 </span>
               </div>
-              <div className="mb-6">
-                <p className="text-gray-300">{selectedPassType?.description}</p>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* Content Section */}
+      <div className="event-content">
+        <div className="event-content-grid">
+          {/* Left Column - Pass Types */}
+          <div className="event-passes-section">
+            <h2 className="event-section-title">
+              <Ticket className="w-5 h-5 text-purple-400" />
+              Available Passes
+            </h2>
+            <div className="event-passes-list">
+              {publishedProgram?.passTypes?.map((passType) => (
+                <div
+                  className={`event-pass-card ${selectedPassType?.id === passType.id ? 'selected' : ''}`}
+                  key={passType.id}
+                  onClick={() => setSelectedPassType(passType)}
+                >
+                  <div className="event-pass-radio">
+                    {selectedPassType?.id === passType.id && (
+                      <Check className="w-4 h-4" />
+                    )}
+                  </div>
+                  <div className="event-pass-info">
+                    <h3 className="event-pass-name">{passType.name}</h3>
+                    <p className="event-pass-description">{passType.description}</p>
+                  </div>
+                  <div className="event-pass-price">
+                    <span className="event-pass-currency">$</span>
+                    <span className="event-pass-amount">{passType.price}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Right Column - Purchase Card */}
+          <div className="event-purchase-section">
+            <div className="event-purchase-card">
+              <div className="event-purchase-header">
+                <h3>Selected Pass</h3>
+                <span className="event-purchase-type">{selectedPassType?.name}</span>
               </div>
+              <div className="event-purchase-price">
+                <span className="event-purchase-currency">$</span>
+                <span className="event-purchase-amount">{selectedPassType?.price}</span>
+              </div>
+              <p className="event-purchase-description">
+                {selectedPassType?.description}
+              </p>
+              <div className="event-purchase-divider" />
               <Link
                 to={`/programs/${publishedProgram?.id}/purchase/${selectedPassType?.id}`}
               >
-                <Button className="w-full bg-purple-600 hover:bg-purple-700 cursor-pointer">
+                <Button className="event-purchase-btn">
+                  <Ticket className="w-5 h-5" />
                   Purchase Pass
                 </Button>
               </Link>
+              <p className="event-purchase-note">
+                Secure checkout • Instant confirmation
+              </p>
             </div>
           </div>
         </div>
-      </main>
+      </div>
+
+      {/* Footer Gradient */}
+      <div className="event-footer-gradient" />
     </div>
   );
 };

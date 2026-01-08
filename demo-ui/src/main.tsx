@@ -1,9 +1,9 @@
-import { StrictMode } from "react";
-import { createRoot } from "react-dom/client";
+import {StrictMode} from "react";
+import {createRoot} from "react-dom/client";
 import "./index.css";
 import AttendeeLandingPage from "./pages/attendee-landing-page.tsx";
-import { AuthProvider } from "react-oidc-context";
-import { createBrowserRouter, RouterProvider } from "react-router";
+import {AuthProvider} from "react-oidc-context";
+import {createBrowserRouter, RouterProvider} from "react-router";
 import OrganizersLandingPage from "./pages/organizers-landing-page.tsx";
 import DashboardManageProgramPage from "./pages/dashboard-manage-program-page.tsx";
 import LoginPage from "./pages/login-page.tsx";
@@ -105,7 +105,7 @@ const router = createBrowserRouter([
 ]);
 
 const oidcConfig = {
-  authority: "http://localhost:9090/realms/kaleo-events",
+  authority: "http://localhost:9095/realms/kaleo-events",
   client_id: "kaleo-event-app",
   redirect_uri: "http://localhost:5173/callback",
 };
