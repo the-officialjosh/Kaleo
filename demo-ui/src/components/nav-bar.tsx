@@ -4,7 +4,6 @@ import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuItem,
-    DropdownMenuLabel,
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
@@ -17,46 +16,53 @@ const NavBar: React.FC = () => {
   const { isOrganizer } = useRoles();
 
   return (
-    <div className="bg-gray-950 border-b border-gray-800 text-white">
-      <div className="container mx-auto p-4">
-        <div className="flex justify-between items-center">
-          <div className="flex gap-10 md:gap-20 items-center">
-            <h1 className="text-xl font-bold">Kaleo</h1>
-            <div className="text-gray-300 flex gap-8">
-              {isOrganizer && <Link to="/dashboard/programs">Programs</Link>}
-              <Link to="/dashboard/passes">Passes</Link>
-            </div>
-          </div>
+    <div className="dashboard-nav">
+      <div className="dashboard-nav-container">
+        <div className="dashboard-nav-left">
+          <Link to="/" className="dashboard-nav-brand">
+            <h1>Kaleo</h1>
+          </Link>
+          <nav className="dashboard-nav-links">
+            {isOrganizer && <Link to="/dashboard/programs" className="dashboard-nav-link">Programs</Link>}
+            <Link to="/dashboard/passes" className="dashboard-nav-link">Passes</Link>
+          </nav>
+        </div>
 
-          <DropdownMenu>
-            <DropdownMenuTrigger>
-              <Avatar className="h-8 w-8">
-                <AvatarFallback className="bg-gray-700">
+        <DropdownMenu>
+          <DropdownMenuTrigger className="dashboard-nav-avatar-trigger">
+            <Avatar className="dashboard-nav-avatar">
+              <AvatarFallback className="dashboard-nav-avatar-fallback">
+                {user?.profile?.preferred_username?.slice(0, 2).toUpperCase()}
+              </AvatarFallback>
+            </Avatar>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent
+            className="dashboard-user-dropdown"
+            align="end"
+          >
+            <div className="dashboard-user-dropdown-header">
+              <Avatar className="dashboard-user-dropdown-avatar">
+                <AvatarFallback className="dashboard-user-dropdown-avatar-fallback">
                   {user?.profile?.preferred_username?.slice(0, 2).toUpperCase()}
                 </AvatarFallback>
               </Avatar>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent
-              className="w-56 bg-gray-900 border-gray-700 text-white"
-              align="end"
-            >
-              <DropdownMenuLabel className="font-normal">
-                <p className="text-sm font-medium">
+              <div className="dashboard-user-dropdown-info">
+                <p className="dashboard-user-dropdown-name">
                   {user?.profile?.preferred_username}
                 </p>
-                <p className="text-sm text-gray-400">{user?.profile?.email}</p>
-              </DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem
-                className="hover:bg-gray-800"
-                onClick={() => signoutRedirect()}
-              >
-                <LogOut />
-                <span>Log Out</span>
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
+                <p className="dashboard-user-dropdown-email">{user?.profile?.email}</p>
+              </div>
+            </div>
+            <DropdownMenuSeparator className="dashboard-user-dropdown-separator" />
+            <DropdownMenuItem
+              className="dashboard-user-dropdown-logout"
+              onClick={() => signoutRedirect()}
+            >
+              <LogOut className="w-4 h-4" />
+              <span>Log Out</span>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
     </div>
   );

@@ -2,18 +2,17 @@ import NavBar from "@/components/nav-bar";
 import {SimplePagination} from "@/components/simple-pagination";
 import {Alert, AlertDescription, AlertTitle} from "@/components/ui/alert";
 import {
-    AlertDialog,
-    AlertDialogAction,
-    AlertDialogCancel,
-    AlertDialogContent,
-    AlertDialogDescription,
-    AlertDialogFooter,
-    AlertDialogHeader,
-    AlertDialogTitle,
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import {Button} from "@/components/ui/button";
-import {Card, CardContent, CardFooter, CardHeader,} from "@/components/ui/card";
-import {ProgramStatusEnum, ProgramSummary, SpringBootPagination,} from "@/domain/domain";
+import {ProgramSummary, SpringBootPagination,} from "@/domain/domain";
 import {deleteProgram, listPrograms} from "@/lib/api";
 import {AlertCircle, Calendar, Clock, Edit, MapPin, Tag, Trash,} from "lucide-react";
 import {useEffect, useState} from "react";
@@ -79,21 +78,6 @@ const DashboardListProgramsPage: React.FC = () => {
     });
   };
 
-  const formatStatusBadge = (status: ProgramStatusEnum) => {
-    switch (status) {
-      case ProgramStatusEnum.DRAFT:
-        return "bg-gray-700 text-gray-200";
-      case ProgramStatusEnum.PUBLISHED:
-        return "bg-green-700 text-green-100";
-      case ProgramStatusEnum.CANCELLED:
-        return "bg-red-700 text-red-100";
-      case ProgramStatusEnum.COMPLETED:
-        return "bg-blue-700 text-blue-100";
-      default:
-        return "bg-gray-700 text-gray-200";
-    }
-  };
-
   const handleOpenDeleteProgramDialog = (programToDelete: ProgramSummary) => {
     setProgramToDelete(programToDelete);
     setDialogOpen(true);
@@ -128,7 +112,7 @@ const DashboardListProgramsPage: React.FC = () => {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-black text-white">
+      <div className="dashboard-page">
         <Alert variant="destructive" className="bg-gray-900 border-red-700">
           <AlertCircle className="h-4 w-4" />
           <AlertTitle>Error</AlertTitle>
@@ -139,137 +123,147 @@ const DashboardListProgramsPage: React.FC = () => {
   }
 
   return (
-    <div className="bg-black min-h-screen text-white">
+    <div className="dashboard-page">
       <NavBar />
 
-      <div className="max-w-lg mx-auto px-4">
-        {/* Title */}
-        <div className="py-8 px-4 flex justify-between">
-          <div>
-            <h1 className="text-2xl font-bold">Your Programs</h1>
-            <p>Programs you have created</p>
+      {/* Hero Header */}
+      <div className="dashboard-list-hero">
+        <div className="dashboard-list-hero-content">
+          <div className="dashboard-list-hero-left">
+            <h1 className="dashboard-list-hero-title">Your Programs</h1>
+            <p className="dashboard-list-hero-subtitle">Manage and organize all your events</p>
           </div>
-          <div>
+          <Link to="/dashboard/programs/create">
+            <Button className="dashboard-list-create-btn">
+              <Calendar className="w-4 h-4" />
+              Create Program
+            </Button>
+          </Link>
+        </div>
+      </div>
+
+      {/* Programs Grid */}
+      <div className="dashboard-list-container">
+        {programs?.content.length === 0 ? (
+          <div className="dashboard-list-empty">
+            <Calendar className="w-16 h-16 opacity-20" />
+            <h3>No programs yet</h3>
+            <p>Create your first program to get started</p>
             <Link to="/dashboard/programs/create">
-              <Button className="bg-purple-700 hover:bg-purple-500 cursor-pointer">
+              <Button className="dashboard-list-create-btn mt-4">
                 Create Program
               </Button>
             </Link>
           </div>
-        </div>
-
-        {/* Program Cards */}
-        <div className="space-y-2">
-          {programs?.content.map((programItem) => (
-            <Card className="bg-gray-900 border-gray-700 text-white">
-              <CardHeader>
-                <div className="flex justify-between">
-                  <h3 className="font-bold text-xl">{programItem.name}</h3>
-                  <span
-                    className={`flex items-center px-2 py-1 rounded-lg text-xs ${formatStatusBadge(programItem.status)}`}
-                  >
+        ) : (
+          <div className="dashboard-list-grid">
+            {programs?.content.map((programItem) => (
+              <div key={programItem.id} className="dashboard-program-card">
+                <div className="dashboard-program-card-header">
+                  <h3 className="dashboard-program-card-title">{programItem.name}</h3>
+                  <span className={`dashboard-program-status ${programItem.status.toLowerCase()}`}>
                     {programItem.status}
                   </span>
                 </div>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                {/* Program Start & End */}
-                <div className="flex space-x-2">
-                  <Calendar className="h-5 w-5 text-gray-400" />
-                  <div>
-                    <p className="font-medium">
-                      {formatDate(programItem.startTime)} to{" "}
-                      {formatDate(programItem.endTime)}
-                    </p>
-                    <p className="text-gray-400">
-                      {formatTime(programItem.startTime)} -{" "}
-                      {formatTime(programItem.endTime)}
-                    </p>
+
+                <div className="dashboard-program-card-body">
+                  <div className="dashboard-program-meta-item">
+                    <Calendar className="w-4 h-4" />
+                    <div>
+                      <span className="label">Event Date</span>
+                      <span className="value">
+                        {formatDate(programItem.startTime)} - {formatDate(programItem.endTime)}
+                      </span>
+                    </div>
                   </div>
-                </div>
-                {/* Registration start and end */}
-                <div className="flex space-x-2">
-                  <Clock className="h-5 w-5 text-gray-400" />
-                  <div>
-                    <h4 className="font-medium">Registration Period</h4>
-                    <p className="text-gray-400">
-                      {formatDate(programItem.registrationStart)} to{" "}
-                      {formatDate(programItem.registrationEnd)}
-                    </p>
+
+                  <div className="dashboard-program-meta-item">
+                    <Clock className="w-4 h-4" />
+                    <div>
+                      <span className="label">Time</span>
+                      <span className="value">
+                        {formatTime(programItem.startTime)} - {formatTime(programItem.endTime)}
+                      </span>
+                    </div>
                   </div>
-                </div>
-                <div className="flex space-x-2">
-                  <MapPin className="h-5 w-5 text-gray-400" />
-                  <div>
-                    <p className="font-medium">{programItem.venue}</p>
+
+                  <div className="dashboard-program-meta-item">
+                    <MapPin className="w-4 h-4" />
+                    <div>
+                      <span className="label">Venue</span>
+                      <span className="value">{programItem.venue || "TBD"}</span>
+                    </div>
                   </div>
+
+                  {programItem.passTypes.length > 0 && (
+                    <div className="dashboard-program-passes">
+                      <Tag className="w-4 h-4" />
+                      <div className="dashboard-program-passes-list">
+                        {programItem.passTypes.map((passType) => (
+                          <span key={passType.id} className="dashboard-program-pass-tag">
+                            {passType.name} · ${passType.price}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  )}
                 </div>
-                <div className="flex items-center space-x-2">
-                  <Tag className="h-5 w-5 text-gray-400" />
-                  <div>
-                    <h4 className="font-medium">Pass Types</h4>
-                    <ul>
-                      {programItem.passTypes.map((passType) => (
-                        <li
-                          key={passType.id}
-                          className="flex gap-2 text-gray-400"
-                        >
-                          <span>{passType.name}</span>
-                          <span>${passType.price}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
-              </CardContent>
-              <CardFooter className="flex justify-end gap-2">
-                <Link to={`/dashboard/programs/update/${programItem.id}`}>
-                  <Button
-                    type="button"
-                    className="bg-gray-700 hover:bg-gray-500 cursor-pointer"
+
+                <div className="dashboard-program-card-footer">
+                  <Link to={`/dashboard/programs/update/${programItem.id}`}>
+                    <button className="dashboard-program-action-btn edit">
+                      <Edit className="w-4 h-4" />
+                      Edit
+                    </button>
+                  </Link>
+                  <button
+                    className="dashboard-program-action-btn delete"
+                    onClick={() => handleOpenDeleteProgramDialog(programItem)}
                   >
-                    <Edit />
-                  </Button>
-                </Link>
-                <Button
-                  type="button"
-                  className="bg-red-700/80 hover:bg-red-500 cursor-pointer"
-                  onClick={() => handleOpenDeleteProgramDialog(programItem)}
-                >
-                  <Trash />
-                </Button>
-              </CardFooter>
-            </Card>
-          ))}
-        </div>
-      </div>
-      <div className="flex justify-center py-8">
-        {programs && (
-          <SimplePagination pagination={programs} onPageChange={setPage} />
+                    <Trash className="w-4 h-4" />
+                    Delete
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {programs && programs.content.length > 0 && (
+          <div className="dashboard-list-pagination">
+            <SimplePagination pagination={programs} onPageChange={setPage} />
+          </div>
         )}
       </div>
+
+      {/* Delete Dialog */}
       <AlertDialog open={dialogOpen}>
-        <AlertDialogContent>
+        <AlertDialogContent className="dashboard-delete-dialog">
           <AlertDialogHeader>
-            <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+            <AlertDialogTitle>Delete Program</AlertDialogTitle>
             <AlertDialogDescription>
-              This will delete your program '{programToDelete?.name}' and cannot
-              be undone.
+              Are you sure you want to delete "{programToDelete?.name}"? This action cannot be undone.
             </AlertDialogDescription>
           </AlertDialogHeader>
           {deleteProgramError && (
-            <Alert variant="destructive" className="border-red-700">
+            <Alert variant="destructive" className="dashboard-delete-error">
               <AlertCircle className="h-4 w-4" />
               <AlertTitle>Error</AlertTitle>
               <AlertDescription>{deleteProgramError}</AlertDescription>
             </Alert>
           )}
           <AlertDialogFooter>
-            <AlertDialogCancel onClick={handleCancelDeleteProgramDialog}>
+            <AlertDialogCancel 
+              className="dashboard-delete-cancel"
+              onClick={handleCancelDeleteProgramDialog}
+            >
               Cancel
             </AlertDialogCancel>
-            <AlertDialogAction onClick={() => handleDeleteProgram()}>
-              Continue
+            <AlertDialogAction 
+              className="dashboard-delete-confirm"
+              onClick={() => handleDeleteProgram()}
+            >
+              Delete Program
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

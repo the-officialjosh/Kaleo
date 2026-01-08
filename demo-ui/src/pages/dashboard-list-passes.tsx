@@ -1,10 +1,9 @@
 import NavBar from "@/components/nav-bar";
 import {SimplePagination} from "@/components/simple-pagination";
 import {Alert, AlertDescription, AlertTitle} from "@/components/ui/alert";
-import {Card, CardContent, CardHeader} from "@/components/ui/card";
 import {PassSummary, SpringBootPagination} from "@/domain/domain";
 import {listPasses} from "@/lib/api";
-import {AlertCircle, DollarSign, Tag, Ticket} from "lucide-react";
+import {AlertCircle, Tag, Ticket} from "lucide-react";
 import {useEffect, useState} from "react";
 import {useAuth} from "react-oidc-context";
 import {Link} from "react-router";
@@ -42,7 +41,7 @@ const DashboardListPasses: React.FC = () => {
 
   if (error) {
     return (
-      <div className="bg-black min-h-screen text-white">
+      <div className="dashboard-page">
         <NavBar />
         <Alert variant="destructive" className="bg-gray-900 border-red-700">
           <AlertCircle className="h-4 w-4" />
@@ -54,55 +53,66 @@ const DashboardListPasses: React.FC = () => {
   }
 
   return (
-    <div className="bg-black min-h-screen text-white">
+    <div className="dashboard-page">
       <NavBar />
 
-      {/* Title */}
-      <div className="py-8 px-4">
-        <h1 className="text-2xl font-bold">Your Passes</h1>
-        <p>Passes you have purchased</p>
+      {/* Hero Header */}
+      <div className="dashboard-list-hero">
+        <div className="dashboard-list-hero-content">
+          <div className="dashboard-list-hero-left">
+            <h1 className="dashboard-list-hero-title">Your Passes</h1>
+            <p className="dashboard-list-hero-subtitle">View and manage your purchased passes</p>
+          </div>
+        </div>
       </div>
 
-      <div className="max-w-lg mx-auto">
-        {passes?.content.map((passItem) => (
-          <Link to={`/dashboard/passes/${passItem.id}`}>
-            <Card key={passItem.id} className="bg-gray-900 text-white">
-              <CardHeader>
-                <div className="flex justify-between">
-                  <div className="flex items-center gap-2">
-                    <Ticket className="h-5 w-5 text-gray-400" />
-                    <h3 className="font-bold text-xl">
-                      {passItem.passType.name}
-                    </h3>
+      {/* Passes Grid */}
+      <div className="dashboard-list-container">
+        {passes?.content.length === 0 ? (
+          <div className="dashboard-list-empty">
+            <Ticket className="w-16 h-16 opacity-20" />
+            <h3>No passes yet</h3>
+            <p>Purchase passes from available programs</p>
+          </div>
+        ) : (
+          <div className="dashboard-list-grid">
+            {passes?.content.map((passItem) => (
+              <Link key={passItem.id} to={`/dashboard/passes/${passItem.id}`} className="dashboard-pass-card-link">
+                <div className="dashboard-pass-card">
+                  <div className="dashboard-pass-card-header">
+                    <div className="dashboard-pass-icon">
+                      <Ticket className="w-5 h-5" />
+                    </div>
+                    <span className={`dashboard-pass-status ${passItem.status.toLowerCase()}`}>
+                      {passItem.status}
+                    </span>
                   </div>
-                  <span>{passItem.status}</span>
+                  
+                  <h3 className="dashboard-pass-card-title">{passItem.passType.name}</h3>
+                  
+                  <div className="dashboard-pass-price">
+                    <span className="currency">$</span>
+                    <span className="amount">{passItem.passType.price}</span>
+                  </div>
+                  
+                  <div className="dashboard-pass-id">
+                    <Tag className="w-3 h-3" />
+                    <span>{passItem.id.slice(0, 12)}...</span>
+                  </div>
+                  
+                  <div className="dashboard-pass-cta">
+                    View Pass →
+                  </div>
                 </div>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                {/* Price */}
-                <div className="flex items-center gap-2">
-                  <DollarSign className="h-5 w-5 text-gray-400" />
-                  <p className="font-medium">${passItem.passType.price}</p>
-                </div>
+              </Link>
+            ))}
+          </div>
+        )}
 
-                {/* Pass ID */}
-                <div className="flex items-center gap-2">
-                  <Tag className="h-5 w-5 text-gray-400" />
-                  <div>
-                    <h4 className="font-medium">Pass ID</h4>
-                    <p className="text-gray-400 font-mono text-sm">
-                      {passItem.id}
-                    </p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </Link>
-        ))}
-      </div>
-      <div className="flex justify-center py-8">
-        {passes && (
-          <SimplePagination pagination={passes} onPageChange={setPage} />
+        {passes && passes.content.length > 0 && (
+          <div className="dashboard-list-pagination">
+            <SimplePagination pagination={passes} onPageChange={setPage} />
+          </div>
         )}
       </div>
     </div>

@@ -2,12 +2,13 @@ import {useAuth} from "react-oidc-context";
 import {Button} from "../components/ui/button";
 import {useNavigate} from "react-router";
 import {AlertCircle, Search, Sparkles, X} from "lucide-react";
-import {useEffect, useRef, useState} from "react";
+import {Suspense, useEffect, useRef, useState} from "react";
 import {PublishedProgramSummary, SpringBootPagination} from "@/domain/domain";
 import {listPublishedPrograms, searchPublishedPrograms} from "@/lib/api";
 import {Alert, AlertDescription, AlertTitle} from "@/components/ui/alert";
 import PublishedProgramCard from "@/components/published-program-card";
 import {SimplePagination} from "@/components/simple-pagination";
+import Background3D from "@/components/background-3d";
 
 const AttendeeLandingPage: React.FC = () => {
   const { isAuthenticated, isLoading, signinRedirect, signoutRedirect } =
@@ -112,8 +113,10 @@ const AttendeeLandingPage: React.FC = () => {
     <div className={`landing-page ${isSearchActive ? 'search-mode' : ''}`}>
       {/* Hero Section */}
       <section className={`hero-section ${isSearchActive ? 'collapsed' : ''}`}>
-        {/* Background */}
-        <div className="hero-background" />
+        {/* 3D Background */}
+        <Suspense fallback={null}>
+          <Background3D />
+        </Suspense>
         <div className="hero-overlay" />
         
         {/* Navigation */}
