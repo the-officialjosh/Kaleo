@@ -83,7 +83,7 @@ class PublishedProgramControllerTest {
         when(programMapper.toListPublishedProgramResponseDto(program)).thenReturn(listPublishedProgramResponseDto);
 
         ResponseEntity<Page<ListPublishedProgramResponseDto>> response =
-                publishedProgramController.listPublishedPrograms(pageable);
+                publishedProgramController.listPublishedPrograms(null, pageable);
 
         assertNotNull(response);
         assertEquals(HttpStatus.OK, response.getStatusCode());
@@ -108,7 +108,7 @@ class PublishedProgramControllerTest {
         when(programService.listPublishedPrograms(any(Pageable.class))).thenReturn(emptyPage);
 
         ResponseEntity<Page<ListPublishedProgramResponseDto>> response =
-                publishedProgramController.listPublishedPrograms(pageable);
+                publishedProgramController.listPublishedPrograms(null, pageable);
 
         assertNotNull(response);
         assertEquals(HttpStatus.OK, response.getStatusCode());
@@ -147,7 +147,7 @@ class PublishedProgramControllerTest {
         when(programMapper.toListPublishedProgramResponseDto(program2)).thenReturn(dto2);
 
         ResponseEntity<Page<ListPublishedProgramResponseDto>> response =
-                publishedProgramController.listPublishedPrograms(pageable);
+                publishedProgramController.listPublishedPrograms(null, pageable);
 
         assertNotNull(response);
         assertEquals(HttpStatus.OK, response.getStatusCode());
@@ -168,7 +168,7 @@ class PublishedProgramControllerTest {
         when(programMapper.toListPublishedProgramResponseDto(program)).thenReturn(listPublishedProgramResponseDto);
 
         ResponseEntity<Page<ListPublishedProgramResponseDto>> response =
-                publishedProgramController.listPublishedPrograms(customPageable);
+                publishedProgramController.listPublishedPrograms(null, customPageable);
 
         assertNotNull(response);
         assertEquals(HttpStatus.OK, response.getStatusCode());
@@ -190,10 +190,90 @@ class PublishedProgramControllerTest {
                 .thenReturn(listPublishedProgramResponseDto);
 
         ResponseEntity<Page<ListPublishedProgramResponseDto>> response =
-                publishedProgramController.listPublishedPrograms(pageable);
+                publishedProgramController.listPublishedPrograms(null, pageable);
 
         assertNotNull(response);
         verify(programMapper, times(1)).toListPublishedProgramResponseDto(program);
     }
-}
 
+    // ==================== Search Published Programs Tests ====================
+
+    @Test
+    void listPublishedPrograms_whenSearchQueryProvided_thenCallsSearchMethod() {
+        Pageable pageable = PageRequest.of(0, 10);
+        String searchQuery = "Sunday";
+        Page<Program> programPage = new PageImpl<>(List.of(program), pageable, 1);
+
+        when(programService.searchPublishedPrograms(searchQuery, pageable)).thenReturn(programPage);
+        when(programMapper.toListPublishedProgramResponseDto(program)).thenReturn(listPublishedProgramResponseDto);
+
+        ResponseEntity<Page<ListPublishedProgramResponseDto>> response =
+                publishedProgramController.listPublishedPrograms(searchQuery, pageable);
+
+        assertNotNull(response);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertNotNull(response.getBody());
+        assertEquals(1, response.getBody().getTotalElements());
+
+        verify(programService).searchPublishedPrograms(searchQuery, pageable);
+        verify(programService, never()).listPublishedPrograms(any());
+        verify(programMapper).toListPublishedProgramResponseDto(program);
+    }
+
+    @Test
+    void listPublishedPrograms_whenSearchQueryIsEmpty_thenCallsListMethod() {
+        Pageable pageable = PageRequest.of(0, 10);
+        Page<Program> programPage = new PageImpl<>(List.of(program), pageable, 1);
+
+        when(programService.listPublishedPrograms(pageable)).thenReturn(programPage);
+        when(programMapper.toListPublishedProgramResponseDto(program)).thenReturn(listPublishedProgramResponseDto);
+
+        ResponseEntity<Page<ListPublishedProgramResponseDto>> response =
+                publishedProgramController.listPublishedPrograms("", pageable);
+
+        assertNotNull(response);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+
+        verify(programService).listPublishedPrograms(pageable);
+        verify(programService, never()).searchPublishedPrograms(any(), any());
+    }
+
+    @Test
+    void listPublishedPrograms_whenSearchQueryIsWhitespace_thenCallsListMethod() {
+        Pageable pageable = PageRequest.of(0, 10);
+        Page<Program> programPage = new PageImpl<>(List.of(program), pageable, 1);
+
+        when(programService.listPublishedPrograms(pageable)).thenReturn(programPage);
+        when(programMapper.toListPublishedProgramResponseDto(program)).thenReturn(listPublishedProgramResponseDto);
+
+        ResponseEntity<Page<ListPublishedProgramResponseDto>> response =
+                publishedProgramController.listPublishedPrograms("   ", pageable);
+
+        assertNotNull(response);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+
+        verify(programService).listPublishedPrograms(pageable);
+        verify(programService, never()).searchPublishedPrograms(any(), any());
+    }
+
+    @Test
+    void listPublishedPrograms_whenSearchReturnsNoResults_thenReturnsEmptyPage() {
+        Pageable pageable = PageRequest.of(0, 10);
+        String searchQuery = "NonExistent";
+        Page<Program> emptyPage = new PageImpl<>(List.of(), pageable, 0);
+
+        when(programService.searchPublishedPrograms(searchQuery, pageable)).thenReturn(emptyPage);
+
+        ResponseEntity<Page<ListPublishedProgramResponseDto>> response =
+                publishedProgramController.listPublishedPrograms(searchQuery, pageable);
+
+        assertNotNull(response);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertNotNull(response.getBody());
+        assertEquals(0, response.getBody().getTotalElements());
+        assertTrue(response.getBody().getContent().isEmpty());
+
+        verify(programService).searchPublishedPrograms(searchQuery, pageable);
+        verify(programMapper, never()).toListPublishedProgramResponseDto(any());
+    }
+}
