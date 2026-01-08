@@ -36,4 +36,7 @@ public interface ProgramRepository extends JpaRepository<Program, UUID> {
             nativeQuery = true
     )
     Page<Program> searchPrograms(@Param("searchTerm") String searchTerm, Pageable pageable);
+
+    Optional<Program> findByIdAndStatus(UUID id, ProgramStatus status);
+    
 }
