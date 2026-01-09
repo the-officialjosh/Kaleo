@@ -3397,6 +3397,44 @@ cursor: none;}
   opacity: 0.7;
 }
 
+.footer-tech-stack {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.footer-tech-label {
+  color: oklch(0.55 0.02 285);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.footer-tech-badges {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.tech-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.35rem 0.75rem;
+  background: oklch(0.16 0.04 285);
+  border: 1px solid oklch(0.25 0.04 285);
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  color: oklch(0.75 0.02 285);
+  transition: all 0.2s ease;
+}
+
+.tech-badge:hover {
+  border-color: var(--purple-400);
+  color: white;
+}
+
 /* ============================================
    TESTIMONIAL CAROUSEL STYLES
    ============================================ */

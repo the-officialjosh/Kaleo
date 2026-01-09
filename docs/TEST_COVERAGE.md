@@ -11,8 +11,9 @@ src/test/java/dev/joshuaonyema/kaleo/
 ├── KaleoApplicationTests.java
 ├── api/
 │   ├── controller/
+│   │   ├── PassTypeControllerTest.java (NEW)
 │   │   ├── ProgramControllerTest.java
-│   │   └── PublishedProgramControllerTest.java (NEW)
+│   │   └── PublishedProgramControllerTest.java
 │   ├── dto/
 │   │   ├── CreatePassTypeRequestDtoTest.java
 │   │   └── CreateProgramRequestDtoTest.java
@@ -28,13 +29,17 @@ src/test/java/dev/joshuaonyema/kaleo/
 │   │   └── CurrentUserServiceTest.java
 │   └── service/
 │       └── impl/
-│           └── ProgramServiceImplTest.java
+│           ├── PassServiceImplTest.java (NEW)
+│           ├── ProgramServiceImplTest.java
+│           └── QrCodeServiceImplTest.java (NEW)
 ├── config/
 │   ├── jpa/
-│   │   └── JpaConfigTest.java (NEW)
+│   │   └── JpaConfigTest.java
+│   ├── qrcode/
+│   │   └── QrCodeConfigTest.java (NEW)
 │   └── security/
-│       ├── HttpSecurityConfigTest.java (NEW)
-│       └── SecurityFilterChainIntegrationTest.java (NEW)
+│       ├── HttpSecurityConfigTest.java
+│       └── SecurityFilterChainIntegrationTest.java
 └── infrastructure/
     └── security/
         └── filter/
@@ -53,12 +58,19 @@ src/test/java/dev/joshuaonyema/kaleo/
   - Update program endpoint
   - Delete program endpoint
 
-- **PublishedProgramControllerTest** (5 tests) **[NEW]**
+- **PublishedProgramControllerTest** (5 tests)
   - List published programs (public endpoint)
   - Pagination support
   - Empty result handling
   - Multiple programs scenarios
   - Mapper integration
+
+- **PassTypeControllerTest** (5 tests) **[NEW]**
+  - Purchase pass endpoint (returns 204 No Content)
+  - Service invocation verification
+  - Path variable extraction
+  - Exception propagation
+  - Multiple pass type handling
 
 #### DTOs
 - **CreatePassTypeRequestDtoTest** (17 tests)
@@ -106,6 +118,26 @@ src/test/java/dev/joshuaonyema/kaleo/
   - Update program
   - Pass type linking validation
 
+- **PassServiceImplTest** (12 tests) **[NEW]**
+  - Successful pass purchase
+  - Pass status set to PURCHASED
+  - Pass linked to pass type and user
+  - QR code generation triggered
+  - Capacity validation (at limit, over limit)
+  - PassTypeNotFoundException when not found
+  - PassSoldOutException when sold out
+  - Locking query verification
+
+- **QrCodeServiceImplTest** (11 tests) **[NEW]**
+  - QR code generation returns valid entity
+  - Status set to ACTIVE
+  - Unique ID generation
+  - Pass linking
+  - Base64-encoded value generation
+  - Repository persistence
+  - WriterException handling
+  - Correct dimensions (300x300)
+
 #### Security
 - **CurrentUserServiceTest** (10 tests)
   - Get current user when authenticated
@@ -144,10 +176,17 @@ src/test/java/dev/joshuaonyema/kaleo/
   - JWT authentication converter bean
 
 #### JPA Configuration
-- **JpaConfigTest** (3 tests) **[NEW]**
+- **JpaConfigTest** (3 tests)
   - JPA configuration bean loading
   - `@EnableJpaAuditing` annotation verification
   - Spring context integration
+
+#### QR Code Configuration
+- **QrCodeConfigTest** (4 tests) **[NEW]**
+  - QRCodeWriter bean creation
+  - Bean instance type verification
+  - Multiple invocation behavior
+  - `@Configuration` annotation verification
 
 ### ✅ Infrastructure Layer Tests
 
@@ -167,12 +206,12 @@ src/test/java/dev/joshuaonyema/kaleo/
 
 | Component | Test Files | Total Tests |
 |-----------|------------|-------------|
-| API Layer | 7 | 85 |
-| Application Layer | 3 | 45 |
-| Configuration Layer | 3 | 19 |
+| API Layer | 8 | 90 |
+| Application Layer | 5 | 68 |
+| Configuration Layer | 4 | 23 |
 | Infrastructure Layer | 1 | 10 |
 | Integration | 1 | 1 |
-| **TOTAL** | **15** | **160** |
+| **TOTAL** | **19** | **192** |
 
 ## Code Coverage Goals
 

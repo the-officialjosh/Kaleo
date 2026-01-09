@@ -411,12 +411,37 @@ Returns program details including pass types for the specified published program
 
 ---
 
+## Pass Types API
+
+Purchase passes for a specific pass type within a program.
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `POST` | `/programs/{programId}/pass-types/{passTypeId}/passes` | Purchase a pass |
+
+### Purchase Pass
+
+**Endpoint:** `POST /programs/{programId}/pass-types/{passTypeId}/passes`
+
+Requires authentication. Purchases a pass for the authenticated user.
+
+**Path Parameters:**
+- `programId` (UUID): The program ID
+- `passTypeId` (UUID): The pass type to purchase
+
+**Response:** `204 No Content`
+
+**Error Responses:**
+- `404 Not Found` - Pass type not found
+- `409 Conflict` - Pass sold out (capacity exceeded)
+
+---
+
 ## Future Endpoints (Planned)
 
 - `POST /programs/{id}/publish` - Publish a draft program
 - `POST /programs/{id}/cancel` - Cancel a program
 - `GET /programs/{id}/registrations` - List registrations for a program
-- `POST /programs/{id}/register` - Register for a program (PARTICIPANT role)
 - `GET /passes/{id}` - Get pass details
 - `POST /passes/{id}/validate` - Validate a pass (STAFF role)
 

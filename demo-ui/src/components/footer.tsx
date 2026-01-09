@@ -30,6 +30,19 @@ export default function Footer() {
           </a>
         </div>
         
+        <div className="footer-tech-stack">
+          <p className="footer-tech-label">Built with</p>
+          <div className="footer-tech-badges">
+            <span className="tech-badge">React 19</span>
+            <span className="tech-badge">TypeScript</span>
+            <span className="tech-badge">Tailwind CSS 4</span>
+            <span className="tech-badge">Three.js</span>
+            <span className="tech-badge">GSAP</span>
+            <span className="tech-badge">Radix UI</span>
+            <span className="tech-badge">React Router 7</span>
+          </div>
+        </div>
+        
         <div className="footer-bottom">
           <p>
             Built with <Heart size={14} className="footer-heart" /> by Joshua Onyema

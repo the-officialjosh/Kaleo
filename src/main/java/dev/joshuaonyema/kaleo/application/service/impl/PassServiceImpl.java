@@ -4,8 +4,10 @@ import dev.joshuaonyema.kaleo.application.security.CurrentUserService;
 import dev.joshuaonyema.kaleo.application.service.PassService;
 import dev.joshuaonyema.kaleo.application.service.QrCodeService;
 import dev.joshuaonyema.kaleo.domain.entity.Pass;
+import dev.joshuaonyema.kaleo.domain.entity.PassStatus;
 import dev.joshuaonyema.kaleo.domain.entity.PassType;
 import dev.joshuaonyema.kaleo.domain.entity.User;
+import dev.joshuaonyema.kaleo.exception.PassSoldOutException;
 import dev.joshuaonyema.kaleo.exception.PassTypeNotFoundException;
 import dev.joshuaonyema.kaleo.repository.PassRepository;
 import dev.joshuaonyema.kaleo.repository.PassTypeRepository;
@@ -28,15 +30,30 @@ public class PassServiceImpl implements PassService {
 
     @Override
     @Transactional
-    public Pass purchasePass(UUID passTypeId) {
+    public void purchasePass(UUID passTypeId) {
         User user = currentUserService.getCurrentUser();
 
-        PassType passType = passTypeRepository.findById(passTypeId).orElseThrow(() -> new PassTypeNotFoundException(
+        PassType passType = passTypeRepository.findByIdWithLock(passTypeId)
+                .orElseThrow(() -> new PassTypeNotFoundException(
                 String.format("Pass type with ID '%s' not found", passTypeId)
         ));
 
         int purchasedPasses = passRepository.countByPassTypeId(passTypeId);
 
-        return null;
+        Integer totalAvailable = passType.getTotalAvailable();
+
+        if(purchasedPasses + 1 > totalAvailable){
+            throw new PassSoldOutException();
+        }
+
+        Pass pass = new Pass();
+        pass.setStatus(PassStatus.PURCHASED);
+        pass.setPassType(passType);
+        pass.setRegistrant(user);
+
+        Pass savedPass = passRepository.save(pass);
+        qrCodeService.generateQrCode(savedPass);
+
+        passRepository.save(savedPass);
     }
 }
