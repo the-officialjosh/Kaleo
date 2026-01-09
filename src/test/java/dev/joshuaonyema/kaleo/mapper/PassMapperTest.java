@@ -53,6 +53,7 @@ class PassMapperTest {
         pass = new Pass();
         pass.setId(passId);
         pass.setStatus(PassStatus.ACTIVE);
+        pass.setManualCode("ABC123");
         pass.setPassType(passType);
     }
 
@@ -65,6 +66,7 @@ class PassMapperTest {
         assertNotNull(result);
         assertEquals(passId, result.getId());
         assertEquals(PassStatus.ACTIVE, result.getStatus());
+        assertEquals("ABC123", result.getManualCode());
     }
 
     @Test
@@ -116,6 +118,7 @@ class PassMapperTest {
         assertNotNull(result);
         assertEquals(passId, result.getId());
         assertEquals(PassStatus.ACTIVE, result.getStatus());
+        assertEquals("ABC123", result.getManualCode());
     }
 
     @Test
@@ -214,4 +217,3 @@ class PassMapperTest {
         assertEquals(BigDecimal.ZERO, result.getPassTypePrice());
     }
 }
-

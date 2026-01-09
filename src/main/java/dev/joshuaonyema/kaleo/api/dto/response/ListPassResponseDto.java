@@ -15,6 +15,7 @@ import java.util.UUID;
 public class ListPassResponseDto {
     private UUID id;
     private PassStatus status;
+    private String manualCode;
     private LocalDateTime createdAt;
 
     // Pass Type Info
