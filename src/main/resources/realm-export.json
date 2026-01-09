@@ -50,32 +50,6 @@
   "roles": {
     "realm": [
       {
-        "id": "5ce567a2-8810-4191-a3fc-d07f151e3725",
-        "name": "ATTENDEE",
-        "description": "",
-        "composite": false,
-        "clientRole": false,
-        "containerId": "4b9ba662-ebff-4da2-bca9-6240095650a6",
-        "attributes": {}
-      },
-      {
-        "id": "1d8c884f-6b1f-4bd2-aa8f-1d7808f6f3e7",
-        "name": "ORGANIZER",
-        "description": "",
-        "composite": true,
-        "composites": {
-          "realm": [
-            "default-roles-church-event-platform",
-            "offline_access",
-            "uma_authorization",
-            "ORGANIZER"
-          ]
-        },
-        "clientRole": false,
-        "containerId": "4b9ba662-ebff-4da2-bca9-6240095650a6",
-        "attributes": {}
-      },
-      {
         "id": "143403e7-ce6d-47d0-8a98-927a1a847111",
         "name": "ROLE_ATTENDEE",
         "description": "",
@@ -133,15 +107,6 @@
         "attributes": {}
       },
       {
-        "id": "4378e9e9-80e1-4c80-beb1-75d4aaa12410",
-        "name": "STAFF",
-        "description": "",
-        "composite": false,
-        "clientRole": false,
-        "containerId": "4b9ba662-ebff-4da2-bca9-6240095650a6",
-        "attributes": {}
-      },
-      {
         "id": "1b462bd1-ea42-49df-9c89-8a020e9b5f50",
         "name": "offline_access",
         "description": "${role_offline-access}",
@@ -150,7 +115,324 @@
         "containerId": "4b9ba662-ebff-4da2-bca9-6240095650a6",
         "attributes": {}
       }
-    ]
+    ],
+    "client": {
+      "realm-management": [
+        {
+          "id": "3a5e4e23-3b05-44fa-8d55-515a834b23a9",
+          "name": "view-authorization",
+          "description": "${role_view-authorization}",
+          "composite": false,
+          "clientRole": true,
+          "containerId": "8e5e165e-e954-46b9-8bbd-cbd49a6a8916",
+          "attributes": {}
+        },
+        {
+          "id": "8ba89e53-3914-4919-9727-ca3ff45aae38",
+          "name": "view-identity-providers",
+          "description": "${role_view-identity-providers}",
+          "composite": false,
+          "clientRole": true,
+          "containerId": "8e5e165e-e954-46b9-8bbd-cbd49a6a8916",
+          "attributes": {}
+        },
+        {
+          "id": "fcaed50a-9074-4390-895b-b773682ed211",
+          "name": "manage-realm",
+          "description": "${role_manage-realm}",
+          "composite": false,
+          "clientRole": true,
+          "containerId": "8e5e165e-e954-46b9-8bbd-cbd49a6a8916",
+          "attributes": {}
+        },
+        {
+          "id": "cdec6bf4-1fc4-4318-931c-44166e46ae60",
+          "name": "manage-clients",
+          "description": "${role_manage-clients}",
+          "composite": false,
+          "clientRole": true,
+          "containerId": "8e5e165e-e954-46b9-8bbd-cbd49a6a8916",
+          "attributes": {}
+        },
+        {
+          "id": "2636b8d5-5999-42af-9e11-24e0a32fb8ad",
+          "name": "impersonation",
+          "description": "${role_impersonation}",
+          "composite": false,
+          "clientRole": true,
+          "containerId": "8e5e165e-e954-46b9-8bbd-cbd49a6a8916",
+          "attributes": {}
+        },
+        {
+          "id": "a8d1f58c-a3de-477c-afc5-4517f0dcae04",
+          "name": "manage-identity-providers",
+          "description": "${role_manage-identity-providers}",
+          "composite": false,
+          "clientRole": true,
+          "containerId": "8e5e165e-e954-46b9-8bbd-cbd49a6a8916",
+          "attributes": {}
+        },
+        {
+          "id": "5692ff60-a527-4681-90b1-588d3caa3e9d",
+          "name": "view-clients",
+          "description": "${role_view-clients}",
+          "composite": true,
+          "composites": {
+            "client": {
+              "realm-management": [
+                "query-clients"
+              ]
+            }
+          },
+          "clientRole": true,
+          "containerId": "8e5e165e-e954-46b9-8bbd-cbd49a6a8916",
+          "attributes": {}
+        },
+        {
+          "id": "6c47ba12-99cf-4428-b758-bc4360db7341",
+          "name": "view-users",
+          "description": "${role_view-users}",
+          "composite": true,
+          "composites": {
+            "client": {
+              "realm-management": [
+                "query-users",
+                "query-groups"
+              ]
+            }
+          },
+          "clientRole": true,
+          "containerId": "8e5e165e-e954-46b9-8bbd-cbd49a6a8916",
+          "attributes": {}
+        },
+        {
+          "id": "64a0ce88-8208-4ff9-a78c-1ffa5e9e55a1",
+          "name": "view-events",
+          "description": "${role_view-events}",
+          "composite": false,
+          "clientRole": true,
+          "containerId": "8e5e165e-e954-46b9-8bbd-cbd49a6a8916",
+          "attributes": {}
+        },
+        {
+          "id": "7823f76d-d880-4382-8672-12cecb50913a",
+          "name": "query-realms",
+          "description": "${role_query-realms}",
+          "composite": false,
+          "clientRole": true,
+          "containerId": "8e5e165e-e954-46b9-8bbd-cbd49a6a8916",
+          "attributes": {}
+        },
+        {
+          "id": "8bc48e1c-ea61-4783-a531-40a96124cc4e",
+          "name": "query-users",
+          "description": "${role_query-users}",
+          "composite": false,
+          "clientRole": true,
+          "containerId": "8e5e165e-e954-46b9-8bbd-cbd49a6a8916",
+          "attributes": {}
+        },
+        {
+          "id": "0405140c-6679-463b-8f8a-0ab6818d1130",
+          "name": "manage-authorization",
+          "description": "${role_manage-authorization}",
+          "composite": false,
+          "clientRole": true,
+          "containerId": "8e5e165e-e954-46b9-8bbd-cbd49a6a8916",
+          "attributes": {}
+        },
+        {
+          "id": "6267ded3-6d03-4460-a301-2b83b6a3071d",
+          "name": "realm-admin",
+          "description": "${role_realm-admin}",
+          "composite": true,
+          "composites": {
+            "client": {
+              "realm-management": [
+                "view-authorization",
+                "view-identity-providers",
+                "manage-realm",
+                "manage-clients",
+                "impersonation",
+                "manage-identity-providers",
+                "view-clients",
+                "view-users",
+                "view-events",
+                "query-realms",
+                "query-users",
+                "manage-authorization",
+                "view-realm",
+                "create-client",
+                "manage-users",
+                "manage-events",
+                "query-clients",
+                "query-groups"
+              ]
+            }
+          },
+          "clientRole": true,
+          "containerId": "8e5e165e-e954-46b9-8bbd-cbd49a6a8916",
+          "attributes": {}
+        },
+        {
+          "id": "d5833ea9-9bc8-4a9e-b256-1ace90e1c00f",
+          "name": "view-realm",
+          "description": "${role_view-realm}",
+          "composite": false,
+          "clientRole": true,
+          "containerId": "8e5e165e-e954-46b9-8bbd-cbd49a6a8916",
+          "attributes": {}
+        },
+        {
+          "id": "acbe0777-1068-4cdc-bcf4-4a35305e314a",
+          "name": "create-client",
+          "description": "${role_create-client}",
+          "composite": false,
+          "clientRole": true,
+          "containerId": "8e5e165e-e954-46b9-8bbd-cbd49a6a8916",
+          "attributes": {}
+        },
+        {
+          "id": "c433e937-4954-494e-906e-3c77c81f26b4",
+          "name": "manage-events",
+          "description": "${role_manage-events}",
+          "composite": false,
+          "clientRole": true,
+          "containerId": "8e5e165e-e954-46b9-8bbd-cbd49a6a8916",
+          "attributes": {}
+        },
+        {
+          "id": "8715567e-dbf6-44c4-9965-93ff1f2820dd",
+          "name": "manage-users",
+          "description": "${role_manage-users}",
+          "composite": false,
+          "clientRole": true,
+          "containerId": "8e5e165e-e954-46b9-8bbd-cbd49a6a8916",
+          "attributes": {}
+        },
+        {
+          "id": "b266ab11-1012-434d-a993-515b5e713feb",
+          "name": "query-clients",
+          "description": "${role_query-clients}",
+          "composite": false,
+          "clientRole": true,
+          "containerId": "8e5e165e-e954-46b9-8bbd-cbd49a6a8916",
+          "attributes": {}
+        },
+        {
+          "id": "436309b5-76f5-424f-80a9-b80d06e9be1a",
+          "name": "query-groups",
+          "description": "${role_query-groups}",
+          "composite": false,
+          "clientRole": true,
+          "containerId": "8e5e165e-e954-46b9-8bbd-cbd49a6a8916",
+          "attributes": {}
+        }
+      ],
+      "security-admin-console": [],
+      "admin-cli": [],
+      "kaleo-event-app": [],
+      "account-console": [],
+      "broker": [
+        {
+          "id": "8fb72a03-354d-48c9-954f-0002d003d313",
+          "name": "read-token",
+          "description": "${role_read-token}",
+          "composite": false,
+          "clientRole": true,
+          "containerId": "8836bf37-1bed-4a8e-9eb3-d19a946daae4",
+          "attributes": {}
+        }
+      ],
+      "account": [
+        {
+          "id": "cb167b97-276b-4d34-92a6-401ec1c4f449",
+          "name": "delete-account",
+          "description": "${role_delete-account}",
+          "composite": false,
+          "clientRole": true,
+          "containerId": "49610884-54c7-4bdf-8943-8dad60811871",
+          "attributes": {}
+        },
+        {
+          "id": "4c4bbc37-e80c-43de-a6e9-f3072c286a09",
+          "name": "view-profile",
+          "description": "${role_view-profile}",
+          "composite": false,
+          "clientRole": true,
+          "containerId": "49610884-54c7-4bdf-8943-8dad60811871",
+          "attributes": {}
+        },
+        {
+          "id": "8f15fc7e-3821-482a-8f80-4b8c0f3323df",
+          "name": "view-applications",
+          "description": "${role_view-applications}",
+          "composite": false,
+          "clientRole": true,
+          "containerId": "49610884-54c7-4bdf-8943-8dad60811871",
+          "attributes": {}
+        },
+        {
+          "id": "539e1e4f-74ae-46b8-93c3-219ba84fe10c",
+          "name": "view-consent",
+          "description": "${role_view-consent}",
+          "composite": false,
+          "clientRole": true,
+          "containerId": "49610884-54c7-4bdf-8943-8dad60811871",
+          "attributes": {}
+        },
+        {
+          "id": "b8b8708f-4882-4df7-80bd-2c8b08d4ed59",
+          "name": "view-groups",
+          "description": "${role_view-groups}",
+          "composite": false,
+          "clientRole": true,
+          "containerId": "49610884-54c7-4bdf-8943-8dad60811871",
+          "attributes": {}
+        },
+        {
+          "id": "841a18d8-48a3-4c6b-928b-8bcd12cf5189",
+          "name": "manage-consent",
+          "description": "${role_manage-consent}",
+          "composite": true,
+          "composites": {
+            "client": {
+              "account": [
+                "view-consent"
+              ]
+            }
+          },
+          "clientRole": true,
+          "containerId": "49610884-54c7-4bdf-8943-8dad60811871",
+          "attributes": {}
+        },
+        {
+          "id": "ad50c41a-f823-4f08-b77d-fd795f6f6ee8",
+          "name": "manage-account",
+          "description": "${role_manage-account}",
+          "composite": true,
+          "composites": {
+            "client": {
+              "account": [
+                "manage-account-links"
+              ]
+            }
+          },
+          "clientRole": true,
+          "containerId": "49610884-54c7-4bdf-8943-8dad60811871",
+          "attributes": {}
+        },
+        {
+          "id": "984f6534-68af-4b30-a2f7-8393b59219e9",
+          "name": "manage-account-links",
+          "description": "${role_manage-account-links}",
+          "composite": false,
+          "clientRole": true,
+          "containerId": "49610884-54c7-4bdf-8943-8dad60811871",
+          "attributes": {}
+        }
+      ]
+    }
   },
   "groups": [],
   "defaultRole": {
@@ -210,6 +492,384 @@
       "clientScope": "offline_access",
       "roles": [
         "offline_access"
+      ]
+    }
+  ],
+  "clientScopeMappings": {
+    "account": [
+      {
+        "client": "account-console",
+        "roles": [
+          "manage-account",
+          "view-groups"
+        ]
+      }
+    ]
+  },
+  "clients": [
+    {
+      "id": "49610884-54c7-4bdf-8943-8dad60811871",
+      "clientId": "account",
+      "name": "${client_account}",
+      "rootUrl": "${authBaseUrl}",
+      "baseUrl": "/realms/kaleo-events/account/",
+      "surrogateAuthRequired": false,
+      "enabled": true,
+      "alwaysDisplayInConsole": false,
+      "clientAuthenticatorType": "client-secret",
+      "redirectUris": [
+        "/realms/kaleo-events/account/*"
+      ],
+      "webOrigins": [],
+      "notBefore": 0,
+      "bearerOnly": false,
+      "consentRequired": false,
+      "standardFlowEnabled": true,
+      "implicitFlowEnabled": false,
+      "directAccessGrantsEnabled": false,
+      "serviceAccountsEnabled": false,
+      "publicClient": true,
+      "frontchannelLogout": false,
+      "protocol": "openid-connect",
+      "attributes": {
+        "realm_client": "false",
+        "post.logout.redirect.uris": "+"
+      },
+      "authenticationFlowBindingOverrides": {},
+      "fullScopeAllowed": false,
+      "nodeReRegistrationTimeout": 0,
+      "defaultClientScopes": [
+        "web-origins",
+        "acr",
+        "profile",
+        "roles",
+        "basic",
+        "email"
+      ],
+      "optionalClientScopes": [
+        "address",
+        "phone",
+        "organization",
+        "offline_access",
+        "microprofile-jwt"
+      ]
+    },
+    {
+      "id": "d27a1b5d-3fc0-467a-a75c-b359986ebb8e",
+      "clientId": "account-console",
+      "name": "${client_account-console}",
+      "rootUrl": "${authBaseUrl}",
+      "baseUrl": "/realms/kaleo-events/account/",
+      "surrogateAuthRequired": false,
+      "enabled": true,
+      "alwaysDisplayInConsole": false,
+      "clientAuthenticatorType": "client-secret",
+      "redirectUris": [
+        "/realms/kaleo-events/account/*"
+      ],
+      "webOrigins": [],
+      "notBefore": 0,
+      "bearerOnly": false,
+      "consentRequired": false,
+      "standardFlowEnabled": true,
+      "implicitFlowEnabled": false,
+      "directAccessGrantsEnabled": false,
+      "serviceAccountsEnabled": false,
+      "publicClient": true,
+      "frontchannelLogout": false,
+      "protocol": "openid-connect",
+      "attributes": {
+        "realm_client": "false",
+        "post.logout.redirect.uris": "+",
+        "pkce.code.challenge.method": "S256"
+      },
+      "authenticationFlowBindingOverrides": {},
+      "fullScopeAllowed": false,
+      "nodeReRegistrationTimeout": 0,
+      "protocolMappers": [
+        {
+          "id": "f0e1daaf-69f8-4844-826a-61d53a51ec6e",
+          "name": "audience resolve",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-audience-resolve-mapper",
+          "consentRequired": false,
+          "config": {}
+        }
+      ],
+      "defaultClientScopes": [
+        "web-origins",
+        "acr",
+        "profile",
+        "roles",
+        "basic",
+        "email"
+      ],
+      "optionalClientScopes": [
+        "address",
+        "phone",
+        "organization",
+        "offline_access",
+        "microprofile-jwt"
+      ]
+    },
+    {
+      "id": "687d64d9-85ca-41e9-b3eb-f301e77a854a",
+      "clientId": "admin-cli",
+      "name": "${client_admin-cli}",
+      "surrogateAuthRequired": false,
+      "enabled": true,
+      "alwaysDisplayInConsole": false,
+      "clientAuthenticatorType": "client-secret",
+      "redirectUris": [],
+      "webOrigins": [],
+      "notBefore": 0,
+      "bearerOnly": false,
+      "consentRequired": false,
+      "standardFlowEnabled": false,
+      "implicitFlowEnabled": false,
+      "directAccessGrantsEnabled": true,
+      "serviceAccountsEnabled": false,
+      "publicClient": true,
+      "frontchannelLogout": false,
+      "protocol": "openid-connect",
+      "attributes": {
+        "realm_client": "false",
+        "client.use.lightweight.access.token.enabled": "true"
+      },
+      "authenticationFlowBindingOverrides": {},
+      "fullScopeAllowed": true,
+      "nodeReRegistrationTimeout": 0,
+      "defaultClientScopes": [
+        "web-origins",
+        "acr",
+        "profile",
+        "roles",
+        "basic",
+        "email"
+      ],
+      "optionalClientScopes": [
+        "address",
+        "phone",
+        "organization",
+        "offline_access",
+        "microprofile-jwt"
+      ]
+    },
+    {
+      "id": "8836bf37-1bed-4a8e-9eb3-d19a946daae4",
+      "clientId": "broker",
+      "name": "${client_broker}",
+      "surrogateAuthRequired": false,
+      "enabled": true,
+      "alwaysDisplayInConsole": false,
+      "clientAuthenticatorType": "client-secret",
+      "redirectUris": [],
+      "webOrigins": [],
+      "notBefore": 0,
+      "bearerOnly": true,
+      "consentRequired": false,
+      "standardFlowEnabled": true,
+      "implicitFlowEnabled": false,
+      "directAccessGrantsEnabled": false,
+      "serviceAccountsEnabled": false,
+      "publicClient": false,
+      "frontchannelLogout": false,
+      "protocol": "openid-connect",
+      "attributes": {
+        "realm_client": "true"
+      },
+      "authenticationFlowBindingOverrides": {},
+      "fullScopeAllowed": false,
+      "nodeReRegistrationTimeout": 0,
+      "defaultClientScopes": [
+        "web-origins",
+        "acr",
+        "profile",
+        "roles",
+        "basic",
+        "email"
+      ],
+      "optionalClientScopes": [
+        "address",
+        "phone",
+        "organization",
+        "offline_access",
+        "microprofile-jwt"
+      ]
+    },
+    {
+      "id": "6ad3e80a-b36a-4192-91c7-a9cad3e0b75b",
+      "clientId": "kaleo-event-app",
+      "name": "kaleo-event-app",
+      "description": "Kaleo is a secure REST API for church and ministry program management. Organizers publish programs, participants register for limited capacity gatherings, and staff validate attendance using QR coded passes.",
+      "rootUrl": "",
+      "adminUrl": "",
+      "baseUrl": "http://localhost:5173/",
+      "surrogateAuthRequired": false,
+      "enabled": true,
+      "alwaysDisplayInConsole": false,
+      "clientAuthenticatorType": "client-secret",
+      "redirectUris": [
+        "http://localhost/swagger-ui/oauth2-redirect.html",
+        "http://localhost:5173/callback",
+        "http://localhost:8081/swagger-ui/oauth2-redirect.html",
+        "http://localhost/swagger-ui/*"
+      ],
+      "webOrigins": [
+        "http://localhost:8081",
+        "http://localhost",
+        "http://localhost:5173"
+      ],
+      "notBefore": 0,
+      "bearerOnly": false,
+      "consentRequired": false,
+      "standardFlowEnabled": true,
+      "implicitFlowEnabled": false,
+      "directAccessGrantsEnabled": false,
+      "serviceAccountsEnabled": false,
+      "publicClient": true,
+      "frontchannelLogout": true,
+      "protocol": "openid-connect",
+      "attributes": {
+        "realm_client": "false",
+        "oidc.ciba.grant.enabled": "false",
+        "backchannel.logout.session.required": "true",
+        "standard.token.exchange.enabled": "false",
+        "post.logout.redirect.uris": "http://localhost:5173##http://localhost",
+        "frontchannel.logout.session.required": "true",
+        "oauth2.device.authorization.grant.enabled": "false",
+        "display.on.consent.screen": "false",
+        "backchannel.logout.revoke.offline.tokens": "false",
+        "dpop.bound.access.tokens": "false"
+      },
+      "authenticationFlowBindingOverrides": {},
+      "fullScopeAllowed": true,
+      "nodeReRegistrationTimeout": -1,
+      "defaultClientScopes": [
+        "web-origins",
+        "acr",
+        "profile",
+        "roles",
+        "basic",
+        "email"
+      ],
+      "optionalClientScopes": [
+        "address",
+        "phone",
+        "organization",
+        "offline_access",
+        "microprofile-jwt"
+      ]
+    },
+    {
+      "id": "8e5e165e-e954-46b9-8bbd-cbd49a6a8916",
+      "clientId": "realm-management",
+      "name": "${client_realm-management}",
+      "surrogateAuthRequired": false,
+      "enabled": true,
+      "alwaysDisplayInConsole": false,
+      "clientAuthenticatorType": "client-secret",
+      "redirectUris": [],
+      "webOrigins": [],
+      "notBefore": 0,
+      "bearerOnly": true,
+      "consentRequired": false,
+      "standardFlowEnabled": true,
+      "implicitFlowEnabled": false,
+      "directAccessGrantsEnabled": false,
+      "serviceAccountsEnabled": false,
+      "publicClient": false,
+      "frontchannelLogout": false,
+      "protocol": "openid-connect",
+      "attributes": {
+        "realm_client": "true"
+      },
+      "authenticationFlowBindingOverrides": {},
+      "fullScopeAllowed": false,
+      "nodeReRegistrationTimeout": 0,
+      "defaultClientScopes": [
+        "web-origins",
+        "acr",
+        "profile",
+        "roles",
+        "basic",
+        "email"
+      ],
+      "optionalClientScopes": [
+        "address",
+        "phone",
+        "organization",
+        "offline_access",
+        "microprofile-jwt"
+      ]
+    },
+    {
+      "id": "3d84b5b0-42d3-4270-bb38-eaa78f9516bb",
+      "clientId": "security-admin-console",
+      "name": "${client_security-admin-console}",
+      "rootUrl": "${authAdminUrl}",
+      "baseUrl": "/admin/kaleo-events/console/",
+      "surrogateAuthRequired": false,
+      "enabled": true,
+      "alwaysDisplayInConsole": false,
+      "clientAuthenticatorType": "client-secret",
+      "redirectUris": [
+        "/admin/kaleo-events/console/*"
+      ],
+      "webOrigins": [
+        "+"
+      ],
+      "notBefore": 0,
+      "bearerOnly": false,
+      "consentRequired": false,
+      "standardFlowEnabled": true,
+      "implicitFlowEnabled": false,
+      "directAccessGrantsEnabled": false,
+      "serviceAccountsEnabled": false,
+      "publicClient": true,
+      "frontchannelLogout": false,
+      "protocol": "openid-connect",
+      "attributes": {
+        "realm_client": "false",
+        "client.use.lightweight.access.token.enabled": "true",
+        "post.logout.redirect.uris": "+",
+        "pkce.code.challenge.method": "S256"
+      },
+      "authenticationFlowBindingOverrides": {},
+      "fullScopeAllowed": true,
+      "nodeReRegistrationTimeout": 0,
+      "protocolMappers": [
+        {
+          "id": "68e2fd92-4ff4-4459-880a-3a697846344b",
+          "name": "locale",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-attribute-mapper",
+          "consentRequired": false,
+          "config": {
+            "introspection.token.claim": "true",
+            "userinfo.token.claim": "true",
+            "user.attribute": "locale",
+            "id.token.claim": "true",
+            "access.token.claim": "true",
+            "claim.name": "locale",
+            "jsonType.label": "String"
+          }
+        }
+      ],
+      "defaultClientScopes": [
+        "web-origins",
+        "acr",
+        "profile",
+        "roles",
+        "basic",
+        "email"
+      ],
+      "optionalClientScopes": [
+        "address",
+        "phone",
+        "organization",
+        "offline_access",
+        "microprofile-jwt"
       ]
     }
   ],
