@@ -1,17 +1,17 @@
 import {useAuth} from "react-oidc-context";
 import {Button} from "../components/ui/button";
 import {useNavigate} from "react-router";
-import {AlertCircle, BookOpen, Heart, Search, Sparkles, Users, X} from "lucide-react";
+import {BookOpen, Heart, Search, Sparkles, Users, X} from "lucide-react";
 import {Suspense, useEffect, useRef, useState} from "react";
 import {PublishedProgramSummary, SpringBootPagination} from "@/domain/domain";
 import {listPublishedPrograms, searchPublishedPrograms} from "@/lib/api";
-import {Alert, AlertDescription, AlertTitle} from "@/components/ui/alert";
 import PublishedProgramCard from "@/components/published-program-card";
 import {SimplePagination} from "@/components/simple-pagination";
 import Background3D from "@/components/background-3d";
 import KaleoLogo from "@/assets/kaleo.svg";
 import Footer from "@/components/footer";
 import TypewriterText from "@/components/typewriter-text";
+import {InlineError} from "@/components/errors";
 
 const AttendeeLandingPage: React.FC = () => {
   const { isAuthenticated, isLoading, signinRedirect, signoutRedirect } =
@@ -93,13 +93,13 @@ const AttendeeLandingPage: React.FC = () => {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-black text-white">
-        <Alert variant="destructive" className="bg-gray-900 border-red-700">
-          <AlertCircle className="h-4 w-4" />
-          <AlertTitle>Error</AlertTitle>
-          <AlertDescription>{error}</AlertDescription>
-        </Alert>
-      </div>
+      <InlineError 
+        message={error} 
+        onRetry={() => {
+          setError(undefined);
+          refreshPublishedPrograms();
+        }}
+      />
     );
   }
 
