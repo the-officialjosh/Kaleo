@@ -1,22 +1,25 @@
 import {StrictMode} from "react";
 import {createRoot} from "react-dom/client";
 import "./index.css";
-import AttendeeLandingPage from "./pages/attendee-landing-page.tsx";
 import {AuthProvider} from "react-oidc-context";
 import {createBrowserRouter, Outlet, RouterProvider} from "react-router";
-import OrganizersLandingPage from "./pages/organizers-landing-page.tsx";
-import DashboardManageProgramPage from "./pages/dashboard-manage-program-page.tsx";
-import LoginPage from "./pages/login-page.tsx";
-import ProtectedRoute from "./components/protected-route.tsx";
-import CallbackPage from "./pages/callback-page.tsx";
-import DashboardListProgramsPage from "./pages/dashboard-list-programs-page.tsx";
-import PublishedProgramsPage from "./pages/published-programs-page.tsx";
-import PurchasePassPage from "./pages/purchase-pass-page.tsx";
-import DashboardListPasses from "./pages/dashboard-list-passes.tsx";
-import DashboardPage from "./pages/dashboard-page.tsx";
-import DashboardViewPassPage from "./pages/dashboard-view-pass-page.tsx";
-import DashboardValidateQrPage from "./pages/dashboard-validate-qr-page.tsx";
-import CustomCursor from "./components/custom-cursor.tsx";
+
+// Pages
+import AttendeeLandingPage from "./pages/public/attendee-landing-page";
+import OrganizersLandingPage from "./pages/public/organizers-landing-page";
+import PublishedProgramsPage from "./pages/public/published-programs-page";
+import PurchasePassPage from "./pages/public/purchase-pass-page";
+import LoginPage from "./pages/auth/login-page";
+import CallbackPage from "./pages/auth/callback-page";
+import DashboardPage from "./pages/dashboard/dashboard-page";
+import DashboardListProgramsPage from "./pages/dashboard/dashboard-list-programs-page";
+import DashboardManageProgramPage from "./pages/dashboard/dashboard-manage-program-page";
+import DashboardListPasses from "./pages/dashboard/dashboard-list-passes";
+import DashboardViewPassPage from "./pages/dashboard/dashboard-view-pass-page";
+import DashboardValidateQrPage from "./pages/dashboard/dashboard-validate-qr-page";
+
+// Components
+import {CustomCursor, ProtectedRoute} from "./components/common";
 import {ErrorBoundary, ErrorPage, NotFoundPage} from "./components/errors";
 
 const router = createBrowserRouter([

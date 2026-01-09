@@ -1,7 +1,7 @@
-import React, {Component, ErrorInfo, ReactNode} from "react";
+import {Component, ErrorInfo, ReactNode} from "react";
 import {AlertTriangle, Home, RefreshCw} from "lucide-react";
 import {Button} from "../ui/button";
-import Background3D from "@/components/background-3d";
+import Background3D from "@/components/landing/background-3d";
 
 interface Props {
   children: ReactNode;

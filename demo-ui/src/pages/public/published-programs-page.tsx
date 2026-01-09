@@ -1,4 +1,4 @@
-import RandomProgramImage from "@/components/random-program-image";
+import RandomProgramImage from "@/components/programs/random-program-image";
 import {Alert, AlertDescription, AlertTitle} from "@/components/ui/alert";
 import {Button} from "@/components/ui/button";
 import {PublishedProgramDetails, PublishedProgramPassTypeDetails,} from "@/domain/domain";
