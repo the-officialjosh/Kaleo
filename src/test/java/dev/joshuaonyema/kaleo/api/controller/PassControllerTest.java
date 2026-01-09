@@ -78,11 +78,13 @@ class PassControllerTest {
         pass = new Pass();
         pass.setId(passId);
         pass.setStatus(PassStatus.ACTIVE);
+        pass.setManualCode("ABC123");
         pass.setPassType(passType);
 
         listPassResponseDto = new ListPassResponseDto();
         listPassResponseDto.setId(passId);
         listPassResponseDto.setStatus(PassStatus.ACTIVE);
+        listPassResponseDto.setManualCode("ABC123");
         listPassResponseDto.setPassTypeName("General Admission");
         listPassResponseDto.setPassTypePrice(BigDecimal.TEN);
         listPassResponseDto.setPassTypeDescription("Standard entry");
@@ -94,6 +96,7 @@ class PassControllerTest {
         getPassResponseDto = new GetPassResponseDto();
         getPassResponseDto.setId(passId);
         getPassResponseDto.setStatus(PassStatus.ACTIVE);
+        getPassResponseDto.setManualCode("ABC123");
         getPassResponseDto.setPassTypeName("General Admission");
         getPassResponseDto.setPassTypePrice(BigDecimal.TEN);
         getPassResponseDto.setPassTypeDescription("Standard entry");

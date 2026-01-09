@@ -21,6 +21,7 @@ import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -69,6 +70,7 @@ class PassServiceImplTest {
         when(currentUserService.getCurrentUser()).thenReturn(user);
         when(passTypeRepository.findByIdWithLock(passTypeId)).thenReturn(Optional.of(passType));
         when(passRepository.countByPassTypeId(passTypeId)).thenReturn(50);
+        when(passRepository.findByManualCode(anyString())).thenReturn(Optional.empty());
         when(passRepository.save(any(Pass.class))).thenAnswer(invocation -> invocation.getArgument(0));
         when(qrCodeService.generateQrCode(any(Pass.class))).thenReturn(new QrCode());
 
@@ -82,6 +84,7 @@ class PassServiceImplTest {
         when(currentUserService.getCurrentUser()).thenReturn(user);
         when(passTypeRepository.findByIdWithLock(passTypeId)).thenReturn(Optional.of(passType));
         when(passRepository.countByPassTypeId(passTypeId)).thenReturn(0);
+        when(passRepository.findByManualCode(anyString())).thenReturn(Optional.empty());
         when(passRepository.save(any(Pass.class))).thenAnswer(invocation -> invocation.getArgument(0));
         when(qrCodeService.generateQrCode(any(Pass.class))).thenReturn(new QrCode());
 
@@ -99,6 +102,7 @@ class PassServiceImplTest {
         when(currentUserService.getCurrentUser()).thenReturn(user);
         when(passTypeRepository.findByIdWithLock(passTypeId)).thenReturn(Optional.of(passType));
         when(passRepository.countByPassTypeId(passTypeId)).thenReturn(0);
+        when(passRepository.findByManualCode(anyString())).thenReturn(Optional.empty());
         when(passRepository.save(any(Pass.class))).thenAnswer(invocation -> invocation.getArgument(0));
         when(qrCodeService.generateQrCode(any(Pass.class))).thenReturn(new QrCode());
 
@@ -116,6 +120,7 @@ class PassServiceImplTest {
         when(currentUserService.getCurrentUser()).thenReturn(user);
         when(passTypeRepository.findByIdWithLock(passTypeId)).thenReturn(Optional.of(passType));
         when(passRepository.countByPassTypeId(passTypeId)).thenReturn(0);
+        when(passRepository.findByManualCode(anyString())).thenReturn(Optional.empty());
         when(passRepository.save(any(Pass.class))).thenAnswer(invocation -> invocation.getArgument(0));
         when(qrCodeService.generateQrCode(any(Pass.class))).thenReturn(new QrCode());
 
@@ -133,6 +138,7 @@ class PassServiceImplTest {
         when(currentUserService.getCurrentUser()).thenReturn(user);
         when(passTypeRepository.findByIdWithLock(passTypeId)).thenReturn(Optional.of(passType));
         when(passRepository.countByPassTypeId(passTypeId)).thenReturn(0);
+        when(passRepository.findByManualCode(anyString())).thenReturn(Optional.empty());
         when(passRepository.save(any(Pass.class))).thenAnswer(invocation -> invocation.getArgument(0));
         when(qrCodeService.generateQrCode(any(Pass.class))).thenReturn(new QrCode());
 
@@ -149,6 +155,7 @@ class PassServiceImplTest {
         when(currentUserService.getCurrentUser()).thenReturn(user);
         when(passTypeRepository.findByIdWithLock(passTypeId)).thenReturn(Optional.of(passType));
         when(passRepository.countByPassTypeId(passTypeId)).thenReturn(99); // At 99, can still buy 1 more
+        when(passRepository.findByManualCode(anyString())).thenReturn(Optional.empty());
         when(passRepository.save(any(Pass.class))).thenAnswer(invocation -> invocation.getArgument(0));
         when(qrCodeService.generateQrCode(any(Pass.class))).thenReturn(new QrCode());
 
@@ -199,6 +206,7 @@ class PassServiceImplTest {
         when(currentUserService.getCurrentUser()).thenReturn(user);
         when(passTypeRepository.findByIdWithLock(passTypeId)).thenReturn(Optional.of(passType));
         when(passRepository.countByPassTypeId(passTypeId)).thenReturn(0);
+        when(passRepository.findByManualCode(anyString())).thenReturn(Optional.empty());
         when(passRepository.save(any(Pass.class))).thenAnswer(invocation -> invocation.getArgument(0));
         when(qrCodeService.generateQrCode(any(Pass.class))).thenReturn(new QrCode());
 
@@ -213,11 +221,50 @@ class PassServiceImplTest {
         when(currentUserService.getCurrentUser()).thenReturn(user);
         when(passTypeRepository.findByIdWithLock(passTypeId)).thenReturn(Optional.of(passType));
         when(passRepository.countByPassTypeId(passTypeId)).thenReturn(0);
+        when(passRepository.findByManualCode(anyString())).thenReturn(Optional.empty());
         when(passRepository.save(any(Pass.class))).thenAnswer(invocation -> invocation.getArgument(0));
         when(qrCodeService.generateQrCode(any(Pass.class))).thenReturn(new QrCode());
 
         passService.purchasePass(passTypeId);
 
         verify(passRepository).countByPassTypeId(passTypeId);
+    }
+
+    // ==================== Manual Code Generation Tests ====================
+
+    @Test
+    void purchasePass_whenCalled_thenGeneratesManualCode() {
+        when(currentUserService.getCurrentUser()).thenReturn(user);
+        when(passTypeRepository.findByIdWithLock(passTypeId)).thenReturn(Optional.of(passType));
+        when(passRepository.countByPassTypeId(passTypeId)).thenReturn(0);
+        when(passRepository.findByManualCode(anyString())).thenReturn(Optional.empty());
+        when(passRepository.save(any(Pass.class))).thenAnswer(invocation -> invocation.getArgument(0));
+        when(qrCodeService.generateQrCode(any(Pass.class))).thenReturn(new QrCode());
+
+        passService.purchasePass(passTypeId);
+
+        ArgumentCaptor<Pass> passCaptor = ArgumentCaptor.forClass(Pass.class);
+        verify(passRepository, atLeastOnce()).save(passCaptor.capture());
+
+        Pass savedPass = passCaptor.getValue();
+        assertNotNull(savedPass.getManualCode());
+        assertEquals(6, savedPass.getManualCode().length());
+    }
+
+    @Test
+    void purchasePass_whenManualCodeCollision_thenRegeneratesCode() {
+        when(currentUserService.getCurrentUser()).thenReturn(user);
+        when(passTypeRepository.findByIdWithLock(passTypeId)).thenReturn(Optional.of(passType));
+        when(passRepository.countByPassTypeId(passTypeId)).thenReturn(0);
+        // First code collides, second one is unique
+        when(passRepository.findByManualCode(anyString()))
+                .thenReturn(Optional.of(new Pass()))
+                .thenReturn(Optional.empty());
+        when(passRepository.save(any(Pass.class))).thenAnswer(invocation -> invocation.getArgument(0));
+        when(qrCodeService.generateQrCode(any(Pass.class))).thenReturn(new QrCode());
+
+        passService.purchasePass(passTypeId);
+
+        verify(passRepository, times(2)).findByManualCode(anyString());
     }
 }
