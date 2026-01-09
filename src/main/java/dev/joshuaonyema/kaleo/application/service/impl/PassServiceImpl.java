@@ -17,6 +17,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -61,5 +62,11 @@ public class PassServiceImpl implements PassService {
     public Page<Pass> listPassesForUser(Pageable pageable) {
         UUID userId = currentUserService.getCurrentUser().getId();
         return passRepository.findByRegistrantId(userId, pageable);
+    }
+
+    @Override
+    public Optional<Pass> getPassForUser(UUID passID) {
+        UUID userId = currentUserService.getCurrentUser().getId();
+        return passRepository.findByIdAndRegistrantId(passID, userId);
     }
 }
