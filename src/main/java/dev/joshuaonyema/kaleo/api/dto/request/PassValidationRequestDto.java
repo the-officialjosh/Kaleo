@@ -14,6 +14,8 @@ import java.util.UUID;
 @NoArgsConstructor
 @ValidPassValidationRequest
 public class PassValidationRequestDto {
+    @NotNull(message = "programId is required")
+    private UUID programId;
     private UUID qrCodeId;
     private String manualCode;
     @NotNull(message = "method is required")
