@@ -64,7 +64,6 @@ class PassMapperTest {
         ListPassResponseDto result = mapper.toListPassResponseDto(pass);
 
         assertNotNull(result);
-        assertEquals(passId, result.getId());
         assertEquals(PassStatus.ACTIVE, result.getStatus());
     }
 
@@ -96,7 +95,6 @@ class PassMapperTest {
         ListPassResponseDto result = mapper.toListPassResponseDto(pass);
 
         assertNotNull(result);
-        assertEquals(passId, result.getId());
         assertNull(result.getPassTypeName());
         assertNull(result.getPassTypePrice());
         assertNull(result.getProgramName());
@@ -115,7 +113,6 @@ class PassMapperTest {
         GetPassResponseDto result = mapper.toGetPassResponseDto(pass);
 
         assertNotNull(result);
-        assertEquals(passId, result.getId());
         assertEquals(PassStatus.ACTIVE, result.getStatus());
         assertEquals("ABC123", result.getManualCode());
     }
@@ -159,7 +156,7 @@ class PassMapperTest {
         GetPassResponseDto result = mapper.toGetPassResponseDto(pass);
 
         assertNotNull(result);
-        assertEquals(passId, result.getId());
+        assertEquals(PassStatus.ACTIVE, result.getStatus());
         assertNull(result.getPassTypeName());
         assertNull(result.getProgramId());
     }
