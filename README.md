@@ -69,7 +69,7 @@ cd demo-ui && npm install && npm run dev
 | Service | URL |
 |---------|-----|
 | API | http://localhost:8080 |
-| Frontend | http://localhost:5173 |
+| Frontend | http://localhost |
 | Swagger UI | http://localhost:8080/swagger-ui/index.html |
 | Keycloak | http://localhost:9095 |
 
