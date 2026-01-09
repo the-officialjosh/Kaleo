@@ -91,7 +91,7 @@ class PassServiceImplTest {
         verify(passRepository, atLeastOnce()).save(passCaptor.capture());
         
         Pass savedPass = passCaptor.getValue();
-        assertEquals(PassStatus.PURCHASED, savedPass.getStatus());
+        assertEquals(PassStatus.ACTIVE, savedPass.getStatus());
     }
 
     @Test

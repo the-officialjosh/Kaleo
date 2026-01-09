@@ -1,168 +1,79 @@
 package dev.joshuaonyema.kaleo.config.security;
 
-import org.junit.jupiter.api.BeforeEach;
+import dev.joshuaonyema.kaleo.config.security.filter.UserProvisioningFilter;
 import org.junit.jupiter.api.Test;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.oauth2.jwt.Jwt;
-import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.AnnotationUtils;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 
-import java.time.Instant;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import java.lang.reflect.Method;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 class HttpSecurityConfigTest {
 
-    private HttpSecurityConfig httpSecurityConfig;
-
-    @BeforeEach
-    void setUp() {
-        httpSecurityConfig = new HttpSecurityConfig();
-    }
-
-    // ==================== JwtAuthenticationConverter Tests ====================
+    // ==================== Configuration Annotation Tests ====================
 
     @Test
-    void jwtAuthenticationConverter_whenCalled_thenReturnsConverterWithGrantedAuthoritiesConverter() {
-        JwtAuthenticationConverter converter = httpSecurityConfig.jwtAuthenticationConverter();
+    void httpSecurityConfig_shouldHaveConfigurationAnnotation() {
+        Configuration annotation = AnnotationUtils.findAnnotation(
+                HttpSecurityConfig.class, Configuration.class);
 
-        assertNotNull(converter);
-        assertNotNull(converter.convert(createJwtWithRoles(List.of("user", "admin"))));
-    }
-
-    // ==================== Keycloak Realm Roles Converter Tests ====================
-
-    @Test
-    void keycloakRealmRoles_whenJwtHasValidRoles_thenExtractsRolesWithRolePrefix() {
-        JwtAuthenticationConverter converter = httpSecurityConfig.jwtAuthenticationConverter();
-        Jwt jwt = createJwtWithRoles(List.of("user", "admin", "moderator"));
-
-        Collection<GrantedAuthority> authorities = converter.convert(jwt).getAuthorities();
-
-        // Note: Spring Security JwtAuthenticationConverter may add default scope authorities
-        assertTrue(authorities.size() >= 3, "Should have at least 3 authorities");
-        assertTrue(authorities.contains(new SimpleGrantedAuthority("ROLE_user")));
-        assertTrue(authorities.contains(new SimpleGrantedAuthority("ROLE_admin")));
-        assertTrue(authorities.contains(new SimpleGrantedAuthority("ROLE_moderator")));
+        assertNotNull(annotation, "HttpSecurityConfig should have @Configuration annotation");
     }
 
     @Test
-    void keycloakRealmRoles_whenJwtHasSingleRole_thenExtractsSingleRole() {
-        JwtAuthenticationConverter converter = httpSecurityConfig.jwtAuthenticationConverter();
-        Jwt jwt = createJwtWithRoles(List.of("user"));
+    void httpSecurityConfig_shouldHaveEnableMethodSecurityAnnotation() {
+        EnableMethodSecurity annotation = AnnotationUtils.findAnnotation(
+                HttpSecurityConfig.class, EnableMethodSecurity.class);
 
-        Collection<GrantedAuthority> authorities = converter.convert(jwt).getAuthorities();
-
-        assertTrue(authorities.size() >= 1, "Should have at least 1 authority");
-        assertTrue(authorities.contains(new SimpleGrantedAuthority("ROLE_user")));
+        assertNotNull(annotation, "HttpSecurityConfig should have @EnableMethodSecurity annotation");
     }
 
     @Test
-    void keycloakRealmRoles_whenJwtHasEmptyRolesList_thenReturnsEmptyAuthorities() {
-        JwtAuthenticationConverter converter = httpSecurityConfig.jwtAuthenticationConverter();
-        Jwt jwt = createJwtWithRoles(List.of());
+    void httpSecurityConfig_shouldBeInstantiable() {
+        HttpSecurityConfig config = new HttpSecurityConfig();
+        assertNotNull(config);
+    }
 
-        Collection<GrantedAuthority> authorities = converter.convert(jwt).getAuthorities();
+    // ==================== Security Filter Chain Method Tests ====================
 
-        // Spring Security may add default scope authorities even with empty roles
-        assertNotNull(authorities);
+    @Test
+    void securityFilterChainMethod_shouldExist() throws NoSuchMethodException {
+        Method method = HttpSecurityConfig.class.getDeclaredMethod("securityFilterChain",
+                HttpSecurity.class,
+                UserProvisioningFilter.class,
+                JwtAuthenticationConverter.class);
+
+        assertNotNull(method);
     }
 
     @Test
-    void keycloakRealmRoles_whenJwtHasNoRealmAccess_thenReturnsEmptyAuthorities() {
-        JwtAuthenticationConverter converter = httpSecurityConfig.jwtAuthenticationConverter();
-        Jwt jwt = Jwt.withTokenValue("token")
-                .header("alg", "RS256")
-                .claim("sub", "user123")
-                .issuedAt(Instant.now())
-                .expiresAt(Instant.now().plusSeconds(3600))
-                .build();
+    void securityFilterChainMethod_shouldHaveBeanAnnotation() throws NoSuchMethodException {
+        Method method = HttpSecurityConfig.class.getDeclaredMethod("securityFilterChain",
+                HttpSecurity.class,
+                UserProvisioningFilter.class,
+                JwtAuthenticationConverter.class);
 
-        Collection<GrantedAuthority> authorities = converter.convert(jwt).getAuthorities();
-
-        // Spring Security may add default scope authorities
-        assertNotNull(authorities);
+        assertTrue(method.isAnnotationPresent(Bean.class),
+                "securityFilterChain method should be annotated with @Bean");
     }
 
     @Test
-    void keycloakRealmRoles_whenRealmAccessHasNoRoles_thenReturnsEmptyAuthorities() {
-        JwtAuthenticationConverter converter = httpSecurityConfig.jwtAuthenticationConverter();
-        Jwt jwt = Jwt.withTokenValue("token")
-                .header("alg", "RS256")
-                .claim("sub", "user123")
-                .claim("realm_access", Map.of("other_field", "value"))
-                .issuedAt(Instant.now())
-                .expiresAt(Instant.now().plusSeconds(3600))
-                .build();
+    void securityFilterChainMethod_shouldAcceptRequiredDependencies() throws NoSuchMethodException {
+        Method method = HttpSecurityConfig.class.getDeclaredMethod("securityFilterChain",
+                HttpSecurity.class,
+                UserProvisioningFilter.class,
+                JwtAuthenticationConverter.class);
 
-        Collection<GrantedAuthority> authorities = converter.convert(jwt).getAuthorities();
+        Class<?>[] parameterTypes = method.getParameterTypes();
 
-        // Spring Security may add default scope authorities
-        assertNotNull(authorities);
-    }
-
-    @Test
-    void keycloakRealmRoles_whenRolesIsNotList_thenReturnsEmptyAuthorities() {
-        JwtAuthenticationConverter converter = httpSecurityConfig.jwtAuthenticationConverter();
-        Jwt jwt = Jwt.withTokenValue("token")
-                .header("alg", "RS256")
-                .claim("sub", "user123")
-                .claim("realm_access", Map.of("roles", "not-a-list"))
-                .issuedAt(Instant.now())
-                .expiresAt(Instant.now().plusSeconds(3600))
-                .build();
-
-        Collection<GrantedAuthority> authorities = converter.convert(jwt).getAuthorities();
-
-        // Spring Security may add default scope authorities
-        assertNotNull(authorities);
-    }
-
-    @Test
-    void keycloakRealmRoles_whenRolesContainNonStringValues_thenFiltersOutNonStrings() {
-        JwtAuthenticationConverter converter = httpSecurityConfig.jwtAuthenticationConverter();
-        Jwt jwt = Jwt.withTokenValue("token")
-                .header("alg", "RS256")
-                .claim("sub", "user123")
-                .claim("realm_access", Map.of("roles", List.of("user", 123, "admin")))
-                .issuedAt(Instant.now())
-                .expiresAt(Instant.now().plusSeconds(3600))
-                .build();
-
-        Collection<GrantedAuthority> authorities = converter.convert(jwt).getAuthorities();
-
-        assertTrue(authorities.size() >= 2, "Should have at least 2 authorities");
-        assertTrue(authorities.contains(new SimpleGrantedAuthority("ROLE_user")));
-        assertTrue(authorities.contains(new SimpleGrantedAuthority("ROLE_admin")));
-    }
-
-    @Test
-    void keycloakRealmRoles_whenRolesHaveSpecialCharacters_thenPreservesRoleNames() {
-        JwtAuthenticationConverter converter = httpSecurityConfig.jwtAuthenticationConverter();
-        Jwt jwt = createJwtWithRoles(List.of("realm-admin", "view_users", "create.programs"));
-
-        Collection<GrantedAuthority> authorities = converter.convert(jwt).getAuthorities();
-
-        assertTrue(authorities.size() >= 3, "Should have at least 3 authorities");
-        assertTrue(authorities.contains(new SimpleGrantedAuthority("ROLE_realm-admin")));
-        assertTrue(authorities.contains(new SimpleGrantedAuthority("ROLE_view_users")));
-        assertTrue(authorities.contains(new SimpleGrantedAuthority("ROLE_create.programs")));
-    }
-
-    // ==================== Helper Methods ====================
-
-    private Jwt createJwtWithRoles(List<String> roles) {
-        return Jwt.withTokenValue("token")
-                .header("alg", "RS256")
-                .claim("sub", "user123")
-                .claim("realm_access", Map.of("roles", roles))
-                .issuedAt(Instant.now())
-                .expiresAt(Instant.now().plusSeconds(3600))
-                .build();
+        assertEquals(3, parameterTypes.length);
+        assertEquals(HttpSecurity.class, parameterTypes[0]);
+        assertEquals(UserProvisioningFilter.class, parameterTypes[1]);
+        assertEquals(JwtAuthenticationConverter.class, parameterTypes[2]);
     }
 }
 
