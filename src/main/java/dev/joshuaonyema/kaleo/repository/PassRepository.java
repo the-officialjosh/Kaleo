@@ -8,4 +8,5 @@ import java.util.UUID;
 
 @Repository
 public interface PassRepository extends JpaRepository<Pass, UUID> {
+    int countByPassTypeId(UUID ticketTypeId);
 }
