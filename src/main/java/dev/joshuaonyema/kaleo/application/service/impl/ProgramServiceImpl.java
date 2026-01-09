@@ -18,7 +18,6 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -33,7 +32,6 @@ public class ProgramServiceImpl implements ProgramService {
     private final ProgramRepository programRepository;
 
     @Override
-    @PreAuthorize("hasRole('ORGANIZER')")
     @Transactional
     public Program createProgram(CreateProgramCommand command) {
         User organizer = currentUserService.getCurrentUser();
@@ -50,21 +48,18 @@ public class ProgramServiceImpl implements ProgramService {
     }
 
     @Override
-    @PreAuthorize("hasRole('ORGANIZER')")
     public Page<Program> listProgramsForOrganizer(Pageable pageable) {
         User organizer = currentUserService.getCurrentUser();
         return programRepository.findByOrganizer(organizer, pageable);
     }
 
     @Override
-    @PreAuthorize("hasRole('ORGANIZER')")
     public Optional<Program> getProgramForOrganizer(UUID id) {
         User organizer = currentUserService.getCurrentUser();
         return programRepository.findByIdAndOrganizer(id, organizer);
     }
 
     @Override
-    @PreAuthorize("hasRole('ORGANIZER')")
     @Transactional
     public Program updateProgramForOrganizer(UUID id, UpdateProgramCommand command) {
         validateUpdateCommand(id, command);
@@ -78,7 +73,6 @@ public class ProgramServiceImpl implements ProgramService {
 
     @Override
     @Transactional
-    @PreAuthorize("hasRole('ORGANIZER')")
     public void deleteProgramForOrganizer(UUID id) {
         Program program = getOwnedProgram(id);
         programRepository.delete(program);
