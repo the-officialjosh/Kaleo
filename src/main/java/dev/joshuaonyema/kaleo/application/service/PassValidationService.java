@@ -5,6 +5,6 @@ import dev.joshuaonyema.kaleo.domain.entity.PassValidation;
 import java.util.UUID;
 
 public interface PassValidationService {
-    PassValidation validatePassByQrCode(UUID qrCodeId);
-    PassValidation validatePassByManualCode(String manualCode);
+    PassValidation validatePassByQrCode(UUID programId, UUID qrCodeId);
+    PassValidation validatePassByManualCode(UUID programId, String manualCode);
 }
