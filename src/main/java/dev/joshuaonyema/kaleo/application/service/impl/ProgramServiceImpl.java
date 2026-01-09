@@ -94,6 +94,11 @@ public class ProgramServiceImpl implements ProgramService {
         return programRepository.findByIdAndStatus(id, ProgramStatus.PUBLISHED);
     }
 
+    @Override
+    public Page<Program> listProgramsForStaff(Pageable pageable) {
+        return programRepository.findAll(pageable);
+    }
+
     private Program getOwnedProgram(UUID id) {
         UUID currentUserId = currentUserService.getCurrentUserId();
         return programRepository.findByIdAndOrganizerId(id, currentUserId)

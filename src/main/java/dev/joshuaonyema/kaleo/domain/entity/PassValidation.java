@@ -33,6 +33,10 @@ public class PassValidation extends TimestampedEntity {
     @JoinColumn(name = "pass_id")
     private Pass pass;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "program_id")
+    private Program program;
+
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;

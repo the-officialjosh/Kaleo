@@ -7,18 +7,19 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class ListPassResponseDto {
+    private UUID id;
     private PassStatus status;
     private LocalDateTime createdAt;
 
     // Pass Type Info
     private String passTypeName;
     private BigDecimal passTypePrice;
-    private String passTypeDescription;
 
     // Program Info
     private String programName;

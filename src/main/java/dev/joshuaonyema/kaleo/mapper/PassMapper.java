@@ -12,7 +12,6 @@ public interface PassMapper {
 
     @Mapping(source = "passType.name", target = "passTypeName")
     @Mapping(source = "passType.price", target = "passTypePrice")
-    @Mapping(source = "passType.description", target = "passTypeDescription")
     @Mapping(source = "passType.program.name", target = "programName")
     @Mapping(source = "passType.program.startTime", target = "programStartTime")
     @Mapping(source = "passType.program.endTime", target = "programEndTime")

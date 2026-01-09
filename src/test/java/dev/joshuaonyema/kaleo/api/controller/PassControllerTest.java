@@ -85,7 +85,6 @@ class PassControllerTest {
         listPassResponseDto.setStatus(PassStatus.ACTIVE);
         listPassResponseDto.setPassTypeName("General Admission");
         listPassResponseDto.setPassTypePrice(BigDecimal.TEN);
-        listPassResponseDto.setPassTypeDescription("Standard entry");
         listPassResponseDto.setProgramName("Sunday Service");
         listPassResponseDto.setProgramStartTime(now.plusDays(1));
         listPassResponseDto.setProgramEndTime(now.plusDays(1).plusHours(2));

@@ -44,4 +44,6 @@ public interface ProgramMapper {
     GetPublishedPassTypesResponseDto toGetPublishedPassTypesResponseDto(PassType passType);
 
     GetPublishedProgramDetailsResponseDto toGetPublishedProgramDetailsResponseDto(Program program);
+
+    StaffProgramResponseDto toStaffProgramResponseDto(Program program);
 }
