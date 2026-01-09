@@ -103,6 +103,6 @@ export default class FBO {
     this.renderer.render(this.scene, this.camera);
     this.renderer.setRenderTarget(null);
 
-    this.particles.material.uniforms.uPositions.value = this.rtt.texture;
+    (this.particles.material as THREE.ShaderMaterial).uniforms.uPositions.value = this.rtt.texture;
   }
 }

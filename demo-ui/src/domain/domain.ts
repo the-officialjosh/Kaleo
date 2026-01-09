@@ -146,9 +146,11 @@ export interface PublishedProgramPassTypeDetails {
 export interface PublishedProgramDetails {
   id: string;
   name: string;
-  start?: Date;
-  end?: Date;
+  startTime: string;
+  endTime: string;
   venue: string;
+  registrationStart?: string;
+  registrationEnd?: string;
   passTypes: PublishedProgramPassTypeDetails[];
 }
 
