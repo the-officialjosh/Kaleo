@@ -14,4 +14,5 @@ public interface PassRepository extends JpaRepository<Pass, UUID> {
     int countByPassTypeId(UUID ticketTypeId);
     Page<Pass> findByRegistrantId(UUID RegistrantId, Pageable pageable);
     Optional<Pass> findByIdAndRegistrantId(UUID id,  UUID Registrant);
+    Optional<Pass> findByManualCode(String manualCode);
 }

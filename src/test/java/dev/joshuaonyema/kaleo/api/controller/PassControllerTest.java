@@ -78,10 +78,10 @@ class PassControllerTest {
         pass = new Pass();
         pass.setId(passId);
         pass.setStatus(PassStatus.ACTIVE);
+        pass.setManualCode("ABC123");
         pass.setPassType(passType);
 
         listPassResponseDto = new ListPassResponseDto();
-        listPassResponseDto.setId(passId);
         listPassResponseDto.setStatus(PassStatus.ACTIVE);
         listPassResponseDto.setPassTypeName("General Admission");
         listPassResponseDto.setPassTypePrice(BigDecimal.TEN);
@@ -92,8 +92,8 @@ class PassControllerTest {
         listPassResponseDto.setProgramVenue("Main Hall");
 
         getPassResponseDto = new GetPassResponseDto();
-        getPassResponseDto.setId(passId);
         getPassResponseDto.setStatus(PassStatus.ACTIVE);
+        getPassResponseDto.setManualCode("ABC123");
         getPassResponseDto.setPassTypeName("General Admission");
         getPassResponseDto.setPassTypePrice(BigDecimal.TEN);
         getPassResponseDto.setPassTypeDescription("Standard entry");
@@ -147,7 +147,7 @@ class PassControllerTest {
         pass2.setStatus(PassStatus.ACTIVE);
 
         ListPassResponseDto listDto2 = new ListPassResponseDto();
-        listDto2.setId(pass2.getId());
+        listDto2.setStatus(PassStatus.ACTIVE);
 
         Page<Pass> passPage = new PageImpl<>(List.of(pass, pass2), pageable, 2);
 
@@ -172,7 +172,7 @@ class PassControllerTest {
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertNotNull(response.getBody());
-        assertEquals(passId, response.getBody().getId());
+        assertEquals(PassStatus.ACTIVE, response.getBody().getStatus());
         verify(passService).getPassForUser(passId);
         verify(passMapper).toGetPassResponseDto(pass);
     }

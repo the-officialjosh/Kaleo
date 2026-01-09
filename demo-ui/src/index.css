@@ -5383,3 +5383,352 @@ cursor: none;}
     gap: 0.5rem;
   }
 }
+
+/* ============================================
+   PASS VIEW PAGE
+   ============================================ */
+
+.pass-view-container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem 4rem;
+}
+
+.pass-view-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: oklch(0.70 0.03 285);
+  font-size: 0.9rem;
+  font-weight: 500;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem 0;
+  margin-bottom: 1.5rem;
+  transition: color 0.2s ease;
+}
+
+.pass-view-back:hover {
+  color: white;
+}
+
+.pass-view-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.pass-view-card {
+  position: relative;
+  background: linear-gradient(
+    165deg,
+    oklch(0.18 0.05 285) 0%,
+    oklch(0.12 0.04 285) 100%
+  );
+  border-radius: 24px;
+  padding: 2rem;
+  border: 1px solid oklch(1 0 0 / 0.08);
+}
+
+.pass-view-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 24px;
+  padding: 1px;
+  background: linear-gradient(
+    165deg,
+    oklch(0.55 0.18 285 / 0.4) 0%,
+    oklch(0.35 0.10 285 / 0.1) 50%,
+    oklch(0.65 0.15 80 / 0.25) 100%
+  );
+  -webkit-mask: 
+    linear-gradient(#fff 0 0) content-box, 
+    linear-gradient(#fff 0 0);
+  mask: 
+    linear-gradient(#fff 0 0) content-box, 
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+/* Status Badge */
+.pass-view-status {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.4rem 0.9rem;
+  border-radius: 100px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.pass-view-status.active {
+  background: linear-gradient(135deg, oklch(0.55 0.22 145 / 0.25), oklch(0.45 0.18 145 / 0.4));
+  color: oklch(0.80 0.18 145);
+  border: 1px solid oklch(0.55 0.20 145 / 0.4);
+}
+
+.pass-view-status.purchased {
+  background: linear-gradient(135deg, oklch(0.55 0.18 285 / 0.25), oklch(0.45 0.15 285 / 0.4));
+  color: oklch(0.80 0.15 285);
+  border: 1px solid oklch(0.55 0.18 285 / 0.4);
+}
+
+.pass-view-status.used {
+  background: linear-gradient(135deg, oklch(0.45 0.05 285 / 0.25), oklch(0.35 0.04 285 / 0.4));
+  color: oklch(0.65 0.05 285);
+  border: 1px solid oklch(0.45 0.05 285 / 0.4);
+}
+
+.pass-view-status.cancelled {
+  background: linear-gradient(135deg, oklch(0.50 0.18 25 / 0.25), oklch(0.40 0.15 25 / 0.4));
+  color: oklch(0.70 0.18 25);
+  border: 1px solid oklch(0.50 0.18 25 / 0.4);
+}
+
+/* Program Header */
+.pass-view-program-header {
+  margin-bottom: 1.5rem;
+  padding-right: 6rem;
+}
+
+.pass-view-program-name {
+  font-family: var(--font-display);
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: white;
+  margin-bottom: 0.5rem;
+  line-height: 1.25;
+}
+
+.pass-view-pass-type {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: var(--purple-400);
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+/* QR Code Section */
+.pass-view-qr-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.pass-view-qr-wrapper {
+  width: 180px;
+  height: 180px;
+  background: white;
+  border-radius: 16px;
+  padding: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 
+    0 8px 32px oklch(0 0 0 / 0.3),
+    0 2px 8px oklch(0 0 0 / 0.2);
+}
+
+.pass-view-qr-image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: 8px;
+}
+
+.pass-view-qr-loading,
+.pass-view-qr-error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  color: oklch(0.5 0 0);
+  font-size: 0.8rem;
+}
+
+.pass-view-qr-hint {
+  margin-top: 1rem;
+  font-size: 0.85rem;
+  color: oklch(0.60 0.03 285);
+  text-align: center;
+}
+
+/* Loading Spinner */
+.pass-view-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 50vh;
+  gap: 1rem;
+  color: oklch(0.70 0.03 285);
+}
+
+.pass-view-loading-spinner {
+  width: 32px;
+  height: 32px;
+  border: 3px solid oklch(1 0 0 / 0.1);
+  border-top-color: var(--purple-500);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Divider */
+.pass-view-divider {
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    oklch(1 0 0 / 0.15) 20%,
+    oklch(1 0 0 / 0.15) 80%,
+    transparent 100%
+  );
+  margin: 0.5rem 0 1.5rem;
+}
+
+/* Event Details */
+.pass-view-details {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.pass-view-detail-row {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+.pass-view-detail-icon {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: oklch(1 0 0 / 0.06);
+  border-radius: 12px;
+  color: var(--purple-400);
+  flex-shrink: 0;
+}
+
+.pass-view-detail-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.pass-view-detail-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: oklch(0.55 0.03 285);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.pass-view-detail-value {
+  font-size: 0.95rem;
+  color: oklch(0.85 0.02 285);
+  line-height: 1.4;
+}
+
+.pass-view-price {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--gold-400);
+}
+
+/* Pass ID Footer */
+.pass-view-footer {
+  margin-top: 1.5rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid oklch(1 0 0 / 0.08);
+  text-align: center;
+}
+
+.pass-view-footer-label {
+  display: block;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: oklch(0.50 0.02 285);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 0.4rem;
+}
+
+.pass-view-pass-id {
+  font-family: 'SF Mono', 'Monaco', 'Consolas', monospace;
+  font-size: 0.8rem;
+  color: oklch(0.65 0.02 285);
+  background: oklch(0 0 0 / 0.2);
+  padding: 0.5rem 0.75rem;
+  border-radius: 8px;
+}
+
+/* Description Card */
+.pass-view-description-card {
+  background: oklch(1 0 0 / 0.03);
+  border: 1px solid oklch(1 0 0 / 0.08);
+  border-radius: 16px;
+  padding: 1.25rem;
+}
+
+.pass-view-description-card h3 {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: oklch(0.80 0.02 285);
+  margin-bottom: 0.5rem;
+}
+
+.pass-view-description-card p {
+  font-size: 0.9rem;
+  color: oklch(0.65 0.02 285);
+  line-height: 1.6;
+  white-space: pre-wrap;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .pass-view-container {
+    padding: 1rem 1rem 3rem;
+  }
+  
+  .pass-view-card {
+    padding: 1.5rem;
+    border-radius: 20px;
+  }
+  
+  .pass-view-program-header {
+    padding-right: 0;
+    margin-top: 3rem;
+  }
+  
+  .pass-view-status {
+    position: static;
+    margin-bottom: 1rem;
+  }
+  
+  .pass-view-program-name {
+    font-size: 1.5rem;
+  }
+  
+  .pass-view-qr-wrapper {
+    width: 160px;
+    height: 160px;
+  }
+}

@@ -11,6 +11,7 @@ import dev.joshuaonyema.kaleo.exception.PassSoldOutException;
 import dev.joshuaonyema.kaleo.exception.PassTypeNotFoundException;
 import dev.joshuaonyema.kaleo.repository.PassRepository;
 import dev.joshuaonyema.kaleo.repository.PassTypeRepository;
+import dev.joshuaonyema.kaleo.util.ManualCodeGenerator;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -49,6 +50,7 @@ public class PassServiceImpl implements PassService {
 
         Pass pass = new Pass();
         pass.setStatus(PassStatus.ACTIVE);
+        pass.setManualCode(generateUniqueManualCode());
         pass.setPassType(passType);
         pass.setRegistrant(user);
 
@@ -68,5 +70,13 @@ public class PassServiceImpl implements PassService {
     public Optional<Pass> getPassForUser(UUID passID) {
         UUID userId = currentUserService.getCurrentUserId();
         return passRepository.findByIdAndRegistrantId(passID, userId);
+    }
+
+    private String generateUniqueManualCode() {
+        String code;
+        do {
+            code = ManualCodeGenerator.generate();
+        } while (passRepository.findByManualCode(code).isPresent());
+        return code;
     }
 }

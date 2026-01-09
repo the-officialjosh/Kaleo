@@ -13,6 +13,15 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 @Slf4j
 public class GlobalExceptionHandler {
+    @ExceptionHandler(CodeNotFoundException.class)
+    public  ResponseEntity<ErrorDto> handleCodeNotFoundException(CodeNotFoundException notFoundException){
+        log.error("Caught CodeNotFoundException: {}", String.valueOf(notFoundException));
+
+        ErrorDto errorDto = new ErrorDto();
+        errorDto.setError("Code not Found");
+        return new ResponseEntity<>(errorDto, HttpStatus.BAD_REQUEST);
+    }
+
     @ExceptionHandler(PassSoldOutException.class)
     public  ResponseEntity<ErrorDto> handlePassSoldOutException(PassSoldOutException notFoundException){
         log.error("Caught PassSoldOutException: {}", String.valueOf(notFoundException));

@@ -11,31 +11,31 @@ import {InlineError} from "@/components/errors";
 // Helper to format dates nicely
 const formatDate = (dateString: string) => {
   const date = new Date(dateString);
-  return date.toLocaleDateString('en-US', { 
-    month: 'short', 
-    day: 'numeric', 
-    year: 'numeric' 
+  return date.toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
   });
 };
 
 const formatTime = (dateString: string) => {
   const date = new Date(dateString);
-  return date.toLocaleTimeString('en-US', { 
-    hour: 'numeric', 
-    minute: '2-digit',
-    hour12: true 
+  return date.toLocaleTimeString("en-US", {
+    hour: "numeric",
+    minute: "2-digit",
+    hour12: true,
   });
 };
 
 const formatDateRange = (start: string, end: string) => {
   const startDate = new Date(start);
   const endDate = new Date(end);
-  
+
   // Same day event
   if (startDate.toDateString() === endDate.toDateString()) {
     return `${formatDate(start)} • ${formatTime(start)} - ${formatTime(end)}`;
   }
-  
+
   // Multi-day event
   return `${formatDate(start)} - ${formatDate(end)}`;
 };
@@ -75,8 +75,8 @@ const DashboardListPasses: React.FC = () => {
     return (
       <div className="dashboard-page">
         <NavBar />
-        <InlineError 
-          message={error} 
+        <InlineError
+          message={error}
           onRetry={() => {
             setError(undefined);
             refreshPasses();
@@ -96,9 +96,9 @@ const DashboardListPasses: React.FC = () => {
           <div className="dashboard-list-hero-left">
             <h1 className="dashboard-list-hero-title">Your Passes</h1>
             <p className="dashboard-list-hero-subtitle">
-              {passes?.totalElements 
-                ? `${passes.totalElements} pass${passes.totalElements !== 1 ? 'es' : ''} in your collection` 
-                : 'View and manage your purchased passes'}
+              {passes?.totalElements
+                ? `${passes.totalElements} pass${passes.totalElements !== 1 ? "es" : ""} in your collection`
+                : "View and manage your purchased passes"}
             </p>
           </div>
         </div>
@@ -115,28 +115,43 @@ const DashboardListPasses: React.FC = () => {
         ) : (
           <div className="dashboard-passes-grid">
             {passes?.content.map((passItem) => (
-              <Link key={passItem.id} to={`/dashboard/passes/${passItem.id}`} className="dashboard-pass-card-link">
+              <Link
+                key={passItem.id}
+                to={`/dashboard/passes/${passItem.id}`}
+                className="dashboard-pass-card-link"
+              >
                 <div className="dashboard-pass-card-new">
                   {/* Status Badge */}
                   <div className="pass-status-badge-wrapper">
-                    <span className={`pass-status-badge ${passItem.status.toLowerCase()}`}>
+                    <span
+                      className={`pass-status-badge ${passItem.status.toLowerCase()}`}
+                    >
                       {passItem.status}
                     </span>
                   </div>
 
                   {/* Program Info */}
                   <div className="pass-program-section">
-                    <h3 className="pass-program-name">{passItem.program.name}</h3>
-                    
+                    <h3 className="pass-program-name">
+                      {passItem.programName}
+                    </h3>
+
                     <div className="pass-program-details">
                       <div className="pass-detail-row">
                         <Calendar className="pass-detail-icon" />
-                        <span>{formatDateRange(passItem.program.startTime, passItem.program.endTime)}</span>
+                        <span>
+                          {formatDateRange(
+                            passItem.programStartTime,
+                            passItem.programEndTime,
+                          )}
+                        </span>
                       </div>
-                      
+
                       <div className="pass-detail-row">
                         <MapPin className="pass-detail-icon" />
-                        <span className="pass-venue">{passItem.program.venue.split(',')[0]}</span>
+                        <span className="pass-venue">
+                          {passItem.programVenue.split(",")[0]}
+                        </span>
                       </div>
                     </div>
                   </div>
@@ -150,12 +165,16 @@ const DashboardListPasses: React.FC = () => {
                       <div className="pass-type-icon">
                         <Ticket className="w-4 h-4" />
                       </div>
-                      <span className="pass-type-name">{passItem.passType.name}</span>
+                      <span className="pass-type-name">
+                        {passItem.passTypeName}
+                      </span>
                     </div>
-                    
+
                     <div className="pass-type-price">
                       <span className="currency">$</span>
-                      <span className="amount">{passItem.passType.price.toFixed(2)}</span>
+                      <span className="amount">
+                        {passItem.passTypePrice.toFixed(2)}
+                      </span>
                     </div>
                   </div>
 
@@ -172,9 +191,7 @@ const DashboardListPasses: React.FC = () => {
                   </div>
 
                   {/* CTA */}
-                  <div className="pass-card-cta">
-                    View Pass Details →
-                  </div>
+                  <div className="pass-card-cta">View Pass Details →</div>
                 </div>
               </Link>
             ))}
