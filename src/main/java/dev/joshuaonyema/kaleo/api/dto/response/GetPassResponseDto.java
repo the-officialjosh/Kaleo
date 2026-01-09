@@ -12,7 +12,7 @@ import java.util.UUID;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ListPassResponseDto {
+public class GetPassResponseDto {
     private UUID id;
     private PassStatus status;
     private LocalDateTime createdAt;
@@ -23,6 +23,7 @@ public class ListPassResponseDto {
     private String passTypeDescription;
 
     // Program Info
+    private UUID programId;
     private String programName;
     private LocalDateTime programStartTime;
     private LocalDateTime programEndTime;

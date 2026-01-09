@@ -1,11 +1,8 @@
 package dev.joshuaonyema.kaleo.mapper;
 
-import dev.joshuaonyema.kaleo.api.dto.response.ListPassPassTypeInfoResponseDto;
-import dev.joshuaonyema.kaleo.api.dto.response.ListPassProgramInfoResponseDto;
+import dev.joshuaonyema.kaleo.api.dto.response.GetPassResponseDto;
 import dev.joshuaonyema.kaleo.api.dto.response.ListPassResponseDto;
 import dev.joshuaonyema.kaleo.domain.entity.Pass;
-import dev.joshuaonyema.kaleo.domain.entity.PassType;
-import dev.joshuaonyema.kaleo.domain.entity.Program;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
@@ -13,11 +10,22 @@ import org.mapstruct.ReportingPolicy;
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface PassMapper {
 
-    @Mapping(source = "passType", target = "passType")
-    @Mapping(source = "passType.program", target = "program")
+    @Mapping(source = "passType.name", target = "passTypeName")
+    @Mapping(source = "passType.price", target = "passTypePrice")
+    @Mapping(source = "passType.description", target = "passTypeDescription")
+    @Mapping(source = "passType.program.name", target = "programName")
+    @Mapping(source = "passType.program.startTime", target = "programStartTime")
+    @Mapping(source = "passType.program.endTime", target = "programEndTime")
+    @Mapping(source = "passType.program.venue", target = "programVenue")
     ListPassResponseDto toListPassResponseDto(Pass pass);
 
-    ListPassPassTypeInfoResponseDto toPassTypeInfo(PassType passType);
-
-    ListPassProgramInfoResponseDto toProgramInfo(Program program);
+    @Mapping(source = "passType.name", target = "passTypeName")
+    @Mapping(source = "passType.price", target = "passTypePrice")
+    @Mapping(source = "passType.description", target = "passTypeDescription")
+    @Mapping(source = "passType.program.id", target = "programId")
+    @Mapping(source = "passType.program.name", target = "programName")
+    @Mapping(source = "passType.program.startTime", target = "programStartTime")
+    @Mapping(source = "passType.program.endTime", target = "programEndTime")
+    @Mapping(source = "passType.program.venue", target = "programVenue")
+    GetPassResponseDto toGetPassResponseDto(Pass pass);
 }

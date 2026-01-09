@@ -4,9 +4,11 @@ import dev.joshuaonyema.kaleo.domain.entity.Pass;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.Optional;
 import java.util.UUID;
 
 public interface PassService {
     void purchasePass(UUID passTypeId);
     Page<Pass> listPassesForUser(Pageable pageable);
+    Optional<Pass> getPassForUser(UUID passID);
 }

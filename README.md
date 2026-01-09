@@ -9,7 +9,7 @@
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-18-336791?style=flat-square&logo=postgresql&logoColor=white)](https://www.postgresql.org/)
 [![Keycloak](https://img.shields.io/badge/Keycloak-26.4.7-4D4D4D?style=flat-square&logo=keycloak&logoColor=white)](https://www.keycloak.org/)
 [![Adminer](https://img.shields.io/badge/Adminer-4.8.1-34567C?style=flat-square&logo=adminer&logoColor=white)](https://www.adminer.org/)
-[![Tests](https://img.shields.io/badge/tests-192-success?style=flat-square)](docs/TEST_COVERAGE.md)
+[![Tests](https://img.shields.io/badge/tests-225-success?style=flat-square)](docs/TEST_COVERAGE.md)
 
 <div align="center">
 
@@ -121,11 +121,12 @@ API available at: `http://localhost:8080`
 ./mvnw verify jacoco:report
 ```
 
-**Test Coverage:** 19 test classes with 192+ tests
-- **API Layer**: Controllers (ProgramController, PublishedProgramController), DTOs, Validators, Exception Handlers
-- **Application Layer**: Services, Mappers, Security (CurrentUserService)
+**Test Coverage:** 22 test classes with 225+ tests
+- **API Layer**: Controllers (ProgramController, PublishedProgramController, PassController, PassTypeController), DTOs, Validators, Exception Handlers
+- **Application Layer**: Services, Security (CurrentUserService)
+- **Mappers**: ProgramMapper, PassMapper
 - **Infrastructure**: Security Filters (UserProvisioningFilter)
-- **Configuration**: Security Config (HttpSecurityConfig, SecurityFilterChain), JPA Config
+- **Configuration**: Security Config (HttpSecurityConfig, JwtAuthenticationConverter, SecurityFilterChain), JPA Config, QrCode Config
 
 See [Test Coverage Documentation](docs/TEST_COVERAGE.md) for detailed breakdown.
 

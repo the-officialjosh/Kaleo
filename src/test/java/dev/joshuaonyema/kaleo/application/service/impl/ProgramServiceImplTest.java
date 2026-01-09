@@ -230,32 +230,30 @@ class ProgramServiceImplTest {
 
     @Test
     void listProgramsForOrganizer_whenValidRequest_thenReturnsPageOfPrograms() {
-        // Security context setup no longer needed
-        when(currentUserService.getCurrentUser()).thenReturn(user);
+        when(currentUserService.getCurrentUserId()).thenReturn(user.getId());
 
         Program program1 = createTestProgram("Program 1");
         Program program2 = createTestProgram("Program 2");
         Page<Program> expectedPage = new PageImpl<>(List.of(program1, program2));
         Pageable pageable = PageRequest.of(0, 10);
 
-        when(programRepository.findByOrganizer(user, pageable)).thenReturn(expectedPage);
+        when(programRepository.findByOrganizerId(user.getId(), pageable)).thenReturn(expectedPage);
 
         Page<Program> result = programService.listProgramsForOrganizer(pageable);
 
         assertNotNull(result);
         assertEquals(2, result.getTotalElements());
-        verify(programRepository).findByOrganizer(user, pageable);
+        verify(programRepository).findByOrganizerId(user.getId(), pageable);
     }
 
     @Test
     void listProgramsForOrganizer_whenNoPrograms_thenReturnsEmptyPage() {
-        // Security context setup no longer needed
-        when(currentUserService.getCurrentUser()).thenReturn(user);
+        when(currentUserService.getCurrentUserId()).thenReturn(user.getId());
 
         Page<Program> emptyPage = Page.empty();
         Pageable pageable = PageRequest.of(0, 10);
 
-        when(programRepository.findByOrganizer(user, pageable)).thenReturn(emptyPage);
+        when(programRepository.findByOrganizerId(user.getId(), pageable)).thenReturn(emptyPage);
 
         Page<Program> result = programService.listProgramsForOrganizer(pageable);
 
@@ -267,14 +265,13 @@ class ProgramServiceImplTest {
 
     @Test
     void listProgramsForOrganizer_whenPaginationApplied_thenRespectsPageable() {
-        // Security context setup no longer needed
-        when(currentUserService.getCurrentUser()).thenReturn(user);
+        when(currentUserService.getCurrentUserId()).thenReturn(user.getId());
 
         Program program = createTestProgram("Test Program");
         Pageable pageable = PageRequest.of(2, 5);
         Page<Program> expectedPage = new PageImpl<>(List.of(program), pageable, 15);
 
-        when(programRepository.findByOrganizer(user, pageable)).thenReturn(expectedPage);
+        when(programRepository.findByOrganizerId(user.getId(), pageable)).thenReturn(expectedPage);
 
         Page<Program> result = programService.listProgramsForOrganizer(pageable);
 
@@ -287,14 +284,13 @@ class ProgramServiceImplTest {
 
     @Test
     void getProgramForOrganizer_whenProgramExists_thenReturnsProgram() {
-        // Security context setup no longer needed
-        when(currentUserService.getCurrentUser()).thenReturn(user);
+        when(currentUserService.getCurrentUserId()).thenReturn(user.getId());
 
         UUID programId = UUID.randomUUID();
         Program program = createTestProgram("Test Program");
         program.setId(programId);
 
-        when(programRepository.findByIdAndOrganizer(programId, user)).thenReturn(Optional.of(program));
+        when(programRepository.findByIdAndOrganizerId(programId, user.getId())).thenReturn(Optional.of(program));
 
         Optional<Program> result = programService.getProgramForOrganizer(programId);
 
@@ -305,11 +301,10 @@ class ProgramServiceImplTest {
 
     @Test
     void getProgramForOrganizer_whenProgramNotFound_thenReturnsEmpty() {
-        // Security context setup no longer needed
-        when(currentUserService.getCurrentUser()).thenReturn(user);
+        when(currentUserService.getCurrentUserId()).thenReturn(user.getId());
 
         UUID programId = UUID.randomUUID();
-        when(programRepository.findByIdAndOrganizer(programId, user)).thenReturn(Optional.empty());
+        when(programRepository.findByIdAndOrganizerId(programId, user.getId())).thenReturn(Optional.empty());
 
         Optional<Program> result = programService.getProgramForOrganizer(programId);
 
@@ -318,16 +313,15 @@ class ProgramServiceImplTest {
 
     @Test
     void getProgramForOrganizer_whenProgramBelongsToDifferentOrganizer_thenReturnsEmpty() {
-        // Security context setup no longer needed
-        when(currentUserService.getCurrentUser()).thenReturn(user);
+        when(currentUserService.getCurrentUserId()).thenReturn(user.getId());
 
         UUID programId = UUID.randomUUID();
-        when(programRepository.findByIdAndOrganizer(programId, user)).thenReturn(Optional.empty());
+        when(programRepository.findByIdAndOrganizerId(programId, user.getId())).thenReturn(Optional.empty());
 
         Optional<Program> result = programService.getProgramForOrganizer(programId);
 
         assertTrue(result.isEmpty());
-        verify(programRepository).findByIdAndOrganizer(programId, user);
+        verify(programRepository).findByIdAndOrganizerId(programId, user.getId());
     }
 
 
@@ -345,3 +339,4 @@ class ProgramServiceImplTest {
         return program;
     }
 }
+

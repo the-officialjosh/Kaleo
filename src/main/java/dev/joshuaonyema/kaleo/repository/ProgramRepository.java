@@ -2,7 +2,6 @@ package dev.joshuaonyema.kaleo.repository;
 
 import dev.joshuaonyema.kaleo.domain.entity.Program;
 import dev.joshuaonyema.kaleo.domain.entity.ProgramStatus;
-import dev.joshuaonyema.kaleo.domain.entity.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -15,8 +14,8 @@ import java.util.UUID;
 
 @Repository
 public interface ProgramRepository extends JpaRepository<Program, UUID> {
-    Page<Program> findByOrganizer(User organizer, Pageable pageable);
-    Optional<Program> findByIdAndOrganizer(UUID id, User organizer);
+    Page<Program> findByOrganizerId(UUID organizerId, Pageable pageable);
+    Optional<Program> findByIdAndOrganizerId(UUID id, UUID organizerId);
     Page<Program> findByStatus(ProgramStatus status, Pageable pageable);
 
     // This query is particular to PostgreSQL, might add room for upgrade to ElasticSearch

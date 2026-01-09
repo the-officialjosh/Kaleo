@@ -11,7 +11,8 @@ src/test/java/dev/joshuaonyema/kaleo/
 ├── KaleoApplicationTests.java
 ├── api/
 │   ├── controller/
-│   │   ├── PassTypeControllerTest.java (NEW)
+│   │   ├── PassControllerTest.java (NEW)
+│   │   ├── PassTypeControllerTest.java
 │   │   ├── ProgramControllerTest.java
 │   │   └── PublishedProgramControllerTest.java
 │   ├── dto/
@@ -29,18 +30,20 @@ src/test/java/dev/joshuaonyema/kaleo/
 │   │   └── CurrentUserServiceTest.java
 │   └── service/
 │       └── impl/
-│           ├── PassServiceImplTest.java (NEW)
+│           ├── PassServiceImplTest.java
 │           ├── ProgramServiceImplTest.java
-│           └── QrCodeServiceImplTest.java (NEW)
+│           └── QrCodeServiceImplTest.java
 ├── config/
 │   ├── jpa/
 │   │   └── JpaConfigTest.java
 │   ├── qrcode/
-│   │   └── QrCodeConfigTest.java (NEW)
+│   │   └── QrCodeConfigTest.java
 │   └── security/
 │       ├── HttpSecurityConfigTest.java
-│       ├── JwtAuthenticationConverterTest.java (NEW)
+│       ├── JwtAuthenticationConverterTest.java
 │       └── SecurityFilterChainIntegrationTest.java
+├── mapper/
+│   └── PassMapperTest.java (NEW)
 └── infrastructure/
     └── security/
         └── filter/
@@ -59,14 +62,22 @@ src/test/java/dev/joshuaonyema/kaleo/
   - Update program endpoint
   - Delete program endpoint
 
-- **PublishedProgramControllerTest** (5 tests)
+- **PublishedProgramControllerTest** (9 tests)
   - List published programs (public endpoint)
   - Pagination support
   - Empty result handling
   - Multiple programs scenarios
   - Mapper integration
 
-- **PassTypeControllerTest** (5 tests) **[NEW]**
+- **PassControllerTest** (7 tests) **[NEW]**
+  - List passes for user (with pagination)
+  - Get pass details
+  - Get pass QR code image
+  - Empty result handling
+  - Not found handling
+  - Service invocation verification
+
+- **PassTypeControllerTest** (5 tests)
   - Purchase pass endpoint (returns 204 No Content)
   - Service invocation verification
   - Path variable extraction
@@ -156,6 +167,16 @@ src/test/java/dev/joshuaonyema/kaleo/
   - Null handling
   - All mapper methods covered
 
+- **PassMapperTest** (15 tests) **[NEW]**
+  - Pass to ListPassResponseDto mapping
+  - Pass to GetPassResponseDto mapping
+  - PassType field extraction (name, price, description)
+  - Program field extraction (id, name, startTime, endTime, venue)
+  - Null PassType handling
+  - Null Program handling
+  - Status mapping (ACTIVE, CANCELLED)
+  - Edge cases and null fields
+
 ### ✅ Configuration Layer Tests
 
 #### Security Configuration
@@ -219,12 +240,13 @@ src/test/java/dev/joshuaonyema/kaleo/
 
 | Component | Test Files | Total Tests |
 |-----------|------------|-------------|
-| API Layer | 8 | 90 |
-| Application Layer | 5 | 68 |
+| API Layer | 9 | 107 |
+| Application Layer | 5 | 66 |
+| Mappers | 2 | 35 |
 | Configuration Layer | 5 | 32 |
 | Infrastructure Layer | 1 | 10 |
-| Integration | 1 | 3 |
-| **TOTAL** | **20** | **203** |
+| Integration | 1 | 1 |
+| **TOTAL** | **22** | **225** |
 
 ## Code Coverage Goals
 
@@ -237,6 +259,14 @@ src/test/java/dev/joshuaonyema/kaleo/
 - **Configuration**: ✅ 100% (Security and JPA configuration tested)
 
 ## Recent Changes
+
+### Pass Management & Mapper Tests (January 9, 2026)
+1. ✅ Added `PassControllerTest` - 7 tests for pass listing, details, and QR code endpoints
+2. ✅ Added `PassMapperTest` - 15 tests for Pass entity to DTO mapping
+3. ✅ Fixed `ProgramServiceImplTest` - Updated to use `getCurrentUserId()` and `findByOrganizerId()`
+4. ✅ Fixed `ProgramServiceImpl` - Moved user ID retrieval inside methods (was failing at field level)
+5. ✅ Added `@EnableSpringDataWebSupport(pageSerializationMode = VIA_DTO)` to fix Page serialization warning
+6. ✅ Total tests increased from 203 to 225
 
 ### Security Refactoring (January 9, 2026)
 1. ✅ Extracted `JwtAuthenticationConverter` into standalone `@Component` class
@@ -262,6 +292,8 @@ src/test/java/dev/joshuaonyema/kaleo/
 5. ✅ Fixed all import statements
 
 ### New Tests Added (Latest)
+- `PassControllerTest` - Pass listing, details, and QR code retrieval
+- `PassMapperTest` - Pass to DTO mapping with nested field extraction
 - `JwtAuthenticationConverterTest` - JWT authentication token conversion and role extraction
 - `HttpSecurityConfigTest` - Security configuration annotations and method verification
 - `SecurityFilterChainIntegrationTest` - Security configuration integration

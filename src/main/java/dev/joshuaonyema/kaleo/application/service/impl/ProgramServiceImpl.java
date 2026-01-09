@@ -34,9 +34,9 @@ public class ProgramServiceImpl implements ProgramService {
     @Override
     @Transactional
     public Program createProgram(CreateProgramCommand command) {
-        User organizer = currentUserService.getCurrentUser();
+        User currentUser = currentUserService.getCurrentUser();
         Program program = new Program();
-        program.setOrganizer(organizer);
+        program.setOrganizer(currentUser);
         applyProgramFields(program, command);
         if (command.getPassTypes() != null) {
             List<PassType> passTypes = command.getPassTypes().stream()
@@ -49,14 +49,14 @@ public class ProgramServiceImpl implements ProgramService {
 
     @Override
     public Page<Program> listProgramsForOrganizer(Pageable pageable) {
-        User organizer = currentUserService.getCurrentUser();
-        return programRepository.findByOrganizer(organizer, pageable);
+        UUID currentUserId = currentUserService.getCurrentUserId();
+        return programRepository.findByOrganizerId(currentUserId, pageable);
     }
 
     @Override
     public Optional<Program> getProgramForOrganizer(UUID id) {
-        User organizer = currentUserService.getCurrentUser();
-        return programRepository.findByIdAndOrganizer(id, organizer);
+        UUID currentUserId = currentUserService.getCurrentUserId();
+        return programRepository.findByIdAndOrganizerId(id, currentUserId);
     }
 
     @Override
@@ -95,8 +95,8 @@ public class ProgramServiceImpl implements ProgramService {
     }
 
     private Program getOwnedProgram(UUID id) {
-        User organizer = currentUserService.getCurrentUser();
-        return programRepository.findByIdAndOrganizer(id, organizer)
+        UUID currentUserId = currentUserService.getCurrentUserId();
+        return programRepository.findByIdAndOrganizerId(id, currentUserId)
                 .orElseThrow(() -> new ProgramNotFoundException(
                         String.format("Program with ID '%s' not found or you don't have access", id)
                 ));
