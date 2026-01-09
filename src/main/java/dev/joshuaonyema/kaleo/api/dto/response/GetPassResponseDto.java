@@ -13,7 +13,6 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 public class GetPassResponseDto {
-    private UUID id;
     private PassStatus status;
     private String manualCode;
     private LocalDateTime createdAt;
