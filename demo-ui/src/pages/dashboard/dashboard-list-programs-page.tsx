@@ -1,15 +1,15 @@
-import NavBar from "@/components/nav-bar";
-import {SimplePagination} from "@/components/simple-pagination";
+import NavBar from "@/components/common/nav-bar";
+import {SimplePagination} from "@/components/common/simple-pagination";
 import {Alert, AlertDescription, AlertTitle} from "@/components/ui/alert";
 import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import {Button} from "@/components/ui/button";
 import {ProgramSummary, SpringBootPagination,} from "@/domain/domain";

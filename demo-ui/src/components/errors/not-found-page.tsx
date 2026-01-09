@@ -1,7 +1,7 @@
 import {useNavigate} from "react-router";
 import {ArrowLeft, Home, Search} from "lucide-react";
 import {Button} from "../ui/button";
-import Background3D from "@/components/background-3d";
+import Background3D from "@/components/landing/background-3d";
 import {useState} from "react";
 
 export default function NotFoundPage() {

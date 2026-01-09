@@ -1,12 +1,12 @@
 import {useAuth} from "react-oidc-context";
-import {Avatar, AvatarFallback} from "./ui/avatar";
+import {Avatar, AvatarFallback} from "../ui/avatar";
 import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuItem,
     DropdownMenuSeparator,
     DropdownMenuTrigger,
-} from "./ui/dropdown-menu";
+} from "../ui/dropdown-menu";
 import {LogOut} from "lucide-react";
 import {useRoles} from "@/hooks/use-roles";
 import {Link} from "react-router";

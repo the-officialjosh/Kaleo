@@ -1,0 +1,10 @@
+export { default as Background3D } from './background-3d';
+export { OrganizerFeatures, AttendeeFeatures } from './feature-breakdown';
+export { default as HowItWorks } from './how-it-works';
+export { default as PricingSection } from './pricing-section';
+export { default as SecuritySection } from './security-section';
+export { default as SocialProof } from './social-proof';
+export { default as TestimonialCarousel } from './testimonial-carousel';
+export { default as TypewriterText } from './typewriter-text';
+export { default as UseCases } from './use-cases';
+export { default as WhyChooseUs } from './why-choose-us';

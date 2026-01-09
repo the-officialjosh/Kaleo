@@ -1,16 +1,16 @@
 import {useAuth} from "react-oidc-context";
-import {Button} from "../components/ui/button";
+import {Button} from "@/components/ui/button";
 import {useNavigate} from "react-router";
 import {BookOpen, Heart, Search, Sparkles, Users, X} from "lucide-react";
 import {Suspense, useEffect, useRef, useState} from "react";
 import {PublishedProgramSummary, SpringBootPagination} from "@/domain/domain";
 import {listPublishedPrograms, searchPublishedPrograms} from "@/lib/api";
-import PublishedProgramCard from "@/components/published-program-card";
-import {SimplePagination} from "@/components/simple-pagination";
-import Background3D from "@/components/background-3d";
+import PublishedProgramCard from "@/components/programs/published-program-card";
+import {SimplePagination} from "@/components/common/simple-pagination";
+import Background3D from "@/components/landing/background-3d";
 import KaleoLogo from "@/assets/kaleo.svg";
-import Footer from "@/components/footer";
-import TypewriterText from "@/components/typewriter-text";
+import Footer from "@/components/common/footer";
+import TypewriterText from "@/components/landing/typewriter-text";
 import {InlineError} from "@/components/errors";
 
 const AttendeeLandingPage: React.FC = () => {

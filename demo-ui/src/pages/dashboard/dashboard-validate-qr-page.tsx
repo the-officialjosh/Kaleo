@@ -1,4 +1,4 @@
-import NavBar from "@/components/nav-bar";
+import NavBar from "@/components/common/nav-bar";
 import {Input} from "@/components/ui/input";
 import {useState} from "react";
 import {Scanner} from "@yudiel/react-qr-scanner";

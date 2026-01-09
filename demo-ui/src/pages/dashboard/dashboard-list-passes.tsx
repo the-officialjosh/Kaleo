@@ -1,5 +1,5 @@
-import NavBar from "@/components/nav-bar";
-import {SimplePagination} from "@/components/simple-pagination";
+import NavBar from "@/components/common/nav-bar";
+import {SimplePagination} from "@/components/common/simple-pagination";
 import {Alert, AlertDescription, AlertTitle} from "@/components/ui/alert";
 import {PassSummary, SpringBootPagination} from "@/domain/domain";
 import {listPasses} from "@/lib/api";

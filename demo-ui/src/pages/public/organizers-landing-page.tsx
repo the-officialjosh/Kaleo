@@ -2,12 +2,12 @@ import {Button} from "@/components/ui/button";
 import {useAuth} from "react-oidc-context";
 import {useNavigate} from "react-router";
 import {ArrowRight, Calendar, QrCode, Sparkles, Users} from "lucide-react";
-import {AttendeeFeatures, OrganizerFeatures} from "@/components/feature-breakdown";
-import UseCases from "@/components/use-cases";
-import SecuritySection from "@/components/security-section";
-import PricingSection from "@/components/pricing-section";
-import HowItWorks from "@/components/how-it-works";
-import Footer from "@/components/footer";
+import {AttendeeFeatures, OrganizerFeatures} from "@/components/landing/feature-breakdown";
+import UseCases from "@/components/landing/use-cases";
+import SecuritySection from "@/components/landing/security-section";
+import PricingSection from "@/components/landing/pricing-section";
+import HowItWorks from "@/components/landing/how-it-works";
+import Footer from "@/components/common/footer";
 
 const OrganizersLandingPage: React.FC = () => {
   const { isAuthenticated, isLoading, signinRedirect, signoutRedirect } =
