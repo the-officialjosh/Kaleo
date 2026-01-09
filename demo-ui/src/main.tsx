@@ -16,6 +16,7 @@ import DashboardListPasses from "./pages/dashboard-list-passes.tsx";
 import DashboardPage from "./pages/dashboard-page.tsx";
 import DashboardViewPassPage from "./pages/dashboard-view-pass-page.tsx";
 import DashboardValidateQrPage from "./pages/dashboard-validate-qr-page.tsx";
+import CustomCursor from "./components/custom-cursor.tsx";
 
 const router = createBrowserRouter([
   {
@@ -113,7 +114,20 @@ const oidcConfig = {
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <AuthProvider {...oidcConfig}>
+      <div id="cursor-ring"></div>
+      <div id="cursor-dots">
+        <div className="cursor-dot"></div>
+        <div className="cursor-dot"></div>
+        <div className="cursor-dot"></div>
+        <div className="cursor-dot"></div>
+        <div className="cursor-dot"></div>
+        <div className="cursor-dot"></div>
+        <div className="cursor-dot"></div>
+        <div className="cursor-dot"></div>
+      </div>
+      <CustomCursor />
       <RouterProvider router={router} />
     </AuthProvider>
   </StrictMode>,
 );
+

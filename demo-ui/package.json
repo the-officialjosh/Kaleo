@@ -24,11 +24,13 @@
     "@react-three/drei": "^10.7.7",
     "@react-three/fiber": "^9.5.0",
     "@react-three/postprocessing": "^3.0.4",
+    "@studio-freight/lenis": "^1.0.42",
     "@tailwindcss/vite": "^4.1.4",
     "@yudiel/react-qr-scanner": "^2.3.1",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "date-fns": "^3.6.0",
+    "gsap": "^3.14.2",
     "json-server": "^1.0.0-beta.3",
     "jwt-decode": "^4.0.0",
     "lucide-react": "^0.503.0",
@@ -42,7 +44,8 @@
     "tailwind-merge": "^3.2.0",
     "tailwindcss": "^4.1.4",
     "three": "^0.182.0",
-    "tw-animate-css": "^1.2.8"
+    "tw-animate-css": "^1.2.8",
+    "vite-plugin-glsl": "^1.5.5"
   },
   "devDependencies": {
     "@eslint/js": "^9.22.0",
