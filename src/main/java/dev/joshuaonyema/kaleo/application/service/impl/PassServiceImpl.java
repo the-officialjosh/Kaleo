@@ -11,9 +11,10 @@ import dev.joshuaonyema.kaleo.exception.PassSoldOutException;
 import dev.joshuaonyema.kaleo.exception.PassTypeNotFoundException;
 import dev.joshuaonyema.kaleo.repository.PassRepository;
 import dev.joshuaonyema.kaleo.repository.PassTypeRepository;
-import dev.joshuaonyema.kaleo.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
@@ -22,7 +23,6 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class PassServiceImpl implements PassService {
 
-    private final UserRepository userRepository;
     private final PassRepository passRepository;
     private final PassTypeRepository passTypeRepository;
     private final QrCodeService qrCodeService;
@@ -55,5 +55,11 @@ public class PassServiceImpl implements PassService {
         qrCodeService.generateQrCode(savedPass);
 
         passRepository.save(savedPass);
+    }
+
+    @Override
+    public Page<Pass> listPassesForUser(Pageable pageable) {
+        UUID userId = currentUserService.getCurrentUser().getId();
+        return passRepository.findByRegistrantId(userId, pageable);
     }
 }
