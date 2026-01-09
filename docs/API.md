@@ -1,8 +1,19 @@
 # Kaleo API Documentation
 
+## Interactive API Docs (Swagger UI)
+
+Access the full interactive API documentation at:
+- **Development**: http://localhost:8080/swagger-ui/index.html
+- **Docker**: http://localhost:8081/swagger-ui/index.html
+- **Via Nginx**: http://localhost/swagger-ui/index.html
+
+Click **Authorize** to login via Keycloak OAuth2.
+
+---
+
 ## Authentication
 
-All endpoints require authentication via JWT token from Keycloak.
+All endpoints (except public ones) require authentication via JWT token from Keycloak.
 
 **Header:**
 ```

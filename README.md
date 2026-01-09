@@ -1,15 +1,13 @@
 # Kaleo
 
-### Church & Ministry Event Management API
+### Church & Ministry Event Management Platform
 
 [![CI/CD](https://img.shields.io/github/actions/workflow/status/the-officialjosh/kaleo/ci.yml?style=flat-square&logo=github&label=CI%2FCD)](../../actions)
 [![Java](https://img.shields.io/badge/Java-25-ED8B00?style=flat-square&logo=openjdk&logoColor=white)](https://openjdk.org/)
 [![Spring Boot](https://img.shields.io/badge/Spring_Boot-4.0.1-6DB33F?style=flat-square&logo=spring&logoColor=white)](https://spring.io/projects/spring-boot)
-[![Spring Security](https://img.shields.io/badge/Spring_Security-7.0.2-6DB33F?style=flat-square&logo=springsecurity&logoColor=white)](https://spring.io/projects/spring-security)
-[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-18-336791?style=flat-square&logo=postgresql&logoColor=white)](https://www.postgresql.org/)
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-336791?style=flat-square&logo=postgresql&logoColor=white)](https://www.postgresql.org/)
 [![Keycloak](https://img.shields.io/badge/Keycloak-26.4.7-4D4D4D?style=flat-square&logo=keycloak&logoColor=white)](https://www.keycloak.org/)
-[![Adminer](https://img.shields.io/badge/Adminer-4.8.1-34567C?style=flat-square&logo=adminer&logoColor=white)](https://www.adminer.org/)
-[![Tests](https://img.shields.io/badge/tests-225-success?style=flat-square)](docs/TEST_COVERAGE.md)
+[![Docker](https://img.shields.io/badge/Docker-Ready-2496ED?style=flat-square&logo=docker&logoColor=white)](https://www.docker.com/)
 
 <div align="center">
 
@@ -17,7 +15,7 @@
 
 A secure REST API for church and ministry event management. Organizers create programs, participants register for limited-capacity events, and staff validate attendance using QR-coded passes.
 
-[Features](#what-it-does) • [Quick Start](#quick-start) • [API Docs](docs/API.md) • [Architecture](#architecture)
+[Features](#-what-it-does) • [Quick Start](#-quick-start) • [Docker Deploy](#-docker-deployment) • [API Docs](#-api-documentation)
 
 ---
 
@@ -26,13 +24,11 @@ A secure REST API for church and ministry event management. Organizers create pr
 ## ✨ What It Does
 
 - 📋 **Program Management**: Create and manage church programs/events with role-based access
-- 🎟️ **Registration**: Capacity-controlled registration with automatic pass generation (Coming Soon)
-- 📱 **QR Passes**: Generate unique QR codes for event check-in (Coming Soon)
-- ✅ **Validation**: Staff-managed check-in with duplicate prevention (Coming Soon)
-- 📊 **Analytics**: Track attendance and generate reports (Coming Soon)
+- 🎟️ **Pass System**: Capacity-controlled registration with automatic pass generation
+- 📱 **QR Check-in**: Generate unique QR codes and manual codes for event check-in
+- ✅ **Validation**: Staff-managed check-in with duplicate prevention
 - 🔐 **Security**: JWT-based authentication with Keycloak OAuth2/OIDC integration
-
-> 🚧 **Status**: In Development — Core domain model, security infrastructure, program management API, and comprehensive test suite complete
+- 📖 **Swagger UI**: Interactive API documentation with OAuth2 authorization
 
 ---
 
@@ -40,123 +36,156 @@ A secure REST API for church and ministry event management. Organizers create pr
 
 | Component | Technology | Purpose |
 |-----------|------------|---------|
-| **Language** | Java 25 | Modern JVM features |
-| **Framework** | Spring Boot 4.0.1 | Application framework with Data JPA, Validation |
-| **Security** | Spring Security 7.0.2 | Authentication & authorization framework |
-| **Database** | PostgreSQL 18 | Relational database |
-| **DB Admin** | Adminer 4.8.1 | Database management UI |
-| **Auth Provider** | Keycloak 26.4.7 | OAuth2/OIDC authentication & RBAC |
-| **Mapping** | MapStruct | Type-safe bean mapping |
-| **Testing** | JUnit 5 + Mockito | Unit & integration testing |
-
----
-
-## 🏗️ Architecture
-
-```
-┌─────────────────┐
-│   Keycloak      │  OAuth2/OIDC Provider
-│   (Port 9095)   │
-└────────┬────────┘
-         │ JWT
-         ▼
-┌─────────────────┐
-│  Spring Boot    │  REST API Layer
-│  (Port 8080)    │  • Security Filter Chain
-│                 │  • Controllers
-│                 │  • Service Layer
-│                 │  • Repository Layer
-└────────┬────────┘
-         │
-         ▼
-┌─────────────────┐
-│   PostgreSQL    │  Persistent Storage
-│   (Port 5432)   │
-└─────────────────┘
-```
-
-**Key Components:**
-- **Security**: JWT-based authentication with role-based access (`ORGANIZER`, `PARTICIPANT`, `STAFF`)
-- **Domain Model**: Program → PassType → Pass → QrCode → PassValidation
-- **Validation**: Custom validators for date ranges and conditional fields
-- **Mapping**: MapStruct for DTO ↔ Entity conversions
+| **Backend** | Spring Boot 4.0.1 + Java 25 | REST API with Data JPA, Validation |
+| **Database** | PostgreSQL 16 | Relational database |
+| **Auth** | Keycloak 26.4.7 | OAuth2/OIDC authentication & RBAC |
+| **Frontend** | React 19 + Vite + TypeScript | Demo UI |
+| **API Docs** | springdoc-openapi | Swagger UI with OAuth2 |
+| **Container** | Docker + Nginx | Production deployment |
 
 ---
 
 ## 🚀 Quick Start
 
-**Prerequisites:** Java 25, Docker, Docker Compose
+### Development Mode
+
+**Prerequisites:** Java 25, Node.js 20+, Docker
 
 ```bash
 # Clone repository
-git clone https://github.com/yourusername/kaleo.git
+git clone https://github.com/the-officialjosh/kaleo.git
 cd kaleo
 
 # Start dependencies (PostgreSQL + Keycloak)
-docker-compose up -d
+docker compose up db keycloak -d
 
-# Run application
+# Run API
 ./mvnw spring-boot:run
+
+# Run frontend (in another terminal)
+cd demo-ui && npm install && npm run dev
 ```
 
-API available at: `http://localhost:8080`
+| Service | URL |
+|---------|-----|
+| API | http://localhost:8080 |
+| Frontend | http://localhost |
+| Swagger UI | http://localhost:8080/swagger-ui/index.html |
+| Keycloak | http://localhost:9095 |
 
-**⚙️ Configuration:**
-- Keycloak: `http://localhost:9095` (create `kaleo-events` realm)
-- Database: `localhost:5432` (credentials in `.env`)
-- Adminer: `http://localhost:8888`
+---
+
+## 🐳 Docker Deployment
+
+### Full Stack with One Command
+
+```bash
+# Build API container
+./mvnw -DskipTests spring-boot:build-image \
+  -Dspring-boot.build-image.imageName=the-officialjosh/kaleo-api:latest
+
+# Build frontend
+cd demo-ui && npm run build && cd ..
+
+# Start all services
+docker compose up -d
+```
+
+### Services
+
+| Service | Port | Description |
+|---------|------|-------------|
+| `frontend` | 80 | React app via Nginx |
+| `api` | 8081 | Spring Boot API |
+| `keycloak` | 9095 | Auth server (auto-imports realm) |
+| `db` | 5432 | PostgreSQL |
+| `adminer` | 8888 | Database admin UI |
+
+### URLs (Docker mode)
+
+| URL | Description |
+|-----|-------------|
+| http://localhost | Landing page |
+| http://localhost/swagger-ui/index.html | Swagger via Nginx |
+| http://localhost:8081/swagger-ui/index.html | Swagger direct |
+| http://localhost/api/v1/published-programs | Public API (no auth) |
+
+---
+
+## 📖 API Documentation
+
+### Swagger UI with OAuth2
+
+Access Swagger UI at `/swagger-ui/index.html` and click **Authorize** to login via Keycloak.
+
+### Public Endpoints (No Auth)
+
+```
+GET /api/v1/published-programs         # List published programs
+GET /api/v1/published-programs/{id}    # Get program details
+```
+
+### Protected Endpoints
+
+| Endpoint | Role Required |
+|----------|---------------|
+| `/api/v1/programs` | `ROLE_ORGANIZER` |
+| `/api/v1/pass-validations/**` | `ROLE_STAFF` |
+| All other endpoints | Authenticated |
+
+---
+
+## 🔐 Keycloak Setup
+
+The realm is auto-imported on startup. The following roles are available:
+
+| Role | Permissions |
+|------|-------------|
+| `ROLE_ORGANIZER` | Create/manage programs and pass types |
+| `ROLE_STAFF` | Validate passes at events |
+| `ROLE_ATTENDEE` | Register for events, view passes |
+
+### Required Client Redirect URIs
+
+```
+http://localhost/callback
+http://localhost:5173/callback
+http://localhost/swagger-ui/oauth2-redirect.html
+http://localhost:8081/swagger-ui/oauth2-redirect.html
+```
 
 ---
 
 ## 🧪 Running Tests
 
 ```bash
-# Run all tests
-./mvnw test
-
-# Run specific test class
-./mvnw test -Dtest=ProgramServiceImplTest
-
-# Run with coverage
-./mvnw verify jacoco:report
+./mvnw test                           # Run all tests
+./mvnw test -Dtest=PassMapperTest     # Run specific test
+./mvnw verify jacoco:report           # Run with coverage
 ```
 
-**Test Coverage:** 22 test classes with 225+ tests
-- **API Layer**: Controllers (ProgramController, PublishedProgramController, PassController, PassTypeController), DTOs, Validators, Exception Handlers
-- **Application Layer**: Services, Security (CurrentUserService)
-- **Mappers**: ProgramMapper, PassMapper
-- **Infrastructure**: Security Filters (UserProvisioningFilter)
-- **Configuration**: Security Config (HttpSecurityConfig, JwtAuthenticationConverter, SecurityFilterChain), JPA Config, QrCode Config
+**Test Coverage:** 22 test classes with 225+ tests covering API, Services, Mappers, Security, and Configuration.
 
-See [Test Coverage Documentation](docs/TEST_COVERAGE.md) for detailed breakdown.
+---
+
+## 📁 Project Structure
+
+```
+kaleo/
+├── src/main/java/              # Spring Boot API
+├── demo-ui/                    # React frontend
+├── docker-compose.yaml         # Full stack deployment
+├── nginx.conf                  # Nginx reverse proxy
+└── docs/                       # Documentation
+```
 
 ---
 
 ## 📚 Documentation
 
-- [📖 API Documentation](docs/API.md) — Endpoints, request/response examples
-- [📋 Project Plan](docs/project-plan.md) — Detailed specifications
-- [🗺️ Domain Model](docs/images/Kaleo-domain.png) — Entity relationships
-- [✅ Test Coverage](docs/TEST_COVERAGE.md) — Test structure and statistics
-
----
-
-### 🖥️ Demo UI (Development Only)
-
-A minimal React demo for testing the API during development.
-
-[![React](https://img.shields.io/badge/React-19-61DAFB?style=flat-square&logo=react&logoColor=white)](https://react.dev/)
-[![Vite](https://img.shields.io/badge/Vite-6-646CFF?style=flat-square&logo=vite&logoColor=white)](https://vite.dev/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.7-3178C6?style=flat-square&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
-[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4-06B6D4?style=flat-square&logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
-[![React Router](https://img.shields.io/badge/React_Router-7-CA4245?style=flat-square&logo=reactrouter&logoColor=white)](https://reactrouter.com/)
-[![Radix UI](https://img.shields.io/badge/Radix_UI-1.1-161618?style=flat-square&logo=radixui&logoColor=white)](https://www.radix-ui.com/)
-
-```bash
-cd demo-ui && npm install && npm run dev
-```
-
-Runs at `http://localhost:5173`. Requires the API and Keycloak to be running.
+- [📖 API Documentation](docs/API.md)
+- [🗺️ Domain Model](docs/images/Kaleo-domain.png)
+- [✅ Test Coverage](docs/TEST_COVERAGE.md)
 
 ---
 
@@ -168,10 +197,8 @@ MIT License
 
 <div align="center">
 
-**[Report Bug](../../issues)** • **[Request Feature](../../issues)** • **[Discussions](../../discussions)**
+**[Report Bug](../../issues)** • **[Request Feature](../../issues)**
 
 Made with ❤️ for churches and ministries
 
 </div>
-
-

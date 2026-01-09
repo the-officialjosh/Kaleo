@@ -121,10 +121,12 @@ const router = createBrowserRouter([
 ]);
 
 
+// OIDC config - uses current origin for redirect URI so it works in any environment
 const oidcConfig = {
-  authority: "http://localhost:9095/realms/kaleo-events",
-  client_id: "kaleo-event-app",
-  redirect_uri: "http://localhost:5173/callback",
+  authority: import.meta.env.VITE_KEYCLOAK_URL || "http://localhost:9095/realms/kaleo-events",
+  client_id: import.meta.env.VITE_OIDC_CLIENT_ID || "kaleo-event-app",
+  redirect_uri: `${window.location.origin}/callback`,
+  post_logout_redirect_uri: window.location.origin,
 };
 
 createRoot(document.getElementById("root")!).render(
