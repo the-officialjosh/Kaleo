@@ -23,7 +23,7 @@ public class HttpSecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.GET, "/api/v1/published-programs/**").permitAll()
                         .requestMatchers("/api/v1/programs").hasRole("ORGANIZER")
-                        .requestMatchers("/api/v1/pass-validations").hasRole("STAFF")
+                        .requestMatchers("/api/v1/pass-validations/**").hasRole("STAFF")
                         .anyRequest().authenticated())
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

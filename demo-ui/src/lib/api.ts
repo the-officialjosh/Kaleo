@@ -10,6 +10,7 @@ import {
   PublishedProgramDetails,
   PublishedProgramSummary,
   SpringBootPagination,
+  StaffProgramSummary,
   UpdateProgramRequest,
 } from "@/domain/domain";
 
@@ -395,6 +396,73 @@ export const getPassQr = async (
   }
 };
 
+// List programs available for staff validation
+export const listStaffPrograms = async (
+  accessToken: string,
+  page: number,
+): Promise<SpringBootPagination<StaffProgramSummary>> => {
+  const response = await fetch(`/api/v1/pass-validations?page=${page}&size=20`, {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+      "Content-Type": "application/json",
+    },
+  });
+
+  if (!response.ok) {
+    const text = await response.text();
+    if (text) {
+      try {
+        const body = JSON.parse(text);
+        if (isErrorResponse(body)) {
+          throw new Error(body.error);
+        }
+      } catch {
+        // Not a JSON error response
+      }
+    }
+    throw new Error(
+      `Request failed with status ${response.status}: ${text || "No response body"}`,
+    );
+  }
+
+  const data = await response.json();
+
+  // Handle API response with nested page object
+  if (data.page && data.content) {
+    return {
+      content: data.content,
+      number: data.page.number,
+      size: data.page.size,
+      totalElements: data.page.totalElements,
+      totalPages: data.page.totalPages,
+      first: data.page.number === 0,
+      last: data.page.number === data.page.totalPages - 1,
+      numberOfElements: data.content.length,
+      empty: data.content.length === 0,
+      pageable: {
+        pageNumber: data.page.number,
+        pageSize: data.page.size,
+        offset: data.page.number * data.page.size,
+        paged: true,
+        unpaged: false,
+        sort: {
+          empty: true,
+          sorted: false,
+          unsorted: true,
+        },
+      },
+      sort: {
+        empty: true,
+        sorted: false,
+        unsorted: true,
+      },
+    } as SpringBootPagination<StaffProgramSummary>;
+  }
+
+  return data as SpringBootPagination<StaffProgramSummary>;
+};
+
 export const validatePass = async (
   accessToken: string,
   request: PassValidationRequest,
@@ -419,5 +487,5 @@ export const validatePass = async (
     }
   }
 
-  return responseBody as Promise<PassValidationResponse>;
+  return responseBody as PassValidationResponse;
 };

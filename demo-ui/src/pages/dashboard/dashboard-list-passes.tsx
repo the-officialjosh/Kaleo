@@ -2,7 +2,7 @@ import NavBar from "@/components/common/nav-bar";
 import {SimplePagination} from "@/components/common/simple-pagination";
 import {PassSummary, SpringBootPagination} from "@/domain/domain";
 import {listPasses} from "@/lib/api";
-import {Calendar, Clock, MapPin, Tag, Ticket} from "lucide-react";
+import {Calendar, Clock, MapPin, Ticket} from "lucide-react";
 import {useEffect, useState} from "react";
 import {useAuth} from "react-oidc-context";
 import {Link} from "react-router";
@@ -180,10 +180,6 @@ const DashboardListPasses: React.FC = () => {
 
                   {/* Footer */}
                   <div className="pass-card-footer">
-                    <div className="pass-id-row">
-                      <Tag className="w-3 h-3" />
-                      <span>ID: {passItem.id.slice(0, 8)}...</span>
-                    </div>
                     <div className="pass-purchased-row">
                       <Clock className="w-3 h-3" />
                       <span>Purchased {formatDate(passItem.createdAt)}</span>
