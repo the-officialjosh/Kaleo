@@ -164,10 +164,12 @@ export enum PassStatus {
 export interface PassSummary {
   id: string;
   status: PassStatus;
+  manualCode: string;
   createdAt: string;
   passTypeName: string;
   passTypePrice: number;
   passTypeDescription: string;
+  programId: string;
   programName: string;
   programStartTime: string;
   programEndTime: string;
@@ -177,6 +179,7 @@ export interface PassSummary {
 export interface PassDetails {
   id: string;
   status: PassStatus;
+  manualCode: string;
   createdAt: string;
   passTypeName: string;
   passTypePrice: number;

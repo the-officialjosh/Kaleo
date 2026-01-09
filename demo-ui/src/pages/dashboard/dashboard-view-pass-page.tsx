@@ -1,6 +1,17 @@
 import {PassDetails, PassStatus} from "@/domain/domain";
 import {getPass, getPassQr} from "@/lib/api";
-import {AlertCircle, ArrowLeft, Calendar, CheckCircle2, Clock, DollarSign, MapPin, Ticket, XCircle} from "lucide-react";
+import {
+  AlertCircle,
+  ArrowLeft,
+  Calendar,
+  CheckCircle2,
+  Clock,
+  DollarSign,
+  Hash,
+  MapPin,
+  Ticket,
+  XCircle
+} from "lucide-react";
 import {useEffect, useState} from "react";
 import {useAuth} from "react-oidc-context";
 import {useNavigate, useParams} from "react-router";
@@ -216,6 +227,18 @@ const DashboardViewPassPage: React.FC = () => {
                   <span className="pass-view-detail-label">Price Paid</span>
                   <span className="pass-view-detail-value pass-view-price">
                     ${pass.passTypePrice.toFixed(2)}
+                  </span>
+                </div>
+              </div>
+
+              <div className="pass-view-detail-row">
+                <div className="pass-view-detail-icon">
+                  <Hash className="w-5 h-5" />
+                </div>
+                <div className="pass-view-detail-content">
+                  <span className="pass-view-detail-label">Manual Code</span>
+                  <span className="pass-view-detail-value pass-view-manual-code">
+                    {pass.manualCode}
                   </span>
                 </div>
               </div>

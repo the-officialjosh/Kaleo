@@ -27,7 +27,7 @@ public class Pass extends TimestampedEntity {
     @Column(name = "status", nullable = false)
     private PassStatus status;
 
-    @Column(name = "manual_code", nullable = false, unique = true, length = 6)
+    @Column(name = "manual_code", unique = true, length = 6)
     private String manualCode;
 
     @ManyToOne(fetch = FetchType.LAZY)
