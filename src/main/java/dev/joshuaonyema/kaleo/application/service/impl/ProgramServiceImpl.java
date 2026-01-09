@@ -31,12 +31,10 @@ public class ProgramServiceImpl implements ProgramService {
     private final CurrentUserService currentUserService;
     private final ProgramRepository programRepository;
 
-    UUID currentUserId = currentUserService.getCurrentUserId();
-    User currentUser = currentUserService.getCurrentUser();
-
     @Override
     @Transactional
     public Program createProgram(CreateProgramCommand command) {
+        User currentUser = currentUserService.getCurrentUser();
         Program program = new Program();
         program.setOrganizer(currentUser);
         applyProgramFields(program, command);
@@ -51,11 +49,13 @@ public class ProgramServiceImpl implements ProgramService {
 
     @Override
     public Page<Program> listProgramsForOrganizer(Pageable pageable) {
+        UUID currentUserId = currentUserService.getCurrentUserId();
         return programRepository.findByOrganizerId(currentUserId, pageable);
     }
 
     @Override
     public Optional<Program> getProgramForOrganizer(UUID id) {
+        UUID currentUserId = currentUserService.getCurrentUserId();
         return programRepository.findByIdAndOrganizerId(id, currentUserId);
     }
 
@@ -95,6 +95,7 @@ public class ProgramServiceImpl implements ProgramService {
     }
 
     private Program getOwnedProgram(UUID id) {
+        UUID currentUserId = currentUserService.getCurrentUserId();
         return programRepository.findByIdAndOrganizerId(id, currentUserId)
                 .orElseThrow(() -> new ProgramNotFoundException(
                         String.format("Program with ID '%s' not found or you don't have access", id)
