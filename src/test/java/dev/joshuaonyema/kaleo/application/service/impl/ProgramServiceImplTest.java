@@ -294,7 +294,7 @@ class ProgramServiceImplTest {
         Program program = createTestProgram("Test Program");
         program.setId(programId);
 
-        when(programRepository.findByIdAndOrganizer(programId, user)).thenReturn(Optional.of(program));
+        when(programRepository.findByIdAndOrganizerId(programId, user)).thenReturn(Optional.of(program));
 
         Optional<Program> result = programService.getProgramForOrganizer(programId);
 
@@ -309,7 +309,7 @@ class ProgramServiceImplTest {
         when(currentUserService.getCurrentUser()).thenReturn(user);
 
         UUID programId = UUID.randomUUID();
-        when(programRepository.findByIdAndOrganizer(programId, user)).thenReturn(Optional.empty());
+        when(programRepository.findByIdAndOrganizerId(programId, user)).thenReturn(Optional.empty());
 
         Optional<Program> result = programService.getProgramForOrganizer(programId);
 
@@ -322,12 +322,12 @@ class ProgramServiceImplTest {
         when(currentUserService.getCurrentUser()).thenReturn(user);
 
         UUID programId = UUID.randomUUID();
-        when(programRepository.findByIdAndOrganizer(programId, user)).thenReturn(Optional.empty());
+        when(programRepository.findByIdAndOrganizerId(programId, user)).thenReturn(Optional.empty());
 
         Optional<Program> result = programService.getProgramForOrganizer(programId);
 
         assertTrue(result.isEmpty());
-        verify(programRepository).findByIdAndOrganizer(programId, user);
+        verify(programRepository).findByIdAndOrganizerId(programId, user);
     }
 
 

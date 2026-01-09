@@ -60,13 +60,13 @@ public class PassServiceImpl implements PassService {
 
     @Override
     public Page<Pass> listPassesForUser(Pageable pageable) {
-        UUID userId = currentUserService.getCurrentUser().getId();
+        UUID userId = currentUserService.getCurrentUserId();
         return passRepository.findByRegistrantId(userId, pageable);
     }
 
     @Override
     public Optional<Pass> getPassForUser(UUID passID) {
-        UUID userId = currentUserService.getCurrentUser().getId();
+        UUID userId = currentUserService.getCurrentUserId();
         return passRepository.findByIdAndRegistrantId(passID, userId);
     }
 }
