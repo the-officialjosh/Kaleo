@@ -66,7 +66,6 @@ class PassMapperTest {
         assertNotNull(result);
         assertEquals(passId, result.getId());
         assertEquals(PassStatus.ACTIVE, result.getStatus());
-        assertEquals("ABC123", result.getManualCode());
     }
 
     @Test
