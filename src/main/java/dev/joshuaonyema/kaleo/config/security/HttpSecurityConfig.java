@@ -22,6 +22,8 @@ public class HttpSecurityConfig {
         return http
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.GET, "/api/v1/published-programs/**").permitAll()
+                        .requestMatchers("/swagger-ui/**", "/swagger-ui.html", "/swagger-ui/oauth2-redirect.html").permitAll()
+                        .requestMatchers("/v3/api-docs/**", "/v3/api-docs").permitAll()
                         .requestMatchers("/api/v1/programs").hasRole("ORGANIZER")
                         .requestMatchers("/api/v1/pass-validations/**").hasRole("STAFF")
                         .anyRequest().authenticated())
