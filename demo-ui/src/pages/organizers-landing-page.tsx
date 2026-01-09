@@ -2,6 +2,12 @@ import {Button} from "@/components/ui/button";
 import {useAuth} from "react-oidc-context";
 import {useNavigate} from "react-router";
 import {ArrowRight, Calendar, QrCode, Sparkles, Users} from "lucide-react";
+import {AttendeeFeatures, OrganizerFeatures} from "@/components/feature-breakdown";
+import UseCases from "@/components/use-cases";
+import SecuritySection from "@/components/security-section";
+import PricingSection from "@/components/pricing-section";
+import HowItWorks from "@/components/how-it-works";
+import Footer from "@/components/footer";
 
 const OrganizersLandingPage: React.FC = () => {
   const { isAuthenticated, isLoading, signinRedirect, signoutRedirect } =
@@ -135,6 +141,24 @@ const OrganizersLandingPage: React.FC = () => {
         </div>
       </section>
 
+      {/* How It Works */}
+      <HowItWorks />
+
+      {/* Organizer Features */}
+      <OrganizerFeatures />
+
+      {/* Attendee Features */}
+      <AttendeeFeatures />
+
+      {/* Use Cases */}
+      <UseCases />
+
+      {/* Security */}
+      <SecuritySection />
+
+      {/* Pricing */}
+      <PricingSection />
+
       {/* CTA Section */}
       <section className="cta-section">
         <div className="cta-container">
@@ -151,6 +175,9 @@ const OrganizersLandingPage: React.FC = () => {
           </Button>
         </div>
       </section>
+
+      {/* Footer */}
+      <Footer />
     </div>
   );
 };

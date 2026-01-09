@@ -45,7 +45,7 @@ function FlowingParticles() {
         uPixelRatio: { value: Math.min(window.devicePixelRatio, 2) },
         uColorA: { value: new THREE.Color('#8b5cf6') }, // Purple
         uColorB: { value: new THREE.Color('#06b6d4') }, // Cyan
-        uColorC: { value: new THREE.Color('#f97316') }, // Orange - for mouse glow
+        uColorC: { value: new THREE.Color('#ffffff') }, // White - for mouse glow
       },
       vertexShader: `
         uniform float uTime;
@@ -233,9 +233,9 @@ function FlowingParticles() {
   return (
     <points ref={pointsRef}>
       <bufferGeometry>
-        <bufferAttribute attach="attributes-position" count={particleCount} array={positions} itemSize={3} />
-        <bufferAttribute attach="attributes-aRandom" count={particleCount} array={randoms} itemSize={1} />
-        <bufferAttribute attach="attributes-aSpeed" count={particleCount} array={speeds} itemSize={1} />
+        <bufferAttribute attach="attributes-position" args={[positions, 3]} />
+        <bufferAttribute attach="attributes-aRandom" args={[randoms, 1]} />
+        <bufferAttribute attach="attributes-aSpeed" args={[speeds, 1]} />
       </bufferGeometry>
       <primitive object={shaderMaterial} attach="material" ref={materialRef} />
     </points>

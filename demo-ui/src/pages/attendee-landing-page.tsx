@@ -1,7 +1,7 @@
 import {useAuth} from "react-oidc-context";
 import {Button} from "../components/ui/button";
 import {useNavigate} from "react-router";
-import {AlertCircle, Search, Sparkles, X} from "lucide-react";
+import {AlertCircle, BookOpen, Heart, Search, Sparkles, Users, X} from "lucide-react";
 import {Suspense, useEffect, useRef, useState} from "react";
 import {PublishedProgramSummary, SpringBootPagination} from "@/domain/domain";
 import {listPublishedPrograms, searchPublishedPrograms} from "@/lib/api";
@@ -9,6 +9,9 @@ import {Alert, AlertDescription, AlertTitle} from "@/components/ui/alert";
 import PublishedProgramCard from "@/components/published-program-card";
 import {SimplePagination} from "@/components/simple-pagination";
 import Background3D from "@/components/background-3d";
+import KaleoLogo from "@/assets/kaleo.svg";
+import Footer from "@/components/footer";
+import TypewriterText from "@/components/typewriter-text";
 
 const AttendeeLandingPage: React.FC = () => {
   const { isAuthenticated, isLoading, signinRedirect, signoutRedirect } =
@@ -60,7 +63,6 @@ const AttendeeLandingPage: React.FC = () => {
 
     try {
       setPublishedPrograms(await searchPublishedPrograms(query, page));
-      // Smooth scroll to results after a brief delay for the animation
       setTimeout(() => {
         resultsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }, 300);
@@ -111,19 +113,19 @@ const AttendeeLandingPage: React.FC = () => {
 
   return (
     <div className={`landing-page ${isSearchActive ? 'search-mode' : ''}`}>
+      {/* Fixed 3D Background */}
+      <Suspense fallback={null}>
+        <Background3D />
+      </Suspense>
+
       {/* Hero Section */}
       <section className={`hero-section ${isSearchActive ? 'collapsed' : ''}`}>
-        {/* 3D Background */}
-        <Suspense fallback={null}>
-          <Background3D />
-        </Suspense>
         <div className="hero-overlay" />
         
         {/* Navigation */}
         <nav className="hero-nav">
           <div className="hero-nav-brand">
-            <Sparkles className="w-6 h-6" />
-            <span>Kaleo</span>
+            <img src={KaleoLogo} alt="Kaleo" className="kaleo-logo" />
           </div>
           <div className="hero-nav-actions">
             {isAuthenticated ? (
@@ -154,11 +156,11 @@ const AttendeeLandingPage: React.FC = () => {
         {/* Hero Content */}
         <div className="hero-content">
           <h1 className="hero-title">
-            Discover Your Next
-            <span className="hero-title-accent"> Experience</span>
+            Find Your Place
+            <span className="hero-title-accent"> in <TypewriterText /></span>
           </h1>
           <p className="hero-subtitle">
-            Find and book passes to amazing programs, events, and gatherings in your community
+            Connect with church programs, ministries, and gatherings that nurture your faith journey and help you grow closer to God and others.
           </p>
 
           {/* Search Bar */}
@@ -168,7 +170,7 @@ const AttendeeLandingPage: React.FC = () => {
             </div>
             <input
               type="text"
-              placeholder="Search for programs, events, or venues..."
+              placeholder="Search for ministries, bible studies, or events..."
               className="search-input"
               value={query || ""}
               onChange={(e) => setQuery(e.target.value)}
@@ -212,13 +214,13 @@ const AttendeeLandingPage: React.FC = () => {
                   <span className="results-query">"{query}"</span>
                 </>
               ) : (
-                'Upcoming Programs'
+                'Upcoming Ministries & Events'
               )}
             </h2>
             <p className="programs-subtitle">
               {isSearchActive 
                 ? `Found ${publishedPrograms?.totalElements || 0} program${(publishedPrograms?.totalElements || 0) !== 1 ? 's' : ''}` 
-                : 'Explore what\'s happening in your community'
+                : 'Find opportunities to serve, learn, and grow together'
               }
             </p>
           </div>
@@ -238,7 +240,7 @@ const AttendeeLandingPage: React.FC = () => {
             <div className="empty-state">
               <Sparkles className="w-12 h-12 text-purple-400 mb-4" />
               <h3 className="text-xl font-semibold text-white mb-2">No programs found</h3>
-              <p className="text-gray-400">Check back later for upcoming events</p>
+              <p className="text-gray-400">Check back later for upcoming ministries and events</p>
             </div>
           )}
 
@@ -253,6 +255,45 @@ const AttendeeLandingPage: React.FC = () => {
           )}
         </div>
       </section>
+
+      {/* Ways to Connect Section */}
+      <section className="ministry-pillars-section">
+        <div className="ministry-pillars-container">
+          <h2 className="ministry-pillars-title">Ways to Connect</h2>
+          <p className="ministry-pillars-subtitle">
+            Discover meaningful ways to engage with your faith community
+          </p>
+          
+          <div className="ministry-pillars-grid">
+            <div className="ministry-pillar-card">
+              <div className="ministry-pillar-icon">
+                <Heart className="w-8 h-8" />
+              </div>
+              <h3>Worship Services</h3>
+              <p>Join us for inspiring worship experiences that uplift your spirit and draw you closer to God.</p>
+            </div>
+            
+            <div className="ministry-pillar-card">
+              <div className="ministry-pillar-icon">
+                <Users className="w-8 h-8" />
+              </div>
+              <h3>Small Groups</h3>
+              <p>Build authentic relationships in intimate settings where faith meets real life.</p>
+            </div>
+            
+            <div className="ministry-pillar-card">
+              <div className="ministry-pillar-icon">
+                <BookOpen className="w-8 h-8" />
+              </div>
+              <h3>Bible Studies</h3>
+              <p>Dive deeper into Scripture with guided studies that transform understanding into action.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <Footer />
     </div>
   );
 };

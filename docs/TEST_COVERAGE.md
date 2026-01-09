@@ -39,6 +39,7 @@ src/test/java/dev/joshuaonyema/kaleo/
 │   │   └── QrCodeConfigTest.java (NEW)
 │   └── security/
 │       ├── HttpSecurityConfigTest.java
+│       ├── JwtAuthenticationConverterTest.java (NEW)
 │       └── SecurityFilterChainIntegrationTest.java
 └── infrastructure/
     └── security/
@@ -158,16 +159,28 @@ src/test/java/dev/joshuaonyema/kaleo/
 ### ✅ Configuration Layer Tests
 
 #### Security Configuration
-- **HttpSecurityConfigTest** (9 tests) **[NEW]**
-  - JWT authentication converter configuration
-  - Keycloak realm roles extraction
-  - Role prefix mapping (ROLE_*)
-  - Empty roles handling
-  - Invalid JWT claims handling
-  - Non-string role filtering
-  - Special characters in role names
+- **HttpSecurityConfigTest** (6 tests)
+  - `@Configuration` annotation verification
+  - `@EnableMethodSecurity` annotation verification
+  - Class instantiation
+  - `securityFilterChain` method existence
+  - `@Bean` annotation on securityFilterChain
+  - Method parameters verification
 
-- **SecurityFilterChainIntegrationTest** (7 tests) **[NEW]**
+- **JwtAuthenticationConverterTest** (12 tests) **[NEW]**
+  - `@Component` annotation verification
+  - JWT to JwtAuthenticationToken conversion
+  - Extracts roles with ROLE_ prefix
+  - Filters out roles without ROLE_ prefix
+  - Empty authorities when no realm_access claim
+  - Empty authorities when realm_access is null
+  - Empty authorities when no roles key
+  - Empty authorities with empty roles list
+  - Special characters in role names preserved
+  - Mixed roles (with and without prefix)
+  - All roles lacking prefix returns empty
+
+- **SecurityFilterChainIntegrationTest** (7 tests)
   - Spring context loading
   - Security beans registration
   - Filter chain configuration
@@ -208,10 +221,10 @@ src/test/java/dev/joshuaonyema/kaleo/
 |-----------|------------|-------------|
 | API Layer | 8 | 90 |
 | Application Layer | 5 | 68 |
-| Configuration Layer | 4 | 23 |
+| Configuration Layer | 5 | 32 |
 | Infrastructure Layer | 1 | 10 |
-| Integration | 1 | 1 |
-| **TOTAL** | **19** | **192** |
+| Integration | 1 | 3 |
+| **TOTAL** | **20** | **203** |
 
 ## Code Coverage Goals
 
@@ -224,6 +237,13 @@ src/test/java/dev/joshuaonyema/kaleo/
 - **Configuration**: ✅ 100% (Security and JPA configuration tested)
 
 ## Recent Changes
+
+### Security Refactoring (January 9, 2026)
+1. ✅ Extracted `JwtAuthenticationConverter` into standalone `@Component` class
+2. ✅ Added `JwtAuthenticationConverterTest` - 12 comprehensive tests for JWT to authentication token conversion
+3. ✅ Updated `HttpSecurityConfigTest` - Simplified to 6 tests for configuration verification
+4. ✅ JWT role filtering now uses `ROLE_` prefix check (roles must start with `ROLE_`)
+5. ✅ Total tests increased from 192 to 203
 
 ### Security & Configuration Tests (January 7, 2026)
 1. ✅ Added `HttpSecurityConfigTest` - Unit tests for JWT authentication converter and Keycloak role extraction
@@ -242,7 +262,8 @@ src/test/java/dev/joshuaonyema/kaleo/
 5. ✅ Fixed all import statements
 
 ### New Tests Added (Latest)
-- `HttpSecurityConfigTest` - JWT converter and role extraction logic
+- `JwtAuthenticationConverterTest` - JWT authentication token conversion and role extraction
+- `HttpSecurityConfigTest` - Security configuration annotations and method verification
 - `SecurityFilterChainIntegrationTest` - Security configuration integration
 - `JpaConfigTest` - JPA auditing configuration
 - `PublishedProgramControllerTest` - Public API endpoint testing

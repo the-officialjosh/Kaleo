@@ -2,7 +2,7 @@ import {Button} from "@/components/ui/button";
 import {Input} from "@/components/ui/input";
 import {Label} from "@/components/ui/label";
 import {purchasePass} from "@/lib/api";
-import {CheckCircle, CreditCard} from "lucide-react";
+import {ArrowLeft, Calendar, CheckCircle, CreditCard, Lock, Sparkles, User} from "lucide-react";
 import {useEffect, useState} from "react";
 import {useAuth} from "react-oidc-context";
 import {useNavigate, useParams} from "react-router";
@@ -45,19 +45,19 @@ const PurchasePassPage: React.FC = () => {
 
   if (isPurchaseSuccess) {
     return (
-      <div className="bg-black min-h-screen text-white flex items-center">
-        <div className="max-w-md mx-auto p-8 text-center">
-          <div className="bg-white p-8 rounded-lg border border-gray-200 shadow-sm text-black">
-            <div className="space-y-2">
-              <CheckCircle className="h-16 w-16 text-green-500 mx-auto" />
-              <h2 className="text-2xl font-bold text-green-600">Thank you!</h2>
-              <p className="text-gray-600">
-                Your pass purchase was successful.
-              </p>
-              <p className="text-gray-600 text-sm">
-                Redirecting to home page in a few seconds...
-              </p>
+      <div className="purchase-page">
+        <div className="purchase-container">
+          <div className="purchase-card purchase-success-card">
+            <div className="success-icon-wrapper">
+              <CheckCircle className="success-icon" />
             </div>
+            <h2 className="success-title">Thank You!</h2>
+            <p className="success-message">
+              Your pass purchase was successful.
+            </p>
+            <p className="success-redirect">
+              Redirecting to home page in a few seconds...
+            </p>
           </div>
         </div>
       </div>
@@ -65,54 +65,107 @@ const PurchasePassPage: React.FC = () => {
   }
 
   return (
-    <div className="bg-black min-h-screen text-white">
-      <div className="max-w-md mx-auto py-20">
-        <div className="bg-white border-gray-300 shadow-sm border rounded-lg space-y-4 p-6">
+    <div className="purchase-page">
+      {/* Background Effect */}
+      <div className="purchase-bg-gradient" />
+      
+      <div className="purchase-container">
+        {/* Back Button */}
+        <button className="purchase-back-btn" onClick={() => navigate(-1)}>
+          <ArrowLeft size={20} />
+          <span>Back</span>
+        </button>
+
+        {/* Header */}
+        <div className="purchase-header">
+          <div className="purchase-header-icon">
+            <Sparkles size={24} />
+          </div>
+          <h1 className="purchase-title">Complete Your Purchase</h1>
+          <p className="purchase-subtitle">Enter your payment details to get your pass</p>
+        </div>
+
+        {/* Card */}
+        <div className="purchase-card">
           {error && (
-            <div className="border border-red-200 rounded-lg p-4 bg-red-50">
-              <div className="text-red-500 text-sm">
-                <strong>Error:</strong> {error}
-              </div>
+            <div className="purchase-error">
+              <strong>Error:</strong> {error}
             </div>
           )}
 
           {/* Credit Card Number */}
-          <div className="space-y-2">
-            <Label className="text-gray-600">Credit Card Number</Label>
-            <div className="relative">
+          <div className="purchase-field">
+            <Label className="purchase-label">Card Number</Label>
+            <div className="purchase-input-wrapper">
+              <CreditCard className="purchase-input-icon" size={18} />
               <Input
                 type="text"
                 placeholder="1234 5678 9012 3456"
                 maxLength={19}
-                className="bg-gray-200 text-black pl-10"
+                className="purchase-input"
               />
-              <CreditCard className="absolute h-4 w-4 text-gray-400 top-2.5 left-3" />
             </div>
           </div>
 
-          <div className="space-y-2">
-            <Label className="text-gray-600">Cardholder Name </Label>
-            <div className="relative">
+          {/* Cardholder Name */}
+          <div className="purchase-field">
+            <Label className="purchase-label">Cardholder Name</Label>
+            <div className="purchase-input-wrapper">
+              <User className="purchase-input-icon" size={18} />
               <Input
                 type="text"
                 placeholder="John Smith"
-                className="bg-gray-200 text-black pl-10"
+                className="purchase-input"
               />
-              <CreditCard className="absolute h-4 w-4 text-gray-400 top-2.5 left-3" />
             </div>
           </div>
 
-          <div className="flex justify-center">
-            <Button
-              className="bg-purple-500 hover:bg-purple-800 cursor-pointer"
-              onClick={handlePurchase}
-            >
-              Purchase Pass
-            </Button>
+          {/* Expiry & CVV Row */}
+          <div className="purchase-row">
+            <div className="purchase-field">
+              <Label className="purchase-label">Expiry Date</Label>
+              <div className="purchase-input-wrapper">
+                <Calendar className="purchase-input-icon" size={18} />
+                <Input
+                  type="text"
+                  placeholder="MM/YY"
+                  maxLength={5}
+                  className="purchase-input"
+                />
+              </div>
+            </div>
+            <div className="purchase-field">
+              <Label className="purchase-label">CVV</Label>
+              <div className="purchase-input-wrapper">
+                <Lock className="purchase-input-icon" size={18} />
+                <Input
+                  type="text"
+                  placeholder="123"
+                  maxLength={4}
+                  className="purchase-input"
+                />
+              </div>
+            </div>
           </div>
 
-          <div className="text-gray-500 text-xs flex items-center justify-center">
-            This is a mock page, no payment details should be entered.
+          {/* Purchase Button */}
+          <Button
+            className="purchase-submit-btn"
+            onClick={handlePurchase}
+          >
+            <Lock size={16} />
+            <span>Purchase Pass</span>
+          </Button>
+
+          {/* Security Note */}
+          <div className="purchase-security-note">
+            <Lock size={14} />
+            <span>Your payment information is secure and encrypted</span>
+          </div>
+
+          {/* Mock Warning */}
+          <div className="purchase-mock-warning">
+            This is a demo page - no real payment will be processed
           </div>
         </div>
       </div>
