@@ -74,7 +74,7 @@ class PassMapperTest {
         assertNotNull(result);
         assertEquals("General Admission", result.getPassTypeName());
         assertEquals(BigDecimal.TEN, result.getPassTypePrice());
-        assertEquals("Standard entry", result.getPassTypeDescription());
+        // Note: ListPassResponseDto doesn't have passTypeDescription field
     }
 
     @Test
@@ -194,13 +194,13 @@ class PassMapperTest {
     }
 
     @Test
-    void toListPassResponseDto_whenPassTypeHasNullDescription_thenMapsNull() {
-        passType.setDescription(null);
+    void toListPassResponseDto_whenPassTypeHasNullPrice_thenMapsNullPrice() {
+        passType.setPrice(null);
 
         ListPassResponseDto result = mapper.toListPassResponseDto(pass);
 
         assertNotNull(result);
-        assertNull(result.getPassTypeDescription());
+        assertNull(result.getPassTypePrice());
     }
 
     @Test

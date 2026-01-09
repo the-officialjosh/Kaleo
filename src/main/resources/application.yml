@@ -4,7 +4,7 @@ spring:
 
     #Database configuration
     datasource:
-        url: jdbc:postgresql://localhost/postgres
+        url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost/postgres}
         username: ${POSTGRES_USER}
         password: ${POSTGRES_PASSWORD}
 
@@ -12,30 +12,35 @@ spring:
     jpa:
         hibernate:
             ddl-auto: update
-        show-sql: true
+        show-sql: ${SHOW_SQL:false}
         properties:
             hibernate:
                 format_sql: true
                 dialect: org.hibernate.dialect.PostgreSQLDialect
 
-    #Spring Security
+    #Spring Security - JWT validation (container-to-container)
     security:
         oauth2:
             resourceserver:
                 jwt:
-                    issuer-uri: http://localhost:9095/realms/kaleo-events
+                    issuer-uri: ${KEYCLOAK_ISSUER_URI:http://localhost:9095/realms/kaleo-events}
 
     threads:
         virtual:
             enabled: true
 
-#logging:
-#    level:
-#        com:
-#            zaxxer:
-#                hikari: DEBUG
-#        org:
-#            springframework:
-#                boot:
-#                    context:
-#                        properties: DEBUG
+server:
+    port: ${SERVER_PORT:8080}
+
+# Keycloak browser-accessible URL for Swagger OAuth (NOT the container URL)
+keycloak:
+    browser-url: ${KEYCLOAK_BROWSER_URL:http://localhost:9095/realms/kaleo-events}
+
+# SpringDoc / Swagger UI configuration
+springdoc:
+    swagger-ui:
+        oauth:
+            client-id: ${SWAGGER_OAUTH_CLIENT_ID:kaleo-event-app}
+            use-pkce-with-authorization-code-grant: true
+    api-docs:
+        path: /v3/api-docs
