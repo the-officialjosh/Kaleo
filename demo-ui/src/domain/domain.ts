@@ -155,8 +155,10 @@ export interface PublishedProgramDetails {
 }
 
 export enum PassStatus {
+  ACTIVE = "ACTIVE",
   PURCHASED = "PURCHASED",
   CANCELLED = "CANCELLED",
+  USED = "USED",
 }
 
 export interface PassSummaryPassType {
@@ -165,10 +167,20 @@ export interface PassSummaryPassType {
   price: number;
 }
 
+export interface PassSummaryProgram {
+  id: string;
+  name: string;
+  startTime: string;
+  endTime: string;
+  venue: string;
+}
+
 export interface PassSummary {
   id: string;
   status: PassStatus;
+  createdAt: string;
   passType: PassSummaryPassType;
+  program: PassSummaryProgram;
 }
 
 export interface PassDetails {
