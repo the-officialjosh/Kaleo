@@ -3,7 +3,7 @@ import {Alert, AlertDescription, AlertTitle} from "@/components/ui/alert";
 import {Button} from "@/components/ui/button";
 import {PublishedProgramDetails, PublishedProgramPassTypeDetails,} from "@/domain/domain";
 import {getPublishedProgram} from "@/lib/api";
-import {AlertCircle, ArrowLeft, Calendar, Check, MapPin, Sparkles, Ticket} from "lucide-react";
+import {AlertCircle, ArrowLeft, Calendar, Check, Clock, MapPin, Sparkles, Ticket} from "lucide-react";
 import {useEffect, useState} from "react";
 import {useAuth} from "react-oidc-context";
 import {Link, useNavigate, useParams} from "react-router";
@@ -125,16 +125,46 @@ const PublishedProgramsPage: React.FC = () => {
               <MapPin className="w-5 h-5" />
               <span>{publishedProgram?.venue}</span>
             </div>
-            {publishedProgram?.start && (
+            {publishedProgram?.startTime && (
               <div className="event-meta-item">
                 <Calendar className="w-5 h-5" />
                 <span>
-                  {new Date(publishedProgram.start).toLocaleDateString('en-US', {
+                  Starts: {new Date(publishedProgram.startTime).toLocaleDateString('en-US', {
                     weekday: 'long',
                     year: 'numeric',
                     month: 'long',
                     day: 'numeric'
                   })}
+                </span>
+              </div>
+            )}
+            {publishedProgram?.endTime && (
+              <div className="event-meta-item">
+                <Calendar className="w-5 h-5" />
+                <span>
+                  Ends: {new Date(publishedProgram.endTime).toLocaleDateString('en-US', {
+                    weekday: 'long',
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                  })}
+                </span>
+              </div>
+            )}
+            {(publishedProgram?.registrationStart || publishedProgram?.registrationEnd) && (
+              <div className="event-meta-item">
+                <Clock className="w-5 h-5" />
+                <span>
+                  Registration: {publishedProgram?.registrationStart && new Date(publishedProgram.registrationStart).toLocaleDateString('en-US', {
+                    month: 'short',
+                    day: 'numeric',
+                    year: 'numeric'
+                  })} 
+                  {publishedProgram?.registrationEnd && ` - ${new Date(publishedProgram.registrationEnd).toLocaleDateString('en-US', {
+                    month: 'short',
+                    day: 'numeric',
+                    year: 'numeric'
+                  })}`}
                 </span>
               </div>
             )}

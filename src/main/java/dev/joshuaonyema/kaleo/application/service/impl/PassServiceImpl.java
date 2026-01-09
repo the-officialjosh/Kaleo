@@ -47,7 +47,7 @@ public class PassServiceImpl implements PassService {
         }
 
         Pass pass = new Pass();
-        pass.setStatus(PassStatus.PURCHASED);
+        pass.setStatus(PassStatus.ACTIVE);
         pass.setPassType(passType);
         pass.setRegistrant(user);
 
