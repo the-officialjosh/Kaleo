@@ -5732,3 +5732,161 @@ cursor: none;}
     height: 160px;
   }
 }
+
+/* ============================================
+   QR VALIDATE - PROGRAM DROPDOWN
+   ============================================ */
+
+.dashboard-qr-program-selector {
+  margin-bottom: 1.5rem;
+}
+
+.dashboard-qr-label {
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: oklch(0.60 0.02 285);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.5rem;
+}
+
+.dashboard-qr-dropdown {
+  position: relative;
+}
+
+.dashboard-qr-dropdown-trigger {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.875rem 1rem;
+  background: oklch(0 0 0 / 0.3);
+  border: 1px solid oklch(1 0 0 / 0.1);
+  border-radius: 12px;
+  color: white;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.dashboard-qr-dropdown-trigger:hover {
+  background: oklch(0 0 0 / 0.4);
+  border-color: oklch(1 0 0 / 0.15);
+}
+
+.dashboard-qr-dropdown-menu {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  background: oklch(0.15 0.03 285);
+  border: 1px solid oklch(1 0 0 / 0.15);
+  border-radius: 12px;
+  overflow: hidden;
+  z-index: 50;
+  box-shadow: 0 8px 24px oklch(0 0 0 / 0.4);
+}
+
+.dashboard-qr-dropdown-item {
+  width: 100%;
+  display: block;
+  padding: 0.875rem 1rem;
+  background: none;
+  border: none;
+  color: oklch(0.80 0.02 285);
+  font-size: 0.9rem;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.dashboard-qr-dropdown-item:hover {
+  background: oklch(1 0 0 / 0.08);
+  color: white;
+}
+
+.dashboard-qr-dropdown-item.selected {
+  background: oklch(0.45 0.15 285 / 0.25);
+  color: var(--purple-300);
+}
+
+.dashboard-qr-dropdown-empty {
+  padding: 1rem;
+  text-align: center;
+  color: oklch(0.50 0.02 285);
+  font-size: 0.85rem;
+}
+
+.dashboard-qr-result-message {
+  margin-top: 0.75rem;
+  font-size: 0.9rem;
+  color: oklch(0.70 0.02 285);
+  text-align: center;
+}
+
+/* ============================================
+   PASS VIEW - CHECK-IN CODE SECTION
+   ============================================ */
+
+.pass-view-or-divider {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+
+.pass-view-or-divider::before,
+.pass-view-or-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: oklch(1 0 0 / 0.12);
+}
+
+.pass-view-or-divider span {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: oklch(0.55 0.03 285);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+}
+
+.pass-view-checkin-code {
+  text-align: center;
+  padding: 1.25rem;
+  background: linear-gradient(135deg, oklch(0.55 0.18 285 / 0.1), oklch(0.45 0.15 285 / 0.15));
+  border: 1px solid oklch(0.55 0.15 285 / 0.25);
+  border-radius: 16px;
+  margin-bottom: 1.5rem;
+}
+
+.pass-view-checkin-label {
+  display: block;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: oklch(0.60 0.03 285);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 0.5rem;
+}
+
+.pass-view-checkin-value {
+  display: block;
+  font-family: 'SF Mono', 'Monaco', 'Consolas', monospace;
+  font-size: 1.75rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: var(--purple-300);
+  background: oklch(0 0 0 / 0.25);
+  padding: 0.75rem 1.25rem;
+  border-radius: 12px;
+  margin-bottom: 0.75rem;
+}
+
+.pass-view-checkin-hint {
+  font-size: 0.8rem;
+  color: oklch(0.55 0.03 285);
+}

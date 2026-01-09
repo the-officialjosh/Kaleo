@@ -168,7 +168,6 @@ export interface PassSummary {
   createdAt: string;
   passTypeName: string;
   passTypePrice: number;
-  passTypeDescription: string;
   programId: string;
   programName: string;
   programStartTime: string;
@@ -183,7 +182,6 @@ export interface PassDetails {
   createdAt: string;
   passTypeName: string;
   passTypePrice: number;
-  passTypeDescription: string;
   programId: string;
   programName: string;
   programStartTime: string;
@@ -202,12 +200,21 @@ export enum PassValidationStatus {
   EXPIRED = "EXPIRED",
 }
 
-export interface PassValidationRequest {
+// For staff program listing in pass validation
+export interface StaffProgramSummary {
   id: string;
+  name: string;
+}
+
+export interface PassValidationRequest {
+  programId: string;
+  qrCodeId?: string;
+  manualCode?: string;
   method: PassValidationMethod;
 }
 
 export interface PassValidationResponse {
   passId: string;
   status: PassValidationStatus;
+  message?: string;
 }

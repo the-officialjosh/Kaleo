@@ -19,4 +19,5 @@ public interface ProgramService {
     Page<Program> listPublishedPrograms(Pageable pageable);
     Page<Program> searchPublishedPrograms(String query, Pageable pageable);
     Optional<Program> getPublishedProgram(UUID id);
+    Page<Program> listProgramsForStaff(Pageable pageable);
 }

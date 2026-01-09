@@ -1,17 +1,6 @@
 import {PassDetails, PassStatus} from "@/domain/domain";
 import {getPass, getPassQr} from "@/lib/api";
-import {
-  AlertCircle,
-  ArrowLeft,
-  Calendar,
-  CheckCircle2,
-  Clock,
-  DollarSign,
-  Hash,
-  MapPin,
-  Ticket,
-  XCircle
-} from "lucide-react";
+import {AlertCircle, ArrowLeft, Calendar, CheckCircle2, Clock, DollarSign, MapPin, Ticket, XCircle} from "lucide-react";
 import {useEffect, useState} from "react";
 import {useAuth} from "react-oidc-context";
 import {useNavigate, useParams} from "react-router";
@@ -176,7 +165,21 @@ const DashboardViewPassPage: React.FC = () => {
                 )}
               </div>
               <p className="pass-view-qr-hint">
-                Show this QR code at the venue for entry
+                Scan this QR code at the venue
+              </p>
+            </div>
+
+            {/* OR Divider */}
+            <div className="pass-view-or-divider">
+              <span>or use check-in code</span>
+            </div>
+
+            {/* Manual Check-in Code */}
+            <div className="pass-view-checkin-code">
+              <span className="pass-view-checkin-label">Check-in Code</span>
+              <code className="pass-view-checkin-value">{pass.manualCode}</code>
+              <p className="pass-view-checkin-hint">
+                Show this code to staff for manual check-in
               </p>
             </div>
 
@@ -230,34 +233,8 @@ const DashboardViewPassPage: React.FC = () => {
                   </span>
                 </div>
               </div>
-
-              <div className="pass-view-detail-row">
-                <div className="pass-view-detail-icon">
-                  <Hash className="w-5 h-5" />
-                </div>
-                <div className="pass-view-detail-content">
-                  <span className="pass-view-detail-label">Manual Code</span>
-                  <span className="pass-view-detail-value pass-view-manual-code">
-                    {pass.manualCode}
-                  </span>
-                </div>
-              </div>
-            </div>
-
-            {/* Pass ID Footer */}
-            <div className="pass-view-footer">
-              <span className="pass-view-footer-label">Pass ID</span>
-              <code className="pass-view-pass-id">{pass.id}</code>
             </div>
           </div>
-
-          {/* Description Card */}
-          {pass.passTypeDescription && (
-            <div className="pass-view-description-card">
-              <h3>About This Pass</h3>
-              <p>{pass.passTypeDescription}</p>
-            </div>
-          )}
         </div>
       </div>
     </div>
