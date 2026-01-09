@@ -126,17 +126,17 @@ const DashboardListPasses: React.FC = () => {
 
                   {/* Program Info */}
                   <div className="pass-program-section">
-                    <h3 className="pass-program-name">{passItem.program.name}</h3>
+                    <h3 className="pass-program-name">{passItem.programName}</h3>
                     
                     <div className="pass-program-details">
                       <div className="pass-detail-row">
                         <Calendar className="pass-detail-icon" />
-                        <span>{formatDateRange(passItem.program.startTime, passItem.program.endTime)}</span>
+                        <span>{formatDateRange(passItem.programStartTime, passItem.programEndTime)}</span>
                       </div>
                       
                       <div className="pass-detail-row">
                         <MapPin className="pass-detail-icon" />
-                        <span className="pass-venue">{passItem.program.venue.split(',')[0]}</span>
+                        <span className="pass-venue">{passItem.programVenue.split(',')[0]}</span>
                       </div>
                     </div>
                   </div>
@@ -150,12 +150,12 @@ const DashboardListPasses: React.FC = () => {
                       <div className="pass-type-icon">
                         <Ticket className="w-4 h-4" />
                       </div>
-                      <span className="pass-type-name">{passItem.passType.name}</span>
+                      <span className="pass-type-name">{passItem.passTypeName}</span>
                     </div>
                     
                     <div className="pass-type-price">
                       <span className="currency">$</span>
-                      <span className="amount">{passItem.passType.price.toFixed(2)}</span>
+                      <span className="amount">{passItem.passTypePrice.toFixed(2)}</span>
                     </div>
                   </div>
 

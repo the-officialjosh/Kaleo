@@ -161,37 +161,31 @@ export enum PassStatus {
   USED = "USED",
 }
 
-export interface PassSummaryPassType {
-  id: string;
-  name: string;
-  price: number;
-}
-
-export interface PassSummaryProgram {
-  id: string;
-  name: string;
-  startTime: string;
-  endTime: string;
-  venue: string;
-}
-
 export interface PassSummary {
   id: string;
   status: PassStatus;
   createdAt: string;
-  passType: PassSummaryPassType;
-  program: PassSummaryProgram;
+  passTypeName: string;
+  passTypePrice: number;
+  passTypeDescription: string;
+  programName: string;
+  programStartTime: string;
+  programEndTime: string;
+  programVenue: string;
 }
 
 export interface PassDetails {
   id: string;
   status: PassStatus;
-  price: number;
-  description: string;
+  createdAt: string;
+  passTypeName: string;
+  passTypePrice: number;
+  passTypeDescription: string;
+  programId: string;
   programName: string;
+  programStartTime: string;
+  programEndTime: string;
   programVenue: string;
-  programStart: Date;
-  programEnd: Date;
 }
 
 export enum PassValidationMethod {

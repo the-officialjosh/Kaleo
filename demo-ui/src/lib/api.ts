@@ -1,15 +1,15 @@
 import {
   CreateProgramRequest,
-  ProgramDetails,
-  ProgramSummary,
   isErrorResponse,
-  PublishedProgramDetails,
-  PublishedProgramSummary,
-  SpringBootPagination,
   PassDetails,
   PassSummary,
   PassValidationRequest,
   PassValidationResponse,
+  ProgramDetails,
+  ProgramSummary,
+  PublishedProgramDetails,
+  PublishedProgramSummary,
+  SpringBootPagination,
   UpdateProgramRequest,
 } from "@/domain/domain";
 
@@ -308,7 +308,41 @@ export const listPasses = async (
     );
   }
 
-  return (await response.json()) as SpringBootPagination<PassSummary>;
+  const data = await response.json();
+
+  // Handle API response with nested page object
+  if (data.page && data.content) {
+    return {
+      content: data.content,
+      number: data.page.number,
+      size: data.page.size,
+      totalElements: data.page.totalElements,
+      totalPages: data.page.totalPages,
+      first: data.page.number === 0,
+      last: data.page.number === data.page.totalPages - 1,
+      numberOfElements: data.content.length,
+      empty: data.content.length === 0,
+      pageable: {
+        pageNumber: data.page.number,
+        pageSize: data.page.size,
+        offset: data.page.number * data.page.size,
+        paged: true,
+        unpaged: false,
+        sort: {
+          empty: true,
+          sorted: false,
+          unsorted: true,
+        },
+      },
+      sort: {
+        empty: true,
+        sorted: false,
+        unsorted: true,
+      },
+    } as SpringBootPagination<PassSummary>;
+  }
+
+  return data as SpringBootPagination<PassSummary>;
 };
 
 export const getPass = async (

@@ -1,10 +1,31 @@
 import {PassDetails, PassStatus} from "@/domain/domain";
 import {getPass, getPassQr} from "@/lib/api";
-import {format} from "date-fns";
-import {Calendar, DollarSign, MapPin, Tag} from "lucide-react";
+import {AlertCircle, ArrowLeft, Calendar, CheckCircle2, Clock, DollarSign, MapPin, Ticket, XCircle} from "lucide-react";
 import {useEffect, useState} from "react";
 import {useAuth} from "react-oidc-context";
-import {useParams} from "react-router";
+import {useNavigate, useParams} from "react-router";
+import NavBar from "@/components/common/nav-bar";
+import {InlineError} from "@/components/errors";
+
+// Format date nicely
+const formatDate = (dateString: string) => {
+  const date = new Date(dateString);
+  return date.toLocaleDateString('en-US', { 
+    weekday: 'short',
+    month: 'short', 
+    day: 'numeric', 
+    year: 'numeric' 
+  });
+};
+
+const formatTime = (dateString: string) => {
+  const date = new Date(dateString);
+  return date.toLocaleTimeString('en-US', { 
+    hour: 'numeric', 
+    minute: '2-digit',
+    hour12: true 
+  });
+};
 
 const DashboardViewPassPage: React.FC = () => {
   const [pass, setPass] = useState<PassDetails | undefined>();
@@ -14,33 +35,32 @@ const DashboardViewPassPage: React.FC = () => {
 
   const { id } = useParams();
   const { isLoading, user } = useAuth();
+  const navigate = useNavigate();
+
+  const loadPass = async () => {
+    if (!user?.access_token || !id) return;
+    
+    try {
+      setIsQrCodeLoading(true);
+      setError(undefined);
+      setPass(await getPass(user.access_token, id));
+      setQrCodeUrl(URL.createObjectURL(await getPassQr(user.access_token, id)));
+    } catch (err) {
+      if (err instanceof Error) {
+        setError(err.message);
+      } else if (typeof err === "string") {
+        setError(err);
+      } else {
+        setError("An unknown error has occurred");
+      }
+    } finally {
+      setIsQrCodeLoading(false);
+    }
+  };
 
   useEffect(() => {
-    if (isLoading || !user?.access_token || !id) {
-      return;
-    }
-
-    const doUseEffect = async (accessToken: string, id: string) => {
-      try {
-        setIsQrCodeLoading(true);
-        setError(undefined);
-
-        setPass(await getPass(accessToken, id));
-        setQrCodeUrl(URL.createObjectURL(await getPassQr(accessToken, id)));
-      } catch (err) {
-        if (err instanceof Error) {
-          setError(err.message);
-        } else if (typeof err === "string") {
-          setError(err);
-        } else {
-          setError("An unknown error has occurred");
-        }
-      } finally {
-        setIsQrCodeLoading(false);
-      }
-    };
-
-    doUseEffect(user?.access_token, id);
+    if (isLoading || !user?.access_token || !id) return;
+    loadPass();
 
     return () => {
       if (qrCodeUrl) {
@@ -49,100 +69,172 @@ const DashboardViewPassPage: React.FC = () => {
     };
   }, [user?.access_token, isLoading, id]);
 
-  const getStatusColor = (status: PassStatus) => {
+  const getStatusInfo = (status: PassStatus) => {
     switch (status) {
+      case PassStatus.ACTIVE:
+        return { color: "active", icon: CheckCircle2, label: "Active" };
       case PassStatus.PURCHASED:
-        return "text-green-400";
+        return { color: "purchased", icon: Ticket, label: "Purchased" };
+      case PassStatus.USED:
+        return { color: "used", icon: CheckCircle2, label: "Used" };
       case PassStatus.CANCELLED:
-        return "text-red-400";
+        return { color: "cancelled", icon: XCircle, label: "Cancelled" };
       default:
-        return "text-gray-400";
+        return { color: "default", icon: AlertCircle, label: status };
     }
   };
 
-  if (!pass) {
-    return <p>Loading..</p>;
+  if (error) {
+    return (
+      <div className="dashboard-page">
+        <NavBar />
+        <InlineError 
+          message={error} 
+          onRetry={() => {
+            setError(undefined);
+            loadPass();
+          }}
+        />
+      </div>
+    );
   }
 
+  if (!pass || isLoading) {
+    return (
+      <div className="dashboard-page">
+        <NavBar />
+        <div className="pass-view-loading">
+          <div className="pass-view-loading-spinner"></div>
+          <p>Loading pass details...</p>
+        </div>
+      </div>
+    );
+  }
+
+  const statusInfo = getStatusInfo(pass.status);
+  const StatusIcon = statusInfo.icon;
+
   return (
-    <div className="dashboard-page flex items-center justify-center p-4">
-      <div className="w-full max-w-md">
-        <div className="relative bg-gradient-to-br from-purple-900 via-purple-800 to-indigo-900 rounded-3xl p-8 shadow-2xl">
-          {/* Status */}
-          <div className="bg-black/30 backdrop-blur-sm px-3 py-1 rounded-full mb-8 text-center">
-            <span
-              className={`text-sm font-medium ${getStatusColor(pass.status)}`}
-            >
-              {pass?.status}
-            </span>
-          </div>
+    <div className="dashboard-page">
+      <NavBar />
 
-          <div className="mb-2">
-            <h1 className="text-2xl font-bold mb-2">{pass.programName}</h1>
-            <div className="flex items-center gap-2 text-purple-200">
-              <MapPin className="w-4" />
-              <span>{pass.programVenue}</span>
+      <div className="pass-view-container">
+        {/* Back Button */}
+        <button className="pass-view-back" onClick={() => navigate('/dashboard/passes')}>
+          <ArrowLeft className="w-4 h-4" />
+          Back to Passes
+        </button>
+
+        <div className="pass-view-layout">
+          {/* Pass Card */}
+          <div className="pass-view-card">
+            {/* Status Badge */}
+            <div className={`pass-view-status ${statusInfo.color}`}>
+              <StatusIcon className="w-4 h-4" />
+              <span>{statusInfo.label}</span>
             </div>
-          </div>
 
-          <div className="flex items-center gap-2 text-purple-300 mb-8">
-            <Calendar className="w-4 text-purple-200" />
-            <div>
-              {format(pass.programStart, "Pp")} -{" "}
-              {format(pass.programEnd, "Pp")}
-            </div>
-          </div>
-
-          <div className="flex justify-center mb-8">
-            <div className="bg-white p-4 rounded-2xl shadow-lg">
-              <div className="w-32 h-32 flex items-center justify-center">
-                {/* Loading */}
-                {isQrLoading && (
-                  <div className="text-xs text-center p2">
-                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 mb-2 mx-auto"></div>
-                    <div className="text-gray-800">Loading QR...</div>
-                  </div>
-                )}
-                {/* error */}
-                {error && (
-                  <div className="text-red-400 text-sm text-center p-2">
-                    <div className="mb-1">⚠️</div>
-                    {error}
-                  </div>
-                )}
-                {/* Display QR */}
-                {qrCodeUrl && !isQrLoading && !error && (
-                  <img
-                    src={qrCodeUrl}
-                    alt="QR Code for program"
-                    className="w-full h-full object-contain rounded-large"
-                  />
-                )}
+            {/* Program Header */}
+            <div className="pass-view-program-header">
+              <h1 className="pass-view-program-name">{pass.programName}</h1>
+              <div className="pass-view-pass-type">
+                <Ticket className="w-4 h-4" />
+                <span>{pass.passTypeName}</span>
               </div>
             </div>
-          </div>
 
-          <div className="text-center mb-8">
-            <p className="text-purple-200 text-sm">
-              Present this QR code at the venue for entry
-            </p>
-          </div>
-
-          <div className="space-y-2 mb-8">
-            <div className="flex items-center gap-2">
-              <Tag className="w-5 text-purple-200" />
-              <span className="font-semibold">{pass.description}</span>
+            {/* QR Code Section */}
+            <div className="pass-view-qr-section">
+              <div className="pass-view-qr-wrapper">
+                {isQrLoading ? (
+                  <div className="pass-view-qr-loading">
+                    <div className="pass-view-loading-spinner"></div>
+                    <span>Loading QR...</span>
+                  </div>
+                ) : qrCodeUrl ? (
+                  <img
+                    src={qrCodeUrl}
+                    alt="Pass QR Code"
+                    className="pass-view-qr-image"
+                  />
+                ) : (
+                  <div className="pass-view-qr-error">
+                    <AlertCircle className="w-8 h-8" />
+                    <span>QR unavailable</span>
+                  </div>
+                )}
+              </div>
+              <p className="pass-view-qr-hint">
+                Show this QR code at the venue for entry
+              </p>
             </div>
-            <div className="flex items-center gap-2">
-              <DollarSign className="w-5 text-purple-200" />
-              <span className="font-semibold">{pass.price}</span>
+
+            {/* Divider */}
+            <div className="pass-view-divider"></div>
+
+            {/* Event Details */}
+            <div className="pass-view-details">
+              <div className="pass-view-detail-row">
+                <div className="pass-view-detail-icon">
+                  <Calendar className="w-5 h-5" />
+                </div>
+                <div className="pass-view-detail-content">
+                  <span className="pass-view-detail-label">Date</span>
+                  <span className="pass-view-detail-value">
+                    {formatDate(pass.programStartTime)} — {formatDate(pass.programEndTime)}
+                  </span>
+                </div>
+              </div>
+
+              <div className="pass-view-detail-row">
+                <div className="pass-view-detail-icon">
+                  <Clock className="w-5 h-5" />
+                </div>
+                <div className="pass-view-detail-content">
+                  <span className="pass-view-detail-label">Time</span>
+                  <span className="pass-view-detail-value">
+                    {formatTime(pass.programStartTime)} — {formatTime(pass.programEndTime)}
+                  </span>
+                </div>
+              </div>
+
+              <div className="pass-view-detail-row">
+                <div className="pass-view-detail-icon">
+                  <MapPin className="w-5 h-5" />
+                </div>
+                <div className="pass-view-detail-content">
+                  <span className="pass-view-detail-label">Venue</span>
+                  <span className="pass-view-detail-value">{pass.programVenue}</span>
+                </div>
+              </div>
+
+              <div className="pass-view-detail-row">
+                <div className="pass-view-detail-icon">
+                  <DollarSign className="w-5 h-5" />
+                </div>
+                <div className="pass-view-detail-content">
+                  <span className="pass-view-detail-label">Price Paid</span>
+                  <span className="pass-view-detail-value pass-view-price">
+                    ${pass.passTypePrice.toFixed(2)}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            {/* Pass ID Footer */}
+            <div className="pass-view-footer">
+              <span className="pass-view-footer-label">Pass ID</span>
+              <code className="pass-view-pass-id">{pass.id}</code>
             </div>
           </div>
 
-          <div className="text-center mb-2">
-            <h4 className="text-sm font-semibold font-mono">Pass ID</h4>
-            <p className="text-purple-200 text-sm font-mono">{pass.id}</p>
-          </div>
+          {/* Description Card */}
+          {pass.passTypeDescription && (
+            <div className="pass-view-description-card">
+              <h3>About This Pass</h3>
+              <p>{pass.passTypeDescription}</p>
+            </div>
+          )}
         </div>
       </div>
     </div>
