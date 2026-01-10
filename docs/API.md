@@ -20,6 +20,14 @@ All endpoints (except public ones) require authentication via JWT token from Key
 Authorization: Bearer <your_jwt_token>
 ```
 
+### Test Users
+
+| Username | Password | Role | Permissions |
+|----------|----------|------|-------------|
+| `organizer` | `passwordo` | ROLE_ORGANIZER | Create/manage programs |
+| `staff` | `passwords` | ROLE_STAFF | Validate passes at events |
+| `attendee` | `passworda` | ROLE_ATTENDEE | Register for events |
+
 ## Base URL
 
 ```

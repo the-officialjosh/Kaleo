@@ -188,7 +188,7 @@ http://localhost:8081/swagger-ui/oauth2-redirect.html
 ./mvnw verify jacoco:report           # Run with coverage
 ```
 
-**Test Coverage:** 22 test classes with 225+ tests covering API, Services, Mappers, Security, and Configuration.
+**Test Coverage:** 24 test classes with 474 tests covering Controllers, Services, Mappers, Validators, Security, and Configuration.
 
 ---
 
