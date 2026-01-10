@@ -435,6 +435,56 @@
     }
   },
   "groups": [],
+  "users": [
+    {
+      "username": "attendee",
+      "enabled": true,
+      "emailVerified": true,
+      "firstName": "Test",
+      "lastName": "Attendee",
+      "email": "attendee@kaleo.dev",
+      "credentials": [
+        {
+          "type": "password",
+          "value": "passworda",
+          "temporary": false
+        }
+      ],
+      "realmRoles": ["ROLE_ATTENDEE", "default-roles-church-event-platform"]
+    },
+    {
+      "username": "organizer",
+      "enabled": true,
+      "emailVerified": true,
+      "firstName": "Test",
+      "lastName": "Organizer",
+      "email": "organizer@kaleo.dev",
+      "credentials": [
+        {
+          "type": "password",
+          "value": "passwordo",
+          "temporary": false
+        }
+      ],
+      "realmRoles": ["ROLE_ORGANIZER", "default-roles-church-event-platform"]
+    },
+    {
+      "username": "staff",
+      "enabled": true,
+      "emailVerified": true,
+      "firstName": "Test",
+      "lastName": "Staff",
+      "email": "staff@kaleo.dev",
+      "credentials": [
+        {
+          "type": "password",
+          "value": "passwords",
+          "temporary": false
+        }
+      ],
+      "realmRoles": ["ROLE_STAFF", "default-roles-church-event-platform"]
+    }
+  ],
   "defaultRole": {
     "id": "598a5412-c789-4fa8-a041-7a9428872503",
     "name": "default-roles-church-event-platform",
@@ -704,21 +754,22 @@
       "description": "Kaleo is a secure REST API for church and ministry program management. Organizers publish programs, participants register for limited capacity gatherings, and staff validate attendance using QR coded passes.",
       "rootUrl": "",
       "adminUrl": "",
-      "baseUrl": "http://localhost:5173/",
+      "baseUrl": "http://localhost/",
       "surrogateAuthRequired": false,
       "enabled": true,
       "alwaysDisplayInConsole": false,
       "clientAuthenticatorType": "client-secret",
       "redirectUris": [
-        "http://localhost/swagger-ui/oauth2-redirect.html",
-        "http://localhost:5173/callback",
-        "http://localhost:8081/swagger-ui/oauth2-redirect.html",
-        "http://localhost/swagger-ui/*"
+        "http://localhost/*",
+        "http://localhost:8080/*",
+        "http://localhost:8081/*",
+        "http://localhost:3000/*"
       ],
       "webOrigins": [
-        "http://localhost:8081",
         "http://localhost",
-        "http://localhost:5173"
+        "http://localhost:8080",
+        "http://localhost:8081",
+        "http://localhost:3000"
       ],
       "notBefore": 0,
       "bearerOnly": false,
@@ -735,7 +786,7 @@
         "oidc.ciba.grant.enabled": "false",
         "backchannel.logout.session.required": "true",
         "standard.token.exchange.enabled": "false",
-        "post.logout.redirect.uris": "http://localhost:5173##http://localhost",
+        "post.logout.redirect.uris": "http://localhost",
         "frontchannel.logout.session.required": "true",
         "oauth2.device.authorization.grant.enabled": "false",
         "display.on.consent.screen": "false",

@@ -47,31 +47,55 @@ A secure REST API for church and ministry event management. Organizers create pr
 
 ## 🚀 Quick Start
 
-### Development Mode
+### Option 1: Full Stack with Docker (Recommended)
 
-**Prerequisites:** Java 25, Node.js 20+, Docker
+**Prerequisites:** Docker Desktop
 
 ```bash
 # Clone repository
 git clone https://github.com/the-officialjosh/kaleo.git
 cd kaleo
 
-# Start dependencies (PostgreSQL + Keycloak)
+# Build and start all services
+docker build -t the-officialjosh/kaleo-api:latest .
+docker compose up -d
+```
+
+That's it! Everything runs automatically.
+
+| Service | URL |
+|---------|-----|
+| **Frontend** | http://localhost |
+| **Swagger UI** | http://localhost:8081/swagger-ui/index.html |
+| **Keycloak Admin** | http://localhost:9095 |
+| **Database Admin** | http://localhost:8888 |
+
+### Option 2: Development Mode
+
+**Prerequisites:** Java 25, Node.js 20+, Docker
+
+```bash
+# Start dependencies only (PostgreSQL + Keycloak)
 docker compose up db keycloak -d
 
-# Run API
+# Run API locally
 ./mvnw spring-boot:run
 
 # Run frontend (in another terminal)
 cd demo-ui && npm install && npm run dev
 ```
 
-| Service | URL |
-|---------|-----|
-| API | http://localhost:8080 |
-| Frontend | http://localhost |
-| Swagger UI | http://localhost:8080/swagger-ui/index.html |
-| Keycloak | http://localhost:9095 |
+---
+
+## 🔑 Test Users
+
+Login via Swagger UI "Authorize" button or the frontend:
+
+| Username | Password | Role | Permissions |
+|----------|----------|------|-------------|
+| `organizer` | `passwordo` | ROLE_ORGANIZER | Create/manage programs |
+| `staff` | `passwords` | ROLE_STAFF | Validate passes at events |
+| `attendee` | `passworda` | ROLE_ATTENDEE | Register for events |
 
 ---
 

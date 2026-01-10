@@ -66,6 +66,8 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-kaleo_pass}
       # Container-to-container URL for JWT validation
       KEYCLOAK_ISSUER_URI: http://keycloak:8080/realms/kaleo-events
+      # JWK set URI for key fetching from container
+      KEYCLOAK_JWK_SET_URI: http://keycloak:8080/realms/kaleo-events/protocol/openid-connect/certs
       # Browser-accessible URL for Swagger OAuth (user's browser must reach this)
       KEYCLOAK_BROWSER_URL: http://localhost:9095/realms/kaleo-events
       SWAGGER_OAUTH_CLIENT_ID: ${SWAGGER_OAUTH_CLIENT_ID:-kaleo-event-app}
