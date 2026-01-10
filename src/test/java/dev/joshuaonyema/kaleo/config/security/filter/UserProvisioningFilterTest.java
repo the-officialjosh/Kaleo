@@ -1,6 +1,5 @@
-package dev.joshuaonyema.kaleo.infrastructure.security.filter;
+package dev.joshuaonyema.kaleo.config.security.filter;
 
-import dev.joshuaonyema.kaleo.config.security.filter.UserProvisioningFilter;
 import dev.joshuaonyema.kaleo.domain.entity.User;
 import dev.joshuaonyema.kaleo.repository.UserRepository;
 import jakarta.servlet.FilterChain;

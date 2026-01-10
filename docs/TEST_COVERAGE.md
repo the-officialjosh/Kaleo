@@ -2,37 +2,32 @@
 
 ## Test Structure Overview
 
-The test structure has been reorganized to match the main source code structure for better maintainability and clarity.
+The test structure mirrors the main source code structure for maintainability and clarity.
 
 ### Test Directory Structure
 
 ```
 src/test/java/dev/joshuaonyema/kaleo/
-├── KaleoApplicationTests.java
+├── KaleoApplicationTests.java              # Integration test
 ├── api/
 │   ├── controller/
-│   │   ├── PassControllerTest.java (NEW)
+│   │   ├── PassControllerTest.java
 │   │   ├── PassTypeControllerTest.java
 │   │   ├── ProgramControllerTest.java
 │   │   └── PublishedProgramControllerTest.java
 │   ├── dto/
 │   │   ├── CreatePassTypeRequestDtoTest.java
 │   │   └── CreateProgramRequestDtoTest.java
-│   ├── exception/
-│   │   └── GlobalExceptionHandlerTest.java
 │   └── validation/
 │       ├── BothOrNoneValidatorTest.java
 │       └── StartBeforeEndValidatorTest.java
 ├── application/
-│   ├── mapper/
-│   │   └── ProgramMapperTest.java
 │   ├── security/
 │   │   └── CurrentUserServiceTest.java
-│   └── service/
-│       └── impl/
-│           ├── PassServiceImplTest.java
-│           ├── ProgramServiceImplTest.java
-│           └── QrCodeServiceImplTest.java
+│   └── service/impl/
+│       ├── PassServiceImplTest.java
+│       ├── ProgramServiceImplTest.java
+│       └── QrCodeServiceImplTest.java
 ├── config/
 │   ├── jpa/
 │   │   └── JpaConfigTest.java
@@ -41,13 +36,17 @@ src/test/java/dev/joshuaonyema/kaleo/
 │   └── security/
 │       ├── HttpSecurityConfigTest.java
 │       ├── JwtAuthenticationConverterTest.java
-│       └── SecurityFilterChainIntegrationTest.java
+│       ├── SecurityFilterChainIntegrationTest.java
+│       └── filter/
+│           └── UserProvisioningFilterTest.java
+├── exception/
+│   └── GlobalExceptionHandlerTest.java
 ├── mapper/
-│   └── PassMapperTest.java (NEW)
-└── infrastructure/
-    └── security/
-        └── filter/
-            └── UserProvisioningFilterTest.java
+│   ├── PassMapperTest.java
+│   ├── PassValidationMapperTest.java
+│   └── ProgramMapperTest.java
+└── util/
+    └── ManualCodeGeneratorTest.java
 ```
 
 ## Test Coverage by Component
@@ -240,13 +239,14 @@ src/test/java/dev/joshuaonyema/kaleo/
 
 | Component | Test Files | Total Tests |
 |-----------|------------|-------------|
-| API Layer | 9 | 107 |
-| Application Layer | 5 | 66 |
-| Mappers | 2 | 35 |
-| Configuration Layer | 5 | 32 |
-| Infrastructure Layer | 1 | 10 |
+| API Layer (Controllers, DTOs, Validation, Exceptions) | 9 | ~150 |
+| Application Layer (Services, Security) | 5 | ~90 |
+| Mappers | 3 | ~50 |
+| Configuration Layer | 5 | ~40 |
+| Infrastructure Layer | 1 | ~10 |
+| Utilities | 1 | ~10 |
 | Integration | 1 | 1 |
-| **TOTAL** | **22** | **225** |
+| **TOTAL** | **24** | **474** |
 
 ## Code Coverage Goals
 
