@@ -180,10 +180,12 @@
    ============================================ */
 
 .landing-page {
+  position: relative;
   min-height: 100vh;
   background: transparent;
   color: white;
-cursor: none;}
+  cursor: none;
+}
 
 #cursor-ring {
   position: fixed;
@@ -849,7 +851,7 @@ cursor: none;}
 /* --- Programs Section --- */
 .programs-section {
   position: relative;
-  padding: 6rem 2rem;
+  padding: 6rem 2rem 8rem;
   background: transparent;
   z-index: 2;
 }
@@ -2535,23 +2537,6 @@ cursor: none;}
     width: 100%;
     justify-content: center;
   }
-}
-
-/* ============================================
-   SEARCH RESULTS FOOTER FIX
-   ============================================ */
-
-.landing-page {
-  position: relative;
-}
-
-.programs-section {
-  position: relative;
-  padding-bottom: 8rem;
-}
-
-.programs-section::after {
-  display: none;
 }
 
 /* ============================================
@@ -5778,10 +5763,6 @@ cursor: none;}
   border-top-color: var(--purple-500);
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
-}
-
-@keyframes spin {
-  to { transform: rotate(360deg); }
 }
 
 /* Divider */

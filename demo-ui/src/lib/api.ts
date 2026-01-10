@@ -227,7 +227,7 @@ export const searchPublishedPrograms = async (
   page: number,
 ): Promise<SpringBootPagination<PublishedProgramSummary>> => {
   const response = await fetch(
-    `/api/v1/published-programs?q=${query}&page=${page}&size=6`,
+    `/api/v1/published-programs?q=${encodeURIComponent(query)}&page=${page}&size=6`,
     {
       method: "GET",
       headers: {

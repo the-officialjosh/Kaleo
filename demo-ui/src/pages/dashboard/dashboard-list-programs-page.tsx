@@ -30,7 +30,7 @@ const DashboardListProgramsPage: React.FC = () => {
   >();
 
   const [page, setPage] = useState(0);
-  const [itemsPerPage, setItemsPerPage] = useState(10);
+  const [itemsPerPage, setItemsPerPage] = useState(4);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [programToDelete, setProgramToDelete] = useState<
     ProgramSummary | undefined

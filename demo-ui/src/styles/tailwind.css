@@ -1,0 +1,167 @@
+/* ============================================
+   KALEO DESIGN SYSTEM - TAILWIND & THEME
+   This file handles Tailwind + CSS custom properties
+   ============================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap');
+@import "tailwindcss";
+@import "tw-animate-css";
+
+/* Tailwind v4 dark mode variant */
+@custom-variant dark (&:is(.dark *));
+
+/* Tailwind Theme Configuration */
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 12px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --font-sans: 'Inter', system-ui, sans-serif;
+  --font-display: Georgia, serif;
+}
+
+/* CSS Custom Properties - Light Theme */
+:root {
+  --radius: 1rem;
+  
+  /* Core Kaleo Purple Palette */
+  --purple-50: oklch(0.97 0.02 285);
+  --purple-100: oklch(0.94 0.04 285);
+  --purple-200: oklch(0.88 0.08 285);
+  --purple-300: oklch(0.78 0.12 285);
+  --purple-400: oklch(0.68 0.16 285);
+  --purple-500: oklch(0.58 0.20 285);
+  --purple-600: oklch(0.48 0.20 285);
+  --purple-700: oklch(0.40 0.18 285);
+  --purple-800: oklch(0.32 0.14 285);
+  --purple-900: oklch(0.24 0.10 285);
+  --purple-950: oklch(0.14 0.06 285);
+  
+  /* Gold Accent */
+  --gold-400: oklch(0.80 0.14 85);
+  --gold-500: oklch(0.72 0.14 85);
+  
+  /* Theme colors - Light Mode */
+  --background: oklch(0.98 0.008 85);
+  --foreground: oklch(0.15 0.02 285);
+  --card: oklch(0.995 0.005 85);
+  --card-foreground: oklch(0.15 0.02 285);
+  --popover: oklch(0.995 0.005 85);
+  --popover-foreground: oklch(0.15 0.02 285);
+  --primary: var(--purple-600);
+  --primary-foreground: oklch(0.99 0 0);
+  --secondary: var(--purple-100);
+  --secondary-foreground: var(--purple-700);
+  --muted: oklch(0.95 0.01 85);
+  --muted-foreground: oklch(0.45 0.02 285);
+  --accent: var(--gold-400);
+  --accent-foreground: oklch(0.25 0.05 85);
+  --destructive: oklch(0.55 0.22 25);
+  --border: oklch(0.88 0.02 285);
+  --input: oklch(0.92 0.015 285);
+  --ring: var(--purple-500);
+  --chart-1: var(--purple-500);
+  --chart-2: oklch(0.65 0.14 175);
+  --chart-3: var(--gold-500);
+  --chart-4: oklch(0.60 0.16 145);
+  --chart-5: oklch(0.55 0.20 35);
+  --sidebar: oklch(0.97 0.01 285);
+  --sidebar-foreground: oklch(0.15 0.02 285);
+  --sidebar-primary: var(--purple-600);
+  --sidebar-primary-foreground: oklch(0.99 0 0);
+  --sidebar-accent: var(--purple-100);
+  --sidebar-accent-foreground: var(--purple-700);
+  --sidebar-border: oklch(0.88 0.02 285);
+  --sidebar-ring: var(--purple-500);
+}
+
+/* Dark Theme Overrides */
+.dark {
+  --background: var(--purple-950);
+  --foreground: oklch(0.95 0.01 85);
+  --card: oklch(0.18 0.03 285);
+  --card-foreground: oklch(0.95 0.01 85);
+  --popover: oklch(0.20 0.03 285);
+  --popover-foreground: oklch(0.95 0.01 85);
+  --primary: var(--purple-400);
+  --primary-foreground: var(--purple-950);
+  --secondary: oklch(0.26 0.04 285);
+  --secondary-foreground: oklch(0.92 0.02 85);
+  --muted: oklch(0.24 0.025 285);
+  --muted-foreground: oklch(0.65 0.02 85);
+  --accent: var(--gold-400);
+  --accent-foreground: oklch(0.15 0.04 85);
+  --destructive: oklch(0.62 0.20 25);
+  --border: oklch(0.32 0.04 285);
+  --input: oklch(0.26 0.03 285);
+  --ring: var(--purple-400);
+}
+
+/* Base Layer */
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  *,
+  *::before,
+  *::after {
+    cursor: none !important;
+  }
+  
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  
+  body {
+    font-family: var(--font-sans);
+    line-height: 1.65;
+    letter-spacing: -0.01em;
+    background: var(--purple-950);
+  }
+  
+  ::selection {
+    background: var(--purple-500);
+    color: white;
+  }
+  
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}

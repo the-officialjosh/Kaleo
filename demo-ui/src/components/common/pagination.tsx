@@ -27,7 +27,7 @@ export const Pagination: React.FC<PaginationProps> = ({
   if (totalItems === 0) return null;
 
   return (
-    <div className="pagination-container">
+    <div className="pagination-container"  style={{background: "transparent"}}>
       <div className="pagination-info">
         <span className="pagination-showing">
           Showing {startItem} to {endItem} of {totalItems} results
