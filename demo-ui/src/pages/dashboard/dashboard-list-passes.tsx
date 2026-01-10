@@ -1,5 +1,5 @@
 import NavBar from "@/components/common/nav-bar";
-import {SimplePagination} from "@/components/common/simple-pagination";
+import {Pagination} from "@/components/common/pagination";
 import {PassSummary, SpringBootPagination} from "@/domain/domain";
 import {listPasses} from "@/lib/api";
 import {Calendar, Clock, MapPin, Ticket} from "lucide-react";
@@ -48,11 +48,12 @@ const DashboardListPasses: React.FC = () => {
   >();
   const [error, setError] = useState<string | undefined>();
   const [page, setPage] = useState(0);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
 
   const refreshPasses = async () => {
     if (!user?.access_token) return;
     try {
-      setPasses(await listPasses(user.access_token, page));
+      setPasses(await listPasses(user.access_token, page, itemsPerPage));
     } catch (err) {
       if (err instanceof Error) {
         setError(err.message);
@@ -69,7 +70,7 @@ const DashboardListPasses: React.FC = () => {
       return;
     }
     refreshPasses();
-  }, [isLoading, user?.access_token, page]);
+  }, [isLoading, user?.access_token, page, itemsPerPage]);
 
   if (error) {
     return (
@@ -195,9 +196,14 @@ const DashboardListPasses: React.FC = () => {
         )}
 
         {passes && passes.content.length > 0 && (
-          <div className="dashboard-list-pagination">
-            <SimplePagination pagination={passes} onPageChange={setPage} />
-          </div>
+          <Pagination
+            currentPage={passes.number}
+            totalPages={passes.totalPages}
+            onPageChange={setPage}
+            itemsPerPage={itemsPerPage}
+            totalItems={passes.totalElements}
+            onItemsPerPageChange={setItemsPerPage}
+          />
         )}
       </div>
     </div>
