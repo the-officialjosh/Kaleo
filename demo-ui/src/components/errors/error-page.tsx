@@ -2,6 +2,10 @@ import {isRouteErrorResponse, useNavigate, useRouteError} from "react-router";
 import {AlertTriangle, Home, RefreshCw} from "lucide-react";
 import {Button} from "../ui/button";
 import Background3D from "@/components/landing/background-3d";
+import UnauthorizedPage from "./unauthorized-page";
+import ForbiddenPage from "./forbidden-page";
+import ServerErrorPage from "./server-error-page";
+import NotFoundPage from "./not-found-page";
 
 export default function ErrorPage() {
   const error = useRouteError();
@@ -10,14 +14,37 @@ export default function ErrorPage() {
   let errorCode = "Error";
   let errorMessage = "Something went wrong";
   let errorDetails = "";
+  let statusCode = 0;
 
   if (isRouteErrorResponse(error)) {
+    statusCode = error.status;
     errorCode = String(error.status);
     errorMessage = error.statusText || "An error occurred";
     errorDetails = error.data?.message || "";
   } else if (error instanceof Error) {
     errorMessage = error.message;
     errorDetails = error.stack?.split("\n")[0] || "";
+
+    // Try to extract status code from error message
+    const statusMatch = errorMessage.match(/(\d{3})/);
+    if (statusMatch) {
+      statusCode = parseInt(statusMatch[1], 10);
+    }
+  }
+
+  // Route to specialized error pages based on status code
+  switch (statusCode) {
+    case 401:
+      return <UnauthorizedPage />;
+    case 403:
+      return <ForbiddenPage />;
+    case 404:
+      return <NotFoundPage />;
+    case 500:
+    case 502:
+    case 503:
+    case 504:
+      return <ServerErrorPage />;
   }
 
   const handleGoHome = () => {

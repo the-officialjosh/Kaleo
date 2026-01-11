@@ -1,6 +1,8 @@
 spring:
     application:
         name: Kaleo
+    profiles:
+        active: ${SPRING_PROFILES_ACTIVE:dev}
 
     #Database configuration
     datasource:

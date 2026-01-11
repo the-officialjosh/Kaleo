@@ -65,11 +65,42 @@ export const updateProgram = async (
   }
 };
 
+// Helper function to transform Spring Boot 4.x pagination response to our interface
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function transformPaginationResponse<T>(data: any): SpringBootPagination<T> {
+  // Handle new Spring Boot 4.x format with nested page object
+  if (data.page && data.content) {
+    return {
+      content: data.content,
+      number: data.page.number,
+      size: data.page.size,
+      totalElements: data.page.totalElements,
+      totalPages: data.page.totalPages,
+      first: data.page.number === 0,
+      last: data.page.number >= data.page.totalPages - 1,
+      numberOfElements: data.content.length,
+      empty: data.content.length === 0,
+      pageable: {
+        pageNumber: data.page.number,
+        pageSize: data.page.size,
+        offset: data.page.number * data.page.size,
+        paged: true,
+        unpaged: false,
+        sort: { empty: true, sorted: false, unsorted: true },
+      },
+      sort: { empty: true, sorted: false, unsorted: true },
+    } as SpringBootPagination<T>;
+  }
+  // Already in the expected format
+  return data as SpringBootPagination<T>;
+}
+
 export const listPrograms = async (
   accessToken: string,
   page: number,
+  size: number = 10,
 ): Promise<SpringBootPagination<ProgramSummary>> => {
-  const response = await fetch(`/api/v1/programs?page=${page}&size=2`, {
+  const response = await fetch(`/api/v1/programs?page=${page}&size=${size}`, {
     method: "GET",
     headers: {
       Authorization: `Bearer ${accessToken}`,
@@ -94,7 +125,8 @@ export const listPrograms = async (
     );
   }
 
-  return (await response.json()) as SpringBootPagination<ProgramSummary>;
+  const data = await response.json();
+  return transformPaginationResponse<ProgramSummary>(data);
 };
 
 export const getProgram = async (
@@ -160,7 +192,7 @@ export const listPublishedPrograms = async (
   page: number,
 ): Promise<SpringBootPagination<PublishedProgramSummary>> => {
   const response = await fetch(
-    `/api/v1/published-programs?page=${page}&size=4`,
+    `/api/v1/published-programs?page=${page}&size=6`,
     {
       method: "GET",
       headers: {
@@ -186,7 +218,8 @@ export const listPublishedPrograms = async (
     );
   }
 
-  return (await response.json()) as SpringBootPagination<PublishedProgramSummary>;
+  const data = await response.json();
+  return transformPaginationResponse<PublishedProgramSummary>(data);
 };
 
 export const searchPublishedPrograms = async (
@@ -194,7 +227,7 @@ export const searchPublishedPrograms = async (
   page: number,
 ): Promise<SpringBootPagination<PublishedProgramSummary>> => {
   const response = await fetch(
-    `/api/v1/published-programs?q=${query}&page=${page}&size=4`,
+    `/api/v1/published-programs?q=${encodeURIComponent(query)}&page=${page}&size=6`,
     {
       method: "GET",
       headers: {
@@ -220,7 +253,8 @@ export const searchPublishedPrograms = async (
     );
   }
 
-  return (await response.json()) as SpringBootPagination<PublishedProgramSummary>;
+  const data = await response.json();
+  return transformPaginationResponse<PublishedProgramSummary>(data);
 };
 
 export const getPublishedProgram = async (
@@ -283,8 +317,9 @@ export const purchasePass = async (
 export const listPasses = async (
   accessToken: string,
   page: number,
+  size: number = 10,
 ): Promise<SpringBootPagination<PassSummary>> => {
-  const response = await fetch(`/api/v1/passes?page=${page}&size=8`, {
+  const response = await fetch(`/api/v1/passes?page=${page}&size=${size}`, {
     method: "GET",
     headers: {
       Authorization: `Bearer ${accessToken}`,
@@ -310,40 +345,7 @@ export const listPasses = async (
   }
 
   const data = await response.json();
-
-  // Handle API response with nested page object
-  if (data.page && data.content) {
-    return {
-      content: data.content,
-      number: data.page.number,
-      size: data.page.size,
-      totalElements: data.page.totalElements,
-      totalPages: data.page.totalPages,
-      first: data.page.number === 0,
-      last: data.page.number === data.page.totalPages - 1,
-      numberOfElements: data.content.length,
-      empty: data.content.length === 0,
-      pageable: {
-        pageNumber: data.page.number,
-        pageSize: data.page.size,
-        offset: data.page.number * data.page.size,
-        paged: true,
-        unpaged: false,
-        sort: {
-          empty: true,
-          sorted: false,
-          unsorted: true,
-        },
-      },
-      sort: {
-        empty: true,
-        sorted: false,
-        unsorted: true,
-      },
-    } as SpringBootPagination<PassSummary>;
-  }
-
-  return data as SpringBootPagination<PassSummary>;
+  return transformPaginationResponse<PassSummary>(data);
 };
 
 export const getPass = async (
@@ -427,40 +429,7 @@ export const listStaffPrograms = async (
   }
 
   const data = await response.json();
-
-  // Handle API response with nested page object
-  if (data.page && data.content) {
-    return {
-      content: data.content,
-      number: data.page.number,
-      size: data.page.size,
-      totalElements: data.page.totalElements,
-      totalPages: data.page.totalPages,
-      first: data.page.number === 0,
-      last: data.page.number === data.page.totalPages - 1,
-      numberOfElements: data.content.length,
-      empty: data.content.length === 0,
-      pageable: {
-        pageNumber: data.page.number,
-        pageSize: data.page.size,
-        offset: data.page.number * data.page.size,
-        paged: true,
-        unpaged: false,
-        sort: {
-          empty: true,
-          sorted: false,
-          unsorted: true,
-        },
-      },
-      sort: {
-        empty: true,
-        sorted: false,
-        unsorted: true,
-      },
-    } as SpringBootPagination<StaffProgramSummary>;
-  }
-
-  return data as SpringBootPagination<StaffProgramSummary>;
+  return transformPaginationResponse<StaffProgramSummary>(data);
 };
 
 export const validatePass = async (

@@ -51,7 +51,9 @@ services:
       start_period: 60s
 
   api:
-    image: the-officialjosh/kaleo-api:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
     container_name: kaleo-api
     depends_on:
       db:
@@ -71,6 +73,7 @@ services:
       # Browser-accessible URL for Swagger OAuth (user's browser must reach this)
       KEYCLOAK_BROWSER_URL: http://localhost:9095/realms/kaleo-events
       SWAGGER_OAUTH_CLIENT_ID: ${SWAGGER_OAUTH_CLIENT_ID:-kaleo-event-app}
+      SPRING_PROFILES_ACTIVE: dev
       SERVER_PORT: 8080
       SHOW_SQL: "false"
     ports:

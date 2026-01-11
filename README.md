@@ -26,9 +26,10 @@ A secure REST API for church and ministry event management. Organizers create pr
 - 📋 **Program Management**: Create and manage church programs/events with role-based access
 - 🎟️ **Pass System**: Capacity-controlled registration with automatic pass generation
 - 📱 **QR Check-in**: Generate unique QR codes and manual codes for event check-in
-- ✅ **Validation**: Staff-managed check-in with duplicate prevention
+- ✅ **Validation**: Staff-managed check-in with program selection and duplicate prevention
 - 🔐 **Security**: JWT-based authentication with Keycloak OAuth2/OIDC integration
 - 📖 **Swagger UI**: Interactive API documentation with OAuth2 authorization
+- 🚨 **Error Handling**: Comprehensive error pages (401, 403, 404, 500) with beautiful UI
 
 ---
 
@@ -136,6 +137,19 @@ docker compose up -d
 
 ---
 
+## 🎨 Demo UI
+
+The React frontend provides a complete user interface for all roles:
+
+- **Landing Page**: Browse published programs, search and filter events
+- **Organizer Dashboard**: Create/manage programs and pass types
+- **Staff Check-in**: Select programs and validate passes via QR or manual code
+- **Attendee Portal**: Register for events and view passes
+
+See [demo-ui/README.md](demo-ui/README.md) for frontend development details.
+
+---
+
 ## 📖 API Documentation
 
 ### Swagger UI with OAuth2
@@ -151,11 +165,12 @@ GET /api/v1/published-programs/{id}    # Get program details
 
 ### Protected Endpoints
 
-| Endpoint | Role Required |
-|----------|---------------|
-| `/api/v1/programs` | `ROLE_ORGANIZER` |
-| `/api/v1/pass-validations/**` | `ROLE_STAFF` |
-| All other endpoints | Authenticated |
+| Endpoint | Role Required | Description |
+|----------|---------------|-------------|
+| `/api/v1/programs` | `ROLE_ORGANIZER` | Program CRUD operations |
+| `GET /api/v1/pass-validations` | `ROLE_STAFF` | List programs for check-in |
+| `POST /api/v1/pass-validations` | `ROLE_STAFF` | Validate passes (QR/manual) |
+| All other endpoints | Authenticated | User-specific operations |
 
 ---
 
@@ -197,7 +212,22 @@ http://localhost:8081/swagger-ui/oauth2-redirect.html
 ```
 kaleo/
 ├── src/main/java/              # Spring Boot API
+│   └── dev/joshuaonyema/kaleo/
+│       ├── api/                # Controllers, DTOs, Validators
+│       ├── application/        # Services, Commands, Security
+│       ├── config/             # Spring Configuration
+│       ├── domain/             # JPA Entities
+│       ├── exception/          # Global Exception Handling
+│       ├── mapper/             # Object Mappers
+│       └── repository/         # Data Access Layer
 ├── demo-ui/                    # React frontend
+│   └── src/
+│       ├── components/
+│       │   ├── errors/         # Error pages (401, 403, 404, 500)
+│       │   ├── landing/        # Landing page components
+│       │   ├── programs/       # Program components
+│       │   └── ui/             # Shared UI components
+│       └── pages/              # Route pages
 ├── docker-compose.yaml         # Full stack deployment
 ├── nginx.conf                  # Nginx reverse proxy
 └── docs/                       # Documentation

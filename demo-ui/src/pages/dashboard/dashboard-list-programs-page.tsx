@@ -1,5 +1,5 @@
 import NavBar from "@/components/common/nav-bar";
-import {SimplePagination} from "@/components/common/simple-pagination";
+import {Pagination} from "@/components/common/pagination";
 import {Alert, AlertDescription, AlertTitle} from "@/components/ui/alert";
 import {
     AlertDialog,
@@ -30,6 +30,7 @@ const DashboardListProgramsPage: React.FC = () => {
   >();
 
   const [page, setPage] = useState(0);
+  const [itemsPerPage, setItemsPerPage] = useState(4);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [programToDelete, setProgramToDelete] = useState<
     ProgramSummary | undefined
@@ -40,11 +41,11 @@ const DashboardListProgramsPage: React.FC = () => {
       return;
     }
     refreshPrograms(user.access_token);
-  }, [isLoading, user, page]);
+  }, [isLoading, user, page, itemsPerPage]);
 
   const refreshPrograms = async (accessToken: string) => {
     try {
-      setPrograms(await listPrograms(accessToken, page));
+      setPrograms(await listPrograms(accessToken, page, itemsPerPage));
     } catch (err) {
       if (err instanceof Error) {
         setError(err.message);
@@ -230,9 +231,14 @@ const DashboardListProgramsPage: React.FC = () => {
         )}
 
         {programs && programs.content.length > 0 && (
-          <div className="dashboard-list-pagination">
-            <SimplePagination pagination={programs} onPageChange={setPage} />
-          </div>
+          <Pagination
+            currentPage={programs.number}
+            totalPages={programs.totalPages}
+            onPageChange={setPage}
+            itemsPerPage={itemsPerPage}
+            totalItems={programs.totalElements}
+            onItemsPerPageChange={setItemsPerPage}
+          />
         )}
       </div>
 

@@ -160,7 +160,7 @@ const AttendeeLandingPage: React.FC = () => {
             <span className="hero-title-accent"> in <TypewriterText /></span>
           </h1>
           <p className="hero-subtitle">
-            Connect with church programs, ministries, and gatherings that nurture your faith journey and help you grow closer to God and others.
+            Connect with church programs, ministries, and gatherings that nurture your faith journey
           </p>
 
           {/* Search Bar */}
