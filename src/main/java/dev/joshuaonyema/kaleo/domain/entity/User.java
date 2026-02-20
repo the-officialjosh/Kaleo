@@ -60,4 +60,6 @@ public class User extends TimestampedEntity {
     public int hashCode() {
         return Objects.hashCode(id);
     }
+
+
 }
