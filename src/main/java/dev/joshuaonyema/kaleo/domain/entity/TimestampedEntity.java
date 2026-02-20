@@ -11,9 +11,9 @@ import org.springframework.data.annotation.LastModifiedDate;
 import java.time.LocalDateTime;
 
 @MappedSuperclass
+@NoArgsConstructor
 @Getter
 @Setter
-@NoArgsConstructor
 public class TimestampedEntity {
     @CreatedDate
     @Column(name = "created_at", updatable = false, nullable = false)
@@ -22,4 +22,6 @@ public class TimestampedEntity {
     @LastModifiedDate
     @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
+
+
 }

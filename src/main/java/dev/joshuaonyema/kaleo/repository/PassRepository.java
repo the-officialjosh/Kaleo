@@ -9,6 +9,10 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 import java.util.UUID;
 
+/**
+ * @author Joshua Onyema
+ */
+
 @Repository
 public interface PassRepository extends JpaRepository<Pass, UUID> {
     int countByPassTypeId(UUID ticketTypeId);
